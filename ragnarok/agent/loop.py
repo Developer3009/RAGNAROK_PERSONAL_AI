@@ -298,6 +298,10 @@ class AgentLoop:
         return self._history.snapshot()
 
     @property
+    def history(self) -> MessageHistory:
+        return self._history
+
+    @property
     def active_plan(self) -> Plan | None:
         return self._active_plan
 

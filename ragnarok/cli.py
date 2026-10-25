@@ -15,6 +15,17 @@ from __future__ import annotations
 import sys
 import logging
 
+if sys.stdout and hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+if sys.stderr and hasattr(sys.stderr, "reconfigure"):
+    try:
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 from ragnarok import llm
 from ragnarok.agent.loop import AgentLoop
 from ragnarok.config import settings
@@ -58,6 +69,37 @@ _HELP = """
 /triggers          -- list all registered background triggers and their status
 /quit              -- exit Ragnarok
 """
+
+
+_ui_server_thread = None
+
+
+def _ensure_ui_server_running(host: str = "127.0.0.1", port: int = 8000) -> None:
+    """Ensure the FastAPI/uvicorn server is active in a background daemon thread."""
+    global _ui_server_thread
+    import socket
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        is_open = (sock.connect_ex((host, port)) == 0)
+    finally:
+        sock.close()
+
+    if is_open:
+        return
+
+    import threading
+    import uvicorn
+    from ragnarok.ui.app import app
+
+    def _run():
+        config = uvicorn.Config(app, host=host, port=port, log_level="warning")
+        server = uvicorn.Server(config)
+        server.run()
+
+    _ui_server_thread = threading.Thread(target=_run, daemon=True)
+    _ui_server_thread.start()
+    import time
+    time.sleep(0.6)
 
 
 def _print_status(mem_store: MemoryStore | None = None) -> None:
@@ -179,6 +221,8 @@ def main() -> None:
                 print(_HELP)
             elif cmd == "/ui":
                 from ragnarok.ui.app import ACTIVE_TOKEN
+                print("  Starting local web UI server...")
+                _ensure_ui_server_running()
                 url = f"http://127.0.0.1:8000/?token={ACTIVE_TOKEN}"
                 print(f"  Local Web Dashboard: {url}")
                 import webbrowser

@@ -38,7 +38,7 @@ class EvaluationRunner:
             f"**Evaluation Run Date:** {time.strftime('%Y-%m-%d %H:%M:%S UTC', time.gmtime(result.timestamp))}  ",
             f"**Environment:** Windows 10/11 | Python {sys.version.split()[0]} | Local Ollama v0.5+  ",
             f"**Primary Model:** `{settings.model_main}` | **Embedding Model:** `{settings.model_embed}`  ",
-            f"**Sandbox Root:** `{settings.sandbox_root}`  ",
+            f"**Sandbox Root:** `{getattr(settings, 'sandbox_root', settings.allowed_folders[0] if getattr(settings, 'allowed_folders', None) else 'local')}`  ",
             "",
             "---",
             "",

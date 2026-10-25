@@ -239,16 +239,28 @@ def chat_with_tools(
                         "\n\nAvailable tools:\n"
                         + "\n".join(tool_descs)
                         + '\n\nIf you need to call a tool, reply ONLY with JSON: {"name": "<tool_name>", "arguments": {<args>}}'
+                        + '\nIMPORTANT: If you have already received the tool result, or have enough information, do NOT call any more tools — give your final direct response to the user in plain text.'
                     )
-                    msgs = list(payload_fallback.get("messages", []))
-                    if msgs and msgs[0].get("role") == "system":
-                        msgs[0] = {
+                    raw_msgs = payload_fallback.get("messages", [])
+                    cleaned_msgs = []
+                    for m in raw_msgs:
+                        if m.get("role") == "tool":
+                            t_name = m.get("tool_name", "tool")
+                            cleaned_msgs.append({
+                                "role": "user",
+                                "content": f"[Tool Result for '{t_name}']:\n{m.get('content', '')}\n\nBased on this tool result, please answer the user request now in plain text.",
+                            })
+                        else:
+                            cleaned_msgs.append(dict(m))
+
+                    if cleaned_msgs and cleaned_msgs[0].get("role") == "system":
+                        cleaned_msgs[0] = {
                             "role": "system",
-                            "content": msgs[0].get("content", "") + tool_guide,
+                            "content": cleaned_msgs[0].get("content", "") + tool_guide,
                         }
                     else:
-                        msgs.insert(0, {"role": "system", "content": tool_guide.strip()})
-                    payload_fallback["messages"] = msgs
+                        cleaned_msgs.insert(0, {"role": "system", "content": tool_guide.strip()})
+                    payload_fallback["messages"] = cleaned_msgs
 
                 r_fallback = client.post("/api/chat", json=payload_fallback)
                 r_fallback.raise_for_status()
@@ -280,15 +292,29 @@ def chat_with_tools(
     # If native tool_calls is empty, inspect final_content for text-formatted JSON tool calls
     if not parsed_calls and final_content:
         import re
-        m = re.search(r'\{\s*"name"\s*:\s*"([a-zA-Z0-9_]+)"\s*,\s*"arguments"\s*:\s*(\{.*?\})\s*\}', final_content, re.DOTALL)
-        if m:
+        candidates = []
+        # 1. Extract markdown code blocks
+        code_blocks = re.findall(r'```(?:json)?\s*(\{[\s\S]*?\})\s*```', final_content, re.DOTALL)
+        candidates.extend(code_blocks)
+        # 2. Extract balanced or general json-like objects
+        raw_blocks = re.findall(r'(\{(?:[^{}]|(?:\{[^{}]*\}))*\})', final_content, re.DOTALL)
+        candidates.extend(raw_blocks)
+        for cand in candidates:
             try:
-                t_name = m.group(1)
-                t_args = json.loads(m.group(2))
-                parsed_calls.append(ToolCall(name=t_name, arguments=t_args))
-                final_content = None
+                obj = json.loads(cand)
+                if isinstance(obj, dict) and "name" in obj:
+                    t_name = str(obj["name"]).strip()
+                    t_args = obj.get("arguments", {})
+                    if isinstance(t_args, str):
+                        try:
+                            t_args = json.loads(t_args)
+                        except Exception:
+                            t_args = {}
+                    parsed_calls.append(ToolCall(name=t_name, arguments=t_args if isinstance(t_args, dict) else {}))
+                    final_content = None
+                    break
             except Exception:
-                pass
+                continue
 
     result = ChatToolResult(
         tool_calls=parsed_calls,

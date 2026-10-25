@@ -201,10 +201,11 @@ class ResourceBenchmark:
         mem_mb_samples: List[float] = []
 
         # Take 3 quick samples
+        num_cpus = psutil.cpu_count() or 1
         for _ in range(3):
-            cpu = psutil.cpu_percent(interval=sample_duration_sec / 3)
+            p_cpu = process.cpu_percent(interval=sample_duration_sec / 3) / num_cpus
             mem_mb = process.memory_info().rss / (1024 * 1024)
-            cpu_samples.append(cpu)
+            cpu_samples.append(p_cpu)
             mem_mb_samples.append(mem_mb)
 
         avg_cpu = sum(cpu_samples) / len(cpu_samples)
