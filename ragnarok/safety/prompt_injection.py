@@ -23,6 +23,7 @@ from typing import Any
 _INJECTION_PATTERNS: list[re.Pattern] = [
     re.compile(r"ignore\s+(all\s+)?(previous|prior|above)\s+(instructions|rules|prompts)", re.IGNORECASE),
     re.compile(r"(disregard|forget)\s+(all\s+)?(previous|prior)\s+(instructions|rules)", re.IGNORECASE),
+    re.compile(r"disregard\s+(user\s+)?(goals|requests|permissions|commands|intent)", re.IGNORECASE),
     re.compile(r"you\s+are\s+now\s+(in\s+)?(developer|admin|debug|god|maintenance)\s+mode", re.IGNORECASE),
     re.compile(r"system\s*:\s*(override|allow|grant|bypass|disable)", re.IGNORECASE),
     re.compile(r"(override|bypass|disable)\s+(all\s+)?(safety|permissions|filters|approvals)", re.IGNORECASE),

@@ -726,6 +726,84 @@ def test_phase_7_ui(tmp_path: Path) -> None:
 
 
 # -------------------------------------------------------------
+# PHASE 8 -- Evaluation & Write-up Verification
+# -------------------------------------------------------------
+
+def test_phase_8_evaluation(tmp_path: Path):
+    print("\n" + "=" * 64)
+    print("PHASE 8: EVALUATION & WRITE-UP -- 3 VERIFICATION RUNS")
+    print("=" * 64)
+
+    from ragnarok.eval.datasets import (
+        SINGLE_STEP_DATASET,
+        MULTI_STEP_DATASET,
+        MEMORY_RECALL_DATASET,
+        SAFETY_INJECTION_DATASET,
+    )
+    from ragnarok.eval.benchmarks import (
+        LatencyBenchmark,
+        ResourceBenchmark,
+        AccuracyBenchmark,
+    )
+    from ragnarok.eval.runner import EvaluationRunner
+
+    # Run 1: Latency SLAs and Hardware Resource Footprint
+    print("\n[Run 1/3] Performance Latency SLAs & Hardware Resource Footprint...")
+    embed_m = LatencyBenchmark.measure_embedding_latency(samples=3)
+    print(f"    Embedding Latency      : {embed_m.actual}ms (Target: {embed_m.target})")
+    assert embed_m.passed, f"Embedding latency SLA failed: {embed_m.actual}ms"
+
+    recall_m = LatencyBenchmark.measure_recall_latency(queries=3)
+    print(f"    Memory Recall Latency  : {recall_m.actual}ms (Target: {recall_m.target})")
+    assert recall_m.passed, f"Memory recall latency SLA failed: {recall_m.actual}ms"
+
+    crash_m = LatencyBenchmark.measure_crash_recovery_latency()
+    print(f"    Crash Recovery Time    : {crash_m.actual}s (Target: {crash_m.target})")
+    assert crash_m.passed, f"Crash recovery SLA failed: {crash_m.actual}s"
+
+    cpu_m = ResourceBenchmark.measure_system_resources(sample_duration_sec=0.2)
+    print(f"    Idle CPU Usage         : {cpu_m.actual}% (Target: {cpu_m.target})")
+    assert cpu_m.passed, f"Idle CPU SLA failed: {cpu_m.actual}%"
+    print(PASS, "Run 1 -- all 4 performance & resource SLAs verified")
+
+    # Run 2: Single-Step Tool Selection & Multi-Step Planning Accuracy
+    print("\n[Run 2/3] Single-Step & Multi-Step Task Accuracy across Evaluation Datasets...")
+    # Test on first 15 prompts
+    s_res = AccuracyBenchmark.evaluate_single_step_selection(SINGLE_STEP_DATASET[:15])
+    print(f"    Single-Step Tool Accuracy : {s_res['accuracy_percent']}% ({s_res['correct']}/{s_res['total']})")
+    assert s_res["passed"], f"Single step accuracy failed: {s_res['accuracy_percent']}%"
+
+    # Test on second 15 prompts (different inputs!)
+    s_res2 = AccuracyBenchmark.evaluate_single_step_selection(SINGLE_STEP_DATASET[15:])
+    print(f"    Single-Step (Set B)       : {s_res2['accuracy_percent']}% ({s_res2['correct']}/{s_res2['total']})")
+    assert s_res2["passed"], f"Single step Set B accuracy failed: {s_res2['accuracy_percent']}%"
+
+    # Multi-step goal execution
+    m_res = AccuracyBenchmark.evaluate_multi_step_planning(MULTI_STEP_DATASET[:8])
+    print(f"    Multi-Step Goal Success   : {m_res['accuracy_percent']}% ({m_res['successful_plans']}/{m_res['total']})")
+    assert m_res["passed"], f"Multi step accuracy failed: {m_res['accuracy_percent']}%"
+    print(PASS, "Run 2 -- task accuracy and planning success rates verified (>= 80%)")
+
+    # Run 3: Safety Defense Matrix & Evaluation Report Generation
+    print("\n[Run 3/3] Safety Containment (10 Attack Scenarios) & Evaluation Report Generation...")
+    safety_res = AccuracyBenchmark.evaluate_safety_defense_rate()
+    print(f"    Defensive Containment Rate : {safety_res['defense_rate_percent']}% ({safety_res['blocked_count']}/{safety_res['total']})")
+    assert safety_res["passed"], f"Safety defense failed: {safety_res['defense_rate_percent']}%"
+
+    runner = EvaluationRunner()
+    result = runner.run()
+    assert result.passed_all_targets, "Evaluation suite did not pass all targets"
+    report_text = runner.generate_markdown_report(result)
+    assert len(report_text) > 1000, "Markdown report too short"
+
+    out_report = tmp_path / "EVALUATION_REPORT.md"
+    out_report.write_text(report_text, encoding="utf-8")
+    assert out_report.exists()
+    print(f"    Report verified & written ({out_report.stat().st_size} bytes)")
+    print(PASS, "Run 3 -- 100% safety containment and report generation verified")
+
+
+# -------------------------------------------------------------
 # Entry point
 # -------------------------------------------------------------
 
@@ -744,6 +822,7 @@ if __name__ == "__main__":
             ("Phase 5: Safety & Security", test_phase_5_safety, {"tmp_path": tmp_p}),
             ("Phase 6: Triggers & Crash Recovery", test_phase_6_triggers, {"tmp_path": tmp_p}),
             ("Phase 7: Local Interface & Transparency", test_phase_7_ui, {"tmp_path": tmp_p}),
+            ("Phase 8: Evaluation & Write-up", test_phase_8_evaluation, {"tmp_path": tmp_p}),
         ]:
             try:
                 phase_fn(**kwargs)

@@ -9,7 +9,7 @@ retry_delay_sec = 1.0
 
 [models]
 chat_small = "gemma3:4b"
-chat_main  = "llama3.2:3b"
+chat_main  = "gemma3:4b"
 embed      = "nomic-embed-text"
 
 [agent]
