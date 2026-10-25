@@ -50,10 +50,10 @@ def _print_status(mem_store: MemoryStore | None = None) -> None:
     alive = llm.is_ollama_alive()
     if alive:
         models = llm.list_models()
-        print(f"  Ollama:   ✓ online at {settings.ollama_url}")
+        print(f"  Ollama:   [OK] online at {settings.ollama_url}")
         print(f"  Models:   {', '.join(models) if models else '(none pulled)'}")
     else:
-        print(f"  Ollama:   ✗ NOT reachable at {settings.ollama_url}")
+        print(f"  Ollama:   [OFFLINE] NOT reachable at {settings.ollama_url}")
     print(f"  Skills:   {len(registry)} loaded")
     if mem_store:
         print(f"  Memories: {mem_store.count()} active stored")
@@ -128,7 +128,7 @@ def main() -> None:
                     print(f"  {len(mems)} active memories:")
                     for m in mems[:10]:
                         pinned = " [PINNED]" if m.pinned else ""
-                        print(f"   • [{m.kind}]{pinned} {m.text[:80]}")
+                        print(f"    * [{m.kind}]{pinned} {m.text[:80]}")
                     if len(mems) > 10:
                         print(f"   ... and {len(mems) - 10} more.")
             elif user_input.startswith("/remember"):
@@ -137,7 +137,7 @@ def main() -> None:
                     print("Usage: /remember <fact or preference to save>")
                 else:
                     mid = memory_store.remember(fact, kind="semantic", source="user_cli")
-                    print(f"  ✓ Saved to memory: {fact[:60]} (id: {mid[:8]}...)")
+                    print(f"  [OK] Saved to memory: {fact[:60]} (id: {mid[:8]}...)")
             else:
                 print(f"Unknown command: {user_input}. Type /help for commands.")
             continue
