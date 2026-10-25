@@ -113,6 +113,19 @@ class Plan:
             self.status = "failed"
             self.updated_at = time.time()
 
+    @property
+    def is_complete(self) -> bool:
+        """Returns True if the entire plan has finished all steps or status is completed."""
+        return self.status == "completed" or (len(self.steps) > 0 and all(s.status == "completed" for s in self.steps))
+
+    @property
+    def current_step(self) -> int:
+        """Returns the active or current step id."""
+        active = self.active_step()
+        if active:
+            return active.step_id
+        return self.current_step_index
+
     def format_progress(self) -> str:
         """Format a human-readable summary of plan progress."""
         if not self.steps:
