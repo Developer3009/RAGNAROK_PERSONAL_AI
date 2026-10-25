@@ -47,7 +47,13 @@ ragnarok/
     read_file.py       Reads files (allowlist-enforced)
     add_note.py        Saves notes to data/knowledge/
     search_files.py    Searches files by pattern/content
-  memory/              [Phase 2] Persistent vector memory
+  memory/
+    __init__.py        Package exports
+    db.py              SQLite WAL engine with binary float32 embeddings
+    recall.py          MemoryStore: vector recall, deduplication, recency boost
+    facts.py           Automated user fact extraction from conversation turns
+    working.py         Working memory with atomic disk checkpointing
+    consolidation.py   Memory consolidation and forgetting with pinned protection
   safety/              [Phase 5] Permissions, sandbox, encryption
   triggers/            [Phase 6] Scheduler, file/email watchers
   ui/                  [Phase 7] FastAPI + web frontend
@@ -56,7 +62,10 @@ tests/
   test_history.py
   test_llm.py
   test_skills.py
+  test_skills_extended.py
   test_agent_loop.py
+  test_memory.py
+  test_phase4_planning.py
 config.toml             ALL model names, paths, and limits
 requirements.txt
 ```
@@ -75,15 +84,15 @@ pytest -m integration
 
 | Phase | Description                        | Status      |
 |-------|------------------------------------|-------------|
-| 0     | Setup & scoping                    | ✅ Done     |
-| 1     | Core agent loop with Ollama        | ✅ Done     |
-| 2     | Persistent memory                  | 🔲 Next     |
-| 3     | Skills & tool calling              | 🔲 Planned  |
-| 4     | Planning & self-correction         | 🔲 Planned  |
-| 5     | Safety, sandbox, encryption        | 🔲 Planned  |
-| 6     | Always-on triggers & recovery      | 🔲 Planned  |
-| 7     | Local interface & transparency     | 🔲 Planned  |
-| 8     | Evaluation & write-up              | 🔲 Planned  |
+| 0     | Setup & scoping                    | Done        |
+| 1     | Core agent loop with Ollama        | Done        |
+| 2     | Persistent memory                  | Done        |
+| 3     | Skills & tool calling              | Done        |
+| 4     | Planning & self-correction         | Done        |
+| 5     | Safety, sandbox, encryption        | Planned     |
+| 6     | Always-on triggers & recovery      | Planned     |
+| 7     | Local interface & transparency     | Planned     |
+| 8     | Evaluation & write-up              | Planned     |
 
 ## Target Metrics
 

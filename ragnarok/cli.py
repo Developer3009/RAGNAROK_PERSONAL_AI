@@ -26,22 +26,23 @@ from ragnarok.skills.registry import registry
 logger = logging.getLogger(__name__)
 
 _BANNER = r"""
-╔══════════════════════════════════════════════════════╗
-║          R A G N A R O K   A G E N T  v0.2          ║
-║      Local AI  •  Phases 0-2 (Memory)  •  Ollama    ║
-╚══════════════════════════════════════════════════════╝
++===========================================================+
+|          R A G N A R O K   A G E N T  v0.3               |
+|   Local AI  *  Phases 0-4 (Planning)  *  Ollama           |
++===========================================================+
 Type your message and press Enter.
-Special commands: /help  /memory  /remember  /reset  /history  /status  /quit
+Special commands: /help  /plan  /memory  /remember  /reset  /history  /status  /quit
 """
 
 _HELP = """
-/help              — show this message
-/memory            — list active memories stored in SQLite
-/remember <fact>   — manually save a lasting semantic fact to memory
-/reset             — start a new conversation (clear history)
-/history           — show current conversation turn count and char total
-/status            — show Ollama status, loaded models, memory count, skill count
-/quit              — exit Ragnarok
+/help              -- show this message
+/plan              -- show the current active execution plan and its step status
+/memory            -- list active memories stored in SQLite
+/remember <fact>   -- manually save a lasting semantic fact to memory
+/reset             -- start a new conversation (clear history + active plan)
+/history           -- show current conversation turn count and char total
+/status            -- show Ollama status, loaded models, memory count, skill count
+/quit              -- exit Ragnarok
 """
 
 
@@ -113,6 +114,12 @@ def main() -> None:
                       f"{sum(len(m['content']) for m in snap)} chars total.")
             elif cmd == "/status":
                 _print_status(memory_store)
+            elif cmd == "/plan":
+                plan = agent.active_plan
+                if plan is None:
+                    print("  No active plan for this turn (query was not complex enough to trigger planning).")
+                else:
+                    print(plan.format_progress())
             elif cmd == "/memory":
                 mems = memory_store.list_all()
                 if not mems:
@@ -135,17 +142,20 @@ def main() -> None:
                 print(f"Unknown command: {user_input}. Type /help for commands.")
             continue
 
-        # ── Normal chat turn ───────────────────────────────────────────────────
         print("Ragnarok: ", end="", flush=True)
         try:
             result = agent.chat(user_input)
             print(result.answer)
             if result.tool_calls_made:
-                print(f"  [tools used: {', '.join(result.tool_calls_made)} | "
+                print(f"  [tools: {', '.join(result.tool_calls_made)} | "
                       f"steps: {result.steps_taken} | "
                       f"{result.latency_ms:.0f}ms]")
+            if result.plan and result.plan.steps:
+                completed = sum(1 for s in result.plan.steps if s.status == "completed")
+                total = len(result.plan.steps)
+                print(f"  [plan: {completed}/{total} steps done | status: {result.plan.status}]")
             if result.stopped_early:
-                print("  ⚠  Reached maximum steps — answer may be incomplete.")
+                print("  [WARNING] Reached maximum steps -- answer may be incomplete.")
 
             # Background fact extraction
             try:
