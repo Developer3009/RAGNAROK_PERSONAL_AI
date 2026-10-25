@@ -1,0 +1,46 @@
+# config.toml — Ragnarok Agent Configuration
+# All model names, paths, and limits live here — never in source code.
+
+[ollama]
+base_url        = "http://localhost:11434"
+timeout_seconds = 120
+retry_attempts  = 3
+retry_delay_sec = 1.0
+
+[models]
+chat_small = "gemma3:4b"
+chat_main  = "llama3.2:3b"
+embed      = "nomic-embed-text"
+
+[agent]
+max_steps           = 10
+history_turns       = 20
+memory_budget_chars = 2000
+log_dir             = "logs"
+
+[paths]
+db_dir          = "db"
+data_inbox      = "data/inbox"
+data_processed  = "data/processed"
+data_knowledge  = "data/knowledge"
+skills_dir      = "ragnarok/skills"
+allowed_folders = ["data", "logs"]
+
+[memory]
+recall_top_k               = 6
+recency_boost_weight       = 0.15
+forget_threshold           = 0.25
+consolidation_interval_sec = 3600
+
+[scheduler]
+daily_brief_time = "08:00"
+
+[safety]
+default_risk_level   = "low"
+approval_timeout_sec = 60
+
+[metrics]
+target_task_success_pct = 80
+max_recall_latency_ms   = 800
+max_embed_latency_ms    = 200
+max_idle_cpu_pct        = 30

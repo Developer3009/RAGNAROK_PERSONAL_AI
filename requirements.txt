@@ -1,0 +1,28 @@
+# Core LLM / HTTP
+httpx>=0.27
+
+# Config
+tomli>=2.0; python_version < "3.11"
+
+# Data validation
+pydantic>=2.7
+
+# Numerics (for Phase 2 cosine similarity)
+numpy>=1.26
+
+# Web framework (Phase 7)
+fastapi>=0.115
+uvicorn[standard]>=0.30
+
+# Scheduling (Phase 6)
+apscheduler>=3.10
+
+# File watching (Phase 6)
+watchdog>=4.0
+
+# Testing
+pytest>=8.0
+pytest-asyncio>=0.23
+
+# Optional: vector DB for Phase 2 (install separately if slow)
+# chromadb>=0.5

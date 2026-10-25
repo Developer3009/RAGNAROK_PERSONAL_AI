@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Database & Data
+db/
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# Models (Ollama stores separately, but exclude any local model files)
+*.bin
+*.gguf
+*.ggml
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/settings.json
+.idea/
+*.swp
+
+# Test artifacts
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Ragnarok runtime
+data/inbox/*
+data/processed/*
+data/knowledge/*
+!data/inbox/.gitkeep
+!data/processed/.gitkeep
+!data/knowledge/.gitkeep
