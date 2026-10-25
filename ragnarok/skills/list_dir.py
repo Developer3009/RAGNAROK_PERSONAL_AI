@@ -29,7 +29,8 @@ MANIFEST = {
 
 
 def run(args: dict) -> str:
-    path = args.get("path", "data")
+    default_dir = str(settings.allowed_folders[0]) if settings.allowed_folders else "data"
+    path = args.get("path") or default_dir
     target = Path(path).resolve()
 
     allowed = [p.resolve() for p in settings.allowed_folders]
@@ -54,6 +55,8 @@ def run(args: dict) -> str:
         return f"Error listing directory: {exc}"
 
 
-def execute(path: str = "data") -> str:
-    return run({"path": path})
+def execute(path: str | None = None) -> str:
+    default_dir = str(settings.allowed_folders[0]) if settings.allowed_folders else "data"
+    return run({"path": path or default_dir})
+
 

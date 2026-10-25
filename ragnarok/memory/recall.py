@@ -32,7 +32,7 @@ from ragnarok.safety.encryption import SecretStore, get_secret_store
 logger = logging.getLogger(__name__)
 
 # Cosine similarity threshold above which we consider two memories duplicates
-_DEDUP_THRESHOLD = 0.95
+_DEDUP_THRESHOLD = 0.90
 # How many days old until recency boost is zero
 _RECENCY_HALF_LIFE_DAYS = 7.0
 
@@ -86,9 +86,15 @@ class MemoryStore:
         self,
         db: MemoryDB | None = None,
         secret_store: SecretStore | None = None,
+        dedup_threshold: float | None = None,
     ) -> None:
         self._db = db or MemoryDB()
         self._secrets = secret_store
+        self._dedup_threshold = (
+            dedup_threshold
+            if dedup_threshold is not None
+            else getattr(settings, "dedup_threshold", _DEDUP_THRESHOLD)
+        )
 
     # ── remember ───────────────────────────────────────────────────────────────
 
@@ -128,7 +134,7 @@ class MemoryStore:
         for row in existing:
             old_vec = self._db.decode_embedding(row)
             sim = _cosine_similarity(np.array(vector, dtype=np.float32), old_vec)
-            if sim >= _DEDUP_THRESHOLD:
+            if sim >= self._dedup_threshold:
                 # Near-identical — update instead of inserting
                 logger.info(
                     "Dedup: updating existing memory %s (sim=%.3f)", row["id"], sim
@@ -307,6 +313,29 @@ class MemoryStore:
     def pin(self, memory_id: str, pinned: bool = True) -> None:
         """Pin or unpin a memory (pinned memories are never forgotten)."""
         self._db.set_pinned(memory_id, pinned)
+
+    def update(
+        self,
+        memory_id: str,
+        text: str | None = None,
+        importance: float | None = None,
+        pinned: bool | None = None,
+    ) -> bool:
+        """Edit an existing memory, re-computing its embedding if text changes."""
+        embedding = None
+        stored_text = text
+        if text is not None:
+            text = text.strip()
+            embedding = llm.embed(text)
+            if self._secrets is not None and self._secrets.is_encrypted(text):
+                stored_text = self._secrets.encrypt(text)
+        return self._db.update_memory(
+            memory_id,
+            text=stored_text,
+            embedding=embedding,
+            importance=importance,
+            pinned=pinned,
+        )
 
     def delete(self, memory_id: str, allow_pinned: bool = False) -> bool:
         """

@@ -19,18 +19,19 @@ memory_budget_chars = 2000
 log_dir             = "logs"
 
 [paths]
-db_dir          = "db"
-data_inbox      = "data/inbox"
-data_processed  = "data/processed"
-data_knowledge  = "data/knowledge"
+db_dir          = "C:/Users/divye/OneDrive/Desktop/RAGNAROK_MEMORY/db"
+data_inbox      = "C:/Users/divye/OneDrive/Desktop/RAGNAROK_MEMORY/inbox"
+data_processed  = "C:/Users/divye/OneDrive/Desktop/RAGNAROK_MEMORY/processed"
+data_knowledge  = "C:/Users/divye/OneDrive/Desktop/RAGNAROK_MEMORY/knowledge"
 skills_dir      = "ragnarok/skills"
-allowed_folders = ["data", "logs"]
+allowed_folders = ["C:/Users/divye/OneDrive/Desktop/RAGNAROK_MEMORY"]
 
 [memory]
 recall_top_k               = 6
 recency_boost_weight       = 0.15
 forget_threshold           = 0.25
 consolidation_interval_sec = 3600
+dedup_threshold            = 0.90
 
 [scheduler]
 daily_brief_time = "08:00"
@@ -39,8 +40,25 @@ daily_brief_time = "08:00"
 default_risk_level   = "low"
 approval_timeout_sec = 60
 
+[permissions]
+active_role = "operator"
+
+[permissions.roles.admin]
+allowed_skills   = ["*"]
+require_approval = ["write_file"]
+
+[permissions.roles.operator]
+allowed_skills   = ["get_time", "read_file", "search_files", "list_dir", "add_note", "remember", "fetch_web"]
+require_approval = ["write_file", "add_note"]
+
+[permissions.roles.guest]
+allowed_skills   = ["get_time", "read_file", "remember"]
+require_approval = []
+
 [metrics]
 target_task_success_pct = 80
 max_recall_latency_ms   = 800
 max_embed_latency_ms    = 200
 max_idle_cpu_pct        = 30
+
+

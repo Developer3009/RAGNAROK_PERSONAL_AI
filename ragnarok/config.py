@@ -80,26 +80,37 @@ class Settings:
     # ── Paths ──────────────────────────────────────────────────────────────────
     @property
     def db_dir(self) -> Path:
-        return _PROJECT_ROOT / self._raw["paths"]["db_dir"]
+        p = Path(self._raw["paths"]["db_dir"])
+        return p if p.is_absolute() else _PROJECT_ROOT / p
+
+    @property
+    def data_dir(self) -> Path:
+        raw = self._raw["paths"].get("data_dir", self._raw["paths"].get("data_knowledge", "data"))
+        p = Path(raw)
+        return p if p.is_absolute() else _PROJECT_ROOT / p
 
     @property
     def inbox_dir(self) -> Path:
-        return _PROJECT_ROOT / self._raw["paths"]["data_inbox"]
+        p = Path(self._raw["paths"]["data_inbox"])
+        return p if p.is_absolute() else _PROJECT_ROOT / p
 
     @property
     def processed_dir(self) -> Path:
-        return _PROJECT_ROOT / self._raw["paths"]["data_processed"]
+        p = Path(self._raw["paths"]["data_processed"])
+        return p if p.is_absolute() else _PROJECT_ROOT / p
 
     @property
     def knowledge_dir(self) -> Path:
-        return _PROJECT_ROOT / self._raw["paths"]["data_knowledge"]
+        p = Path(self._raw["paths"]["data_knowledge"])
+        return p if p.is_absolute() else _PROJECT_ROOT / p
 
     @property
     def allowed_folders(self) -> list[Path]:
         return [
-            _PROJECT_ROOT / f
+            Path(f) if Path(f).is_absolute() else _PROJECT_ROOT / f
             for f in self._raw["paths"]["allowed_folders"]
         ]
+
 
     # ── Memory ─────────────────────────────────────────────────────────────────
     @property
@@ -118,10 +129,37 @@ class Settings:
     def consolidation_interval_sec(self) -> int:
         return int(self._raw["memory"]["consolidation_interval_sec"])
 
+    @property
+    def dedup_threshold(self) -> float:
+        return float(self._raw.get("memory", {}).get("dedup_threshold", 0.90))
+
+    # ── Safety & Permissions ───────────────────────────────────────────────────
+    @property
+    def default_risk_level(self) -> str:
+        return self._raw.get("safety", {}).get("default_risk_level", "low")
+
+    @property
+    def approval_timeout_sec(self) -> float:
+        return float(self._raw.get("safety", {}).get("approval_timeout_sec", 60.0))
+
+    @property
+    def active_role(self) -> str:
+        return self._raw.get("permissions", {}).get("active_role", "operator")
+
+    @property
+    def roles_config(self) -> dict[str, Any]:
+        return self._raw.get("permissions", {}).get("roles", {})
+
     # ── Metrics ────────────────────────────────────────────────────────────────
     @property
     def max_recall_latency_ms(self) -> float:
         return float(self._raw["metrics"]["max_recall_latency_ms"])
+
+    # ── Triggers (Phase 6) ─────────────────────────────────────────────────────
+    @property
+    def daily_brief_time(self) -> str:
+        return self._raw.get("scheduler", {}).get("daily_brief_time", "08:00")
+
 
 
 # Convenience singleton

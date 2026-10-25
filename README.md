@@ -97,8 +97,8 @@ pytest -m integration
 | 3     | Skills & tool calling              | Done        |
 | 4     | Planning & self-correction         | Done        |
 | 5     | Safety, sandbox, encryption        | Done        |
-| 6     | Always-on triggers & recovery      | Planned     |
-| 7     | Local interface & transparency     | Planned     |
+| 6     | Always-on triggers & recovery      | Done        |
+| 7     | Local interface & transparency     | Done        |
 | 8     | Evaluation & write-up              | Planned     |
 
 ## Target Metrics

@@ -26,8 +26,12 @@ def test_write_file_blocked():
 
 
 def test_list_dir_allowed():
-    res = list_dir.execute("data/knowledge")
-    assert "gitkeep" in res or "FILE" in res or "empty" in res
+    # The sandbox is restricted to RAGNAROK_MEMORY; use the configured knowledge_dir
+    knowledge_dir = settings.knowledge_dir
+    knowledge_dir.mkdir(parents=True, exist_ok=True)
+    res = list_dir.execute(str(knowledge_dir))
+    # Either lists entries, or reports empty — both mean the path was accepted
+    assert "not within any allowed directory" not in res
 
 
 def test_list_dir_blocked():

@@ -31,7 +31,7 @@ MANIFEST = {
 }
 
 
-def execute(url: str, max_length: int = 4000) -> str:
+def execute(url: str, max_length: int = 4000, wrap_untrusted: bool = False) -> str:
     if not (url.startswith("http://") or url.startswith("https://")):
         return "Error: URL must start with http:// or https://"
 
@@ -41,7 +41,16 @@ def execute(url: str, max_length: int = 4000) -> str:
             r.raise_for_status()
             text = r.text
             if len(text) > max_length:
-                return text[:max_length] + f"\n... [Truncated at {max_length} characters]"
+                text = text[:max_length] + f"\n... [Truncated at {max_length} characters]"
+            if wrap_untrusted:
+                from ragnarok.safety.prompt_injection import PromptInjectionDefender
+                return PromptInjectionDefender.wrap_untrusted(text, source=url)
             return text
     except Exception as exc:
         return f"Error fetching URL: {exc}"
+
+
+def run(args: dict) -> str:
+    url = args.get("url", "")
+    max_length = args.get("max_length", 4000)
+    return execute(url, max_length=max_length, wrap_untrusted=True)

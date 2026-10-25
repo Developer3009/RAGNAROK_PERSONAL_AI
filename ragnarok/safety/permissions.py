@@ -60,10 +60,10 @@ class ToolPolicy:
 
 class PermissionManager:
     """
-    Evaluates whether a tool call is permitted based on risk level and explicit policies.
+    Evaluates whether a tool call is permitted based on risk level, role, and explicit policies.
 
     Usage:
-        pm = PermissionManager()
+        pm = PermissionManager(role="operator")
         pm.deny("fetch_web", reason="No internet access in this session")
         pm.allow("write_file", reason="User explicitly approved file writes")
 
@@ -72,9 +72,20 @@ class PermissionManager:
             print(result.reason)
     """
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        role: str | None = None,
+        roles_config: dict[str, Any] | None = None,
+    ) -> None:
+        self.role = role
+        self._roles_config = roles_config
         self._policies: dict[str, ToolPolicy] = {}
         self._session_call_counts: dict[str, int] = {}
+
+    def set_role(self, role: str) -> None:
+        """Switch active user role (e.g. 'admin', 'operator', 'guest')."""
+        self.role = role
+        logger.info("PermissionManager active role set to: %s", role)
 
     # ── Policy management ──────────────────────────────────────────────────────
 
@@ -148,6 +159,24 @@ class PermissionManager:
                     reason=policy.reason or "Explicitly allowed.",
                     requires_approval=(level == PermissionLevel.HIGH),
                 )
+
+        # 3. Role-based check
+        if self._roles_config and self.role and self.role in self._roles_config:
+            role_def = self._roles_config[self.role]
+            allowed_skills = role_def.get("allowed_skills", ["*"])
+            if "*" not in allowed_skills and tool_name not in allowed_skills:
+                return self.CheckResult(
+                    permitted=False,
+                    reason=f"Tool '{tool_name}' is not permitted for role '{self.role}'.",
+                )
+            require_approval_list = role_def.get("require_approval", [])
+            if tool_name in require_approval_list:
+                return self.CheckResult(
+                    permitted=True,
+                    reason=f"Tool '{tool_name}' requires approval under role '{self.role}'.",
+                    requires_approval=True,
+                )
+
 
         # 3. Default risk-level policy
         if level == PermissionLevel.LOW:

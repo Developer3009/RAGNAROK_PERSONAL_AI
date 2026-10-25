@@ -20,7 +20,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable
 
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, Field, ValidationError, model_validator
 
 logger = logging.getLogger(__name__)
 
@@ -36,11 +36,25 @@ class SkillManifest(BaseModel):
     name: str
     description: str
     risk_level: str = "low"          # low | medium | high
-    required_permissions: list[str] = field(default_factory=list)
-    parameters: dict[str, SkillParam] = field(default_factory=dict)
-    required: list[str] = field(default_factory=list)
+    required_permissions: list[str] = Field(default_factory=list)
+    parameters: dict[str, SkillParam] = Field(default_factory=dict)
+    required: list[str] = Field(default_factory=list)
 
     model_config = {"arbitrary_types_allowed": True}
+
+    @model_validator(mode="before")
+    @classmethod
+    def _normalize_manifest(cls, data: Any) -> Any:
+        if not isinstance(data, dict):
+            return data
+        d = dict(data)
+        params = d.get("parameters")
+        if isinstance(params, dict) and "properties" in params:
+            # Standard JSON Schema / OpenAI format: {"type": "object", "properties": {...}, "required": [...]}
+            if not d.get("required") and "required" in params:
+                d["required"] = params.get("required", [])
+            d["parameters"] = params.get("properties", {})
+        return d
 
 
 @dataclass

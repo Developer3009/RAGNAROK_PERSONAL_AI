@@ -22,26 +22,31 @@ from ragnarok.logging_setup import setup_logging
 from ragnarok.memory.recall import MemoryStore
 from ragnarok.memory.facts import extract_and_save_facts
 from ragnarok.skills.registry import registry
+from ragnarok.triggers.scheduler import TriggerScheduler, ScheduledTrigger
+from ragnarok.triggers.checkpoint import SessionCheckpoint, CheckpointError
+from ragnarok.triggers.watchdog import Watchdog
 
 logger = logging.getLogger(__name__)
 
 _BANNER = r"""
-+===========================================================+
-|          R A G N A R O K   A G E N T  v0.3               |
-|   Local AI  *  Phases 0-4 (Planning)  *  Ollama           |
-+===========================================================+
++==========================================================+
+|         R A G N A R O K   A G E N T  v0.7               |
+|  Local AI  *  Phases 0-7  *  Web UI  *  Always-On       |
++==========================================================+
 Type your message and press Enter.
-Special commands: /help  /plan  /memory  /remember  /reset  /history  /status  /quit
+Special commands: /help  /ui  /plan  /memory  /remember  /reset  /history  /status  /quit
 """
 
 _HELP = """
 /help              -- show this message
+/ui                -- launch or open the Phase 7 local web dashboard
 /plan              -- show the current active execution plan and its step status
 /memory            -- list active memories stored in SQLite
 /remember <fact>   -- manually save a lasting semantic fact to memory
 /reset             -- start a new conversation (clear history + active plan)
 /history           -- show current conversation turn count and char total
 /status            -- show Ollama status, loaded models, memory count, skill count
+/triggers          -- list all registered background triggers and their status
 /quit              -- exit Ragnarok
 """
 
@@ -61,17 +66,68 @@ def _print_status(mem_store: MemoryStore | None = None) -> None:
 
 
 def main() -> None:
+    # Phase 7 Web Dashboard launch check
+    if "--ui" in sys.argv:
+        from ragnarok.ui.server import start_server
+        port = 8000
+        if "--port" in sys.argv:
+            try:
+                idx = sys.argv.index("--port")
+                port = int(sys.argv[idx + 1])
+            except (ValueError, IndexError):
+                pass
+        start_server(port=port)
+        return
+
     setup_logging(level=logging.WARNING)   # console: warnings only; file: debug
 
     memory_store = MemoryStore()
+    checkpoint = SessionCheckpoint()       # Phase 6: crash recovery
+    watchdog = Watchdog(                   # Phase 6: hang detection
+        timeout_sec=settings.approval_timeout_sec,
+        name="ragnarok-turn-watchdog",
+    )
 
     print(_BANNER)
     _print_status(memory_store)
+
+    # ── Phase 6: offer to resume from checkpoint after crash ───────────────
+    resumed_history: list[dict] | None = None
+    if checkpoint.exists():
+        try:
+            saved = checkpoint.load()
+            print(f"\n[CHECKPOINT DETECTED] Session from {saved.get('saved_at', '?')}")
+            print(f"  {len(saved.get('history', []))} turns in checkpoint.")
+            ans = input("  Resume previous session? [y/N] ").strip().lower()
+            if ans in ("y", "yes"):
+                resumed_history = saved.get("history", [])
+                print("  Resuming.")
+            else:
+                checkpoint.clear()
+                print("  Starting fresh session.")
+        except CheckpointError as exc:
+            print(f"  [WARNING] Corrupt checkpoint discarded: {exc}")
+            checkpoint.clear()
     print()
 
     # Load skills
     registry.load_all()
     logger.info("Skills loaded: %s", registry)
+
+    # ── Phase 6: Background trigger scheduler ─────────────────────────────
+    def _daily_brief(name: str):
+        """Fires at configured daily_brief_time — can be used for reminders."""
+        logger.info("Daily brief trigger fired: %s", name)
+        # Future: run a morning summary task through the agent
+
+    scheduler = TriggerScheduler()
+    daily_time = getattr(settings, "daily_brief_time", "08:00")
+    try:
+        scheduler.add(ScheduledTrigger("daily_brief", _daily_brief, daily_at=daily_time))
+    except Exception:
+        pass  # Skip if settings don't have a valid daily_brief_time
+    scheduler.start()
+    logger.info("Background trigger scheduler started.")
 
     # CLI approval callback for high-risk tools
     def cli_approval(tool_name: str, args: dict) -> bool:
@@ -87,11 +143,17 @@ def main() -> None:
         memory_fn=memory_store.recall_as_prompt,
     )
 
+    # Restore history after crash-resume
+    if resumed_history:
+        for msg in resumed_history:
+            agent.history.add(msg["role"], msg["content"])
+
     while True:
         try:
             user_input = input("\nYou: ").strip()
         except (EOFError, KeyboardInterrupt):
             print("\nGoodbye.")
+            scheduler.stop()
             break
 
         if not user_input:
@@ -102,9 +164,19 @@ def main() -> None:
             cmd = user_input.lower()
             if cmd in ("/quit", "/exit", "/q"):
                 print("Goodbye.")
+                scheduler.stop()
                 break
             elif cmd == "/help":
                 print(_HELP)
+            elif cmd == "/ui":
+                from ragnarok.ui.app import ACTIVE_TOKEN
+                url = f"http://127.0.0.1:8000/?token={ACTIVE_TOKEN}"
+                print(f"  Local Web Dashboard: {url}")
+                import webbrowser
+                try:
+                    webbrowser.open(url)
+                except Exception:
+                    pass
             elif cmd == "/reset":
                 agent.reset()
                 print("Conversation reset.")
@@ -114,6 +186,15 @@ def main() -> None:
                       f"{sum(len(m['content']) for m in snap)} chars total.")
             elif cmd == "/status":
                 _print_status(memory_store)
+            elif cmd == "/triggers":
+                trigs = scheduler.list_triggers()
+                if not trigs:
+                    print("  No triggers registered.")
+                else:
+                    for t in trigs:
+                        state = "ON" if t["enabled"] else "OFF"
+                        sched_str = t["daily_at"] or f"every {t['interval_sec']}s"
+                        print(f"  [{state}] {t['name']} ({sched_str}) last={t['last_fired']}")
             elif cmd == "/plan":
                 plan = agent.active_plan
                 if plan is None:
@@ -144,7 +225,13 @@ def main() -> None:
 
         print("Ragnarok: ", end="", flush=True)
         try:
+            # Phase 6: arm watchdog before potentially long LLM call
+            watchdog.arm()
             result = agent.chat(user_input)
+            watchdog.disarm()
+            if watchdog.tripped:
+                print("  [WARNING] Turn exceeded watchdog timeout — response may be incomplete.")
+
             print(result.answer)
             if result.tool_calls_made:
                 print(f"  [tools: {', '.join(result.tool_calls_made)} | "
@@ -157,6 +244,18 @@ def main() -> None:
             if result.stopped_early:
                 print("  [WARNING] Reached maximum steps -- answer may be incomplete.")
 
+            # Phase 6: save checkpoint after every successful turn
+            try:
+                checkpoint.save(
+                    history=agent.history_snapshot(),
+                    plan_summary=(
+                        result.plan.format_progress() if result.plan else None
+                    ),
+                    metadata={"steps": result.steps_taken, "latency_ms": result.latency_ms},
+                )
+            except Exception as cp_err:
+                logger.debug("Checkpoint save failed (non-fatal): %s", cp_err)
+
             # Background fact extraction
             try:
                 extract_and_save_facts(
@@ -167,6 +266,7 @@ def main() -> None:
             except Exception as extract_err:
                 logger.debug("Fact extraction skipped: %s", extract_err)
         except Exception as exc:
+            watchdog.disarm()  # Always disarm on exception
             logger.exception("Agent error")
             print(f"\n[ERROR] {exc}")
             print("(Type /reset to start a fresh conversation.)")

@@ -16,6 +16,7 @@ cryptography>=42.0
 # Web framework (Phase 7)
 fastapi>=0.115
 uvicorn[standard]>=0.30
+psutil>=6.0
 
 # Scheduling (Phase 6)
 apscheduler>=3.10

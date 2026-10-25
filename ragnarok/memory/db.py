@@ -165,6 +165,42 @@ class MemoryDB:
         )
         self._conn.commit()
 
+    def update_memory(
+        self,
+        memory_id: str,
+        *,
+        text: str | None = None,
+        embedding: list[float] | None = None,
+        importance: float | None = None,
+        pinned: bool | None = None,
+    ) -> bool:
+        """Update fields of an existing memory. Returns True if row was updated."""
+        updates: list[str] = []
+        params: list[Any] = []
+        if text is not None:
+            updates.append("text = ?")
+            params.append(text)
+        if embedding is not None:
+            updates.append("embedding = ?")
+            params.append(_encode_embedding(embedding))
+        if importance is not None:
+            updates.append("importance = ?")
+            params.append(min(1.0, max(0.0, importance)))
+        if pinned is not None:
+            updates.append("pinned = ?")
+            params.append(int(pinned))
+
+        if not updates:
+            return False
+
+        params.append(memory_id)
+        cur = self._conn.execute(
+            f"UPDATE memories SET {', '.join(updates)} WHERE id = ?",
+            params,
+        )
+        self._conn.commit()
+        return cur.rowcount > 0
+
     # ── Read ───────────────────────────────────────────────────────────────────
 
     def get_all_active(self) -> list[sqlite3.Row]:

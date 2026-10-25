@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ragnarok AI — Local Agent Dashboard</title>
+    <meta name="ragnarok-token" content="{{RAGNAROK_TOKEN}}">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="dark-theme">
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-badge">⚡</div>
+                <div class="brand-info">
+                    <h2>RAGNAROK</h2>
+                    <span class="sub-label">Local Agent v1.0</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" id="tab-btn-chat" data-view="chat-view">
+                    <span class="icon">💬</span>
+                    <span>Chat & Agent</span>
+                </button>
+                <button class="nav-item" id="tab-btn-memory" data-view="memory-view">
+                    <span class="icon">🧠</span>
+                    <span>Memory Manager</span>
+                    <span class="badge" id="memory-counter-badge">0</span>
+                </button>
+                <button class="nav-item" id="tab-btn-approvals" data-view="approvals-view">
+                    <span class="icon">🛡️</span>
+                    <span>Approvals</span>
+                    <span class="badge alert" id="approvals-badge" style="display: none;">0</span>
+                </button>
+                <button class="nav-item" id="tab-btn-logs" data-view="logs-view">
+                    <span class="icon">📜</span>
+                    <span>Execution Log</span>
+                </button>
+                <button class="nav-item" id="tab-btn-settings" data-view="settings-view">
+                    <span class="icon">⚙️</span>
+                    <span>Settings & Status</span>
+                </button>
+            </nav>
+
+            <div class="system-status-card">
+                <div class="status-header">
+                    <span class="status-indicator live"></span>
+                    <span class="status-text" id="agent-status-label">Local Host: 127.0.0.1</span>
+                </div>
+                <div class="metric-row">
+                    <span>CPU:</span>
+                    <span class="metric-val" id="metric-cpu">0%</span>
+                </div>
+                <div class="metric-row">
+                    <span>RAM:</span>
+                    <span class="metric-val" id="metric-ram">0 MB</span>
+                </div>
+                <div class="metric-row">
+                    <span>Model:</span>
+                    <span class="metric-val" id="metric-model">llama3.2:3b</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Topbar Notification & Status -->
+            <header class="topbar">
+                <div class="topbar-title">
+                    <h1 id="view-title">Chat & Agent</h1>
+                    <p id="view-description">Communicate with Ragnarok running locally on your hardware</p>
+                </div>
+                <div class="topbar-actions">
+                    <button id="notify-perm-btn" class="btn btn-outline" title="Enable browser alerts for high-risk action approvals">
+                        🔔 Enable Desktop Alerts
+                    </button>
+                    <div class="role-pill" id="role-display-pill">Role: operator</div>
+                </div>
+            </header>
+
+            <!-- Screen 1: Chat View -->
+            <section id="chat-view" class="view-panel active">
+                <div class="chat-container">
+                    <div class="messages-list" id="chat-messages-container">
+                        <div class="message-bubble system">
+                            <div class="avatar">⚡</div>
+                            <div class="bubble-content">
+                                <p><strong>Ragnarok is ready.</strong> All operations, memory, and skills execute strictly inside your local sandbox.</p>
+                                <span class="timestamp">Session started</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-area">
+                        <form id="chat-form" class="input-form">
+                            <textarea id="chat-input" placeholder="Type a message or instruction for Ragnarok (e.g., 'What time is it?', 'Remember I like python', 'Read a note')..." rows="2" required></textarea>
+                            <button type="submit" id="chat-submit-btn" class="btn btn-primary">
+                                <span>Send</span>
+                                <span class="send-icon">➔</span>
+                            </button>
+                        </form>
+                        <div class="chat-hints">
+                            <span>💡 Tips: Ragnarok can remember preferences, call tools, read notes, and execute multi-step plans.</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Screen 2: Memory Manager View -->
+            <section id="memory-view" class="view-panel">
+                <div class="panel-header">
+                    <div class="search-box">
+                        <input type="text" id="memory-search-input" placeholder="Search memories (semantic vector match or keyword)...">
+                        <button id="memory-search-btn" class="btn btn-secondary">Search</button>
+                        <button id="memory-clear-btn" class="btn btn-outline">Show All</button>
+                    </div>
+                    <div class="panel-actions">
+                        <button id="memory-add-modal-btn" class="btn btn-primary">+ Add Memory</button>
+                        <button id="memory-export-btn" class="btn btn-secondary">📥 Export JSON</button>
+                    </div>
+                </div>
+
+                <div class="memory-grid" id="memory-grid-container">
+                    <div class="empty-state">Loading memories...</div>
+                </div>
+            </section>
+
+            <!-- Screen 3: Approvals View -->
+            <section id="approvals-view" class="view-panel">
+                <div class="section-block">
+                    <div class="section-title">
+                        <h2>Pending Approval Requests</h2>
+                        <span class="sub-text">High-risk actions requiring explicit operator confirmation</span>
+                    </div>
+                    <div id="pending-approvals-list" class="approvals-list">
+                        <div class="empty-state">No pending approvals. System is running smoothly.</div>
+                    </div>
+                </div>
+
+                <div class="section-block mt-4">
+                    <div class="section-title">
+                        <h2>Approval Audit History</h2>
+                        <span class="sub-text">Recent decisions and timeout events</span>
+                    </div>
+                    <div id="approvals-history-table-container">
+                        <table class="data-table" id="approvals-history-table">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Tool</th>
+                                    <th>Parameters</th>
+                                    <th>Comment</th>
+                                </tr>
+                            </thead>
+                            <tbody id="approvals-history-body">
+                                <tr><td colspan="4" class="text-muted">No history yet.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Screen 4: Execution Log View -->
+            <section id="logs-view" class="view-panel">
+                <div class="section-block">
+                    <div class="section-title">
+                        <h2>Agent Execution Timeline (Explainability)</h2>
+                        <span class="sub-text">Step-by-step breakdown of goals, plans, skill choices, and results</span>
+                    </div>
+                    <div id="execution-timeline-container" class="timeline-container">
+                        <div class="empty-state">No execution traces yet. Send a query in the Chat view to inspect reasoning.</div>
+                    </div>
+                </div>
+
+                <div class="section-block mt-4">
+                    <div class="section-title">
+                        <h2>Raw Structured Tool Events</h2>
+                        <span class="sub-text">From logs/ragnarok.jsonl</span>
+                    </div>
+                    <div id="raw-events-container" class="code-box">
+                        <pre id="raw-events-content">Loading tool logs...</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Screen 5: Settings & Status View -->
+            <section id="settings-view" class="view-panel">
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <h3>Model Architecture</h3>
+                        <div class="setting-item">
+                            <label>Main Chat Model:</label>
+                            <span class="val-badge" id="setting-model-main">llama3.2:3b</span>
+                        </div>
+                        <div class="setting-item">
+                            <label>Small Fast Model:</label>
+                            <span class="val-badge" id="setting-model-small">gemma3:4b</span>
+                        </div>
+                        <div class="setting-item">
+                            <label>Embedding Model:</label>
+                            <span class="val-badge" id="setting-model-embed">nomic-embed-text</span>
+                        </div>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3>Security & Permissions</h3>
+                        <div class="setting-item">
+                            <label for="setting-role-select">Active Role:</label>
+                            <select id="setting-role-select" class="custom-select">
+                                <option value="operator">Operator (Default)</option>
+                                <option value="admin">Admin (All tools)</option>
+                                <option value="guest">Guest (Read only)</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>Approval Timeout:</label>
+                            <span class="val-badge" id="setting-timeout">60s (Default-to-deny)</span>
+                        </div>
+                        <div class="setting-item">
+                            <label>Allowed Sandbox Path:</label>
+                            <code class="val-code" id="setting-sandbox-path">C:\Users\divye\OneDrive\Desktop\RAGNAROK_MEMORY</code>
+                        </div>
+                    </div>
+
+                    <div class="settings-card full-width">
+                        <h3>Registered Skills & Risk Levels</h3>
+                        <div id="skills-list-container" class="skills-grid">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="settings-card full-width">
+                        <h3>Background Triggers & Schedulers</h3>
+                        <div class="setting-item">
+                            <label>Daily Briefing:</label>
+                            <span class="val-badge" id="setting-daily-brief">08:00</span>
+                        </div>
+                        <div class="setting-item">
+                            <label>Crash Recovery:</label>
+                            <span class="val-badge success">HMAC Checkpoints Active</span>
+                        </div>
+                        <div class="setting-item">
+                            <label>Watchdog Protection:</label>
+                            <span class="val-badge success">Per-turn hang guard enabled</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add Memory Modal -->
+    <div id="add-memory-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Add Memory</h3>
+                <button class="modal-close-btn" id="close-add-modal-btn">&times;</button>
+            </div>
+            <form id="add-memory-form">
+                <div class="form-group">
+                    <label for="new-memory-text">Memory Content:</label>
+                    <textarea id="new-memory-text" rows="3" required placeholder="Fact, preference, or knowledge..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="new-memory-kind">Type / Kind:</label>
+                    <select id="new-memory-kind" class="custom-select">
+                        <option value="episodic">Episodic (Event/Interaction)</option>
+                        <option value="fact">Fact (Knowledge/Statement)</option>
+                        <option value="preference">Preference (User style/taste)</option>
+                        <option value="sensitive">Sensitive (Encrypted)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="new-memory-importance">Importance: <span id="importance-val-label">0.5</span></label>
+                    <input type="range" id="new-memory-importance" min="0.1" max="1.0" step="0.1" value="0.5">
+                </div>
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="new-memory-pinned">
+                        <span>Pin Memory (Protect from forgetting)</span>
+                    </label>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" id="cancel-add-modal-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Memory</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Memory Modal -->
+    <div id="edit-memory-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Edit Memory</h3>
+                <button class="modal-close-btn" id="close-edit-modal-btn">&times;</button>
+            </div>
+            <form id="edit-memory-form">
+                <input type="hidden" id="edit-memory-id">
+                <div class="form-group">
+                    <label for="edit-memory-text">Memory Content:</label>
+                    <textarea id="edit-memory-text" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-memory-importance">Importance: <span id="edit-importance-val-label">0.5</span></label>
+                    <input type="range" id="edit-memory-importance" min="0.1" max="1.0" step="0.1" value="0.5">
+                </div>
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="edit-memory-pinned">
+                        <span>Pin Memory</span>
+                    </label>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" id="cancel-edit-modal-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Memory</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <div id="delete-confirm-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="danger-text">⚠️ Confirm Permanent Deletion</h3>
+                <button class="modal-close-btn" id="close-delete-modal-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to permanently erase this memory from the local database? This cannot be undone.</p>
+                <blockquote id="delete-memory-preview" class="delete-preview">...</blockquote>
+                <input type="hidden" id="delete-target-id">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" id="cancel-delete-modal-btn">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirm-delete-action-btn">Permanently Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Approval Parameters Modal -->
+    <div id="edit-approval-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Edit Action Parameters</h3>
+                <button class="modal-close-btn" id="close-appr-modal-btn">&times;</button>
+            </div>
+            <form id="edit-approval-form">
+                <input type="hidden" id="edit-approval-id">
+                <div class="form-group">
+                    <label>Tool Name:</label>
+                    <span id="edit-appr-tool-name" class="val-badge">...</span>
+                </div>
+                <div class="form-group">
+                    <label for="edit-appr-args-json">Parameters (JSON format):</label>
+                    <textarea id="edit-appr-args-json" rows="5" class="code-font" required></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" id="cancel-appr-modal-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save & Approve</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

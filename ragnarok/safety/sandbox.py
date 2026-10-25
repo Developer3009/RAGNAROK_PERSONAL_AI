@@ -74,6 +74,13 @@ class PathSandbox:
                 f"Access to hidden path '{resolved}' is not permitted."
             )
 
+        # Protected configuration / system files check (agent cannot view or modify its own permissions)
+        protected_names = {"config.toml", "settings.toml", ".ragnarok_key", "security_audit.jsonl"}
+        if resolved.name.lower() in protected_names or resolved.suffix.lower() in (".enc", ".key"):
+            raise SandboxViolation(
+                f"Access to protected system file '{resolved.name}' is strictly forbidden for agent tools."
+            )
+
         # Allowlist check
         if not self._in_allowlist(resolved):
             allowed_str = ", ".join(str(a) for a in self._allowed)
@@ -163,3 +170,111 @@ class ResourceGuard:
             f"[...{len(entries) - self.max_list_entries} more entries not shown]"
         )
         return capped
+
+
+class SubprocessSandbox:
+    """
+    Executes commands in an isolated, restricted subprocess environment.
+
+    Safety controls:
+      - Execution timeout to prevent infinite loops / runaway processes.
+      - Enforces working directory within PathSandbox allowed folders.
+      - Environment variable sanitization (strips credentials, API keys, tokens).
+      - Network isolation: sets offline/isolation flags and can reject network calls.
+      - Limits stdout/stderr output size via ResourceGuard.
+    """
+
+    def __init__(
+        self,
+        path_sandbox: PathSandbox | None = None,
+        resource_guard: ResourceGuard | None = None,
+        default_timeout_sec: float = 5.0,
+    ) -> None:
+        self.sandbox = path_sandbox
+        self.guard = resource_guard or ResourceGuard()
+        self.default_timeout_sec = default_timeout_sec
+
+    def _sanitize_env(self) -> dict[str, str]:
+        """Produce an isolated minimal environment devoid of secrets."""
+        safe_keys = {
+            "SYSTEMROOT",
+            "PATH",
+            "TEMP",
+            "TMP",
+            "WINDIR",
+            "COMSPEC",
+            "PYTHONPATH",
+            "PYTHONIOENCODING",
+        }
+        clean_env: dict[str, str] = {}
+        for k, v in os.environ.items():
+            if k.upper() in safe_keys:
+                clean_env[k] = v
+        # Ensure offline marker
+        clean_env["RAGNAROK_SANDBOX"] = "1"
+        clean_env["NO_PROXY"] = "*"
+        return clean_env
+
+    def run_command(
+        self,
+        command: Sequence[str],
+        cwd: str | Path | None = None,
+        timeout_sec: float | None = None,
+        allow_network: bool = False,
+    ) -> tuple[int, str, str]:
+        """
+        Execute command with strict safety limits.
+
+        Returns:
+            tuple of (returncode, stdout, stderr)
+
+        Raises:
+            SandboxViolation: on path escape, timeout, or disallowed network attempt.
+        """
+        import subprocess
+
+        timeout = timeout_sec if timeout_sec is not None else self.default_timeout_sec
+
+        # Validate working directory
+        working_dir: Path | None = None
+        if cwd:
+            if self.sandbox:
+                working_dir = self.sandbox.validate(cwd, must_exist=True)
+            else:
+                working_dir = Path(cwd).resolve()
+
+        # Check for disallowed commands
+        disallowed = {"rmdir /s", "del /f", "format", "mkfs", "dd"}
+        cmd_str = " ".join(command).lower()
+        if any(d in cmd_str for d in disallowed):
+            raise SandboxViolation(f"Command '{cmd_str}' contains dangerous operation.")
+
+        if not allow_network:
+            # Check for direct network tooling
+            net_tools = {"curl", "wget", "nc", "ncat", "telnet", "ssh"}
+            if any(tool in command[0].lower() for tool in net_tools):
+                raise SandboxViolation(
+                    f"Network access disabled in sandbox: cannot execute '{command[0]}'."
+                )
+
+        env = self._sanitize_env()
+
+        try:
+            proc = subprocess.run(
+                command,
+                cwd=str(working_dir) if working_dir else None,
+                env=env,
+                capture_output=True,
+                text=True,
+                timeout=timeout,
+            )
+            stdout = self.guard.truncate_read(proc.stdout)
+            stderr = self.guard.truncate_read(proc.stderr)
+            return proc.returncode, stdout, stderr
+        except subprocess.TimeoutExpired as exc:
+            raise SandboxViolation(
+                f"Subprocess exceeded safety time limit of {timeout}s: infinite loop or stall aborted."
+            ) from exc
+        except Exception as exc:
+            raise SandboxViolation(f"Subprocess execution failed: {exc}") from exc
+
