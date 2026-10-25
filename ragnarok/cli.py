@@ -29,10 +29,16 @@ from ragnarok.triggers.watchdog import Watchdog
 logger = logging.getLogger(__name__)
 
 _BANNER = r"""
-+==========================================================+
-|         R A G N A R O K   A G E N T  v0.7               |
-|  Local AI  *  Phases 0-7  *  Web UI  *  Always-On       |
-+==========================================================+
+=============================================================================
+  ____      _       ____   _   _      _     ____     ___    _  __
+ |  _ \    / \     / ___| | \ | |    / \   |  _ \   / _ \  | |/ /
+ | |_) |  / _ \   | |  _  |  \| |   / _ \  | |_) | | | | | | ' / 
+ |  _ <  / ___ \  | |_| | | |\  |  / ___ \ |  _ <  | |_| | | . \ 
+ |_| \_\/_/   \_\  \____| |_| \_| /_/   \_\|_| \_\  \___/  |_|\_\
+
+                L O C A L   A I   A G E N T   v 0 . 7
+      Privacy-First  *  Always-On Triggers  *  Local Web Dashboard
+=============================================================================
 Type your message and press Enter.
 Special commands: /help  /ui  /plan  /memory  /remember  /reset  /history  /status  /quit
 """
