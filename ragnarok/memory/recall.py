@@ -162,6 +162,7 @@ class MemoryStore:
         query: str,
         top_k: int | None = None,
         kind_filter: str | None = None,
+        query_embedding: list[float] | None = None,
     ) -> list[MemoryEntry]:
         """
         Find the most relevant memories for `query`.
@@ -171,9 +172,10 @@ class MemoryStore:
         Updates use_count on returned memories.
 
         Args:
-            query:       The text to match against memories.
-            top_k:       How many to return (defaults to config recall_top_k).
-            kind_filter: If set, only return memories of this kind.
+            query:           The text to match against memories.
+            top_k:           How many to return (defaults to config recall_top_k).
+            kind_filter:     If set, only return memories of this kind.
+            query_embedding: Optional precomputed vector to bypass embed API call.
 
         Returns:
             List of MemoryEntry sorted by relevance, best first.
@@ -181,17 +183,36 @@ class MemoryStore:
         k = top_k or settings.recall_top_k
         t0 = time.perf_counter()
 
-        query_vec = np.array(llm.embed(query), dtype=np.float32)
+        if query_embedding is not None:
+            query_vec = np.array(query_embedding, dtype=np.float32)
+        else:
+            query_vec = np.array(llm.embed(query), dtype=np.float32)
+        norm_q = np.linalg.norm(query_vec)
         rows = self._db.get_all_active()
 
+        if not rows:
+            return []
+
+        # Vectorized similarity computation
+        filtered_rows = [r for r in rows if not kind_filter or r["kind"] == kind_filter]
+        if not filtered_rows:
+            return []
+
+        mem_matrices = [self._db.decode_embedding(r) for r in filtered_rows]
+        matrix = np.vstack(mem_matrices)  # Shape (N, D)
+        norms_m = np.linalg.norm(matrix, axis=1)
+
+        # Handle zero norms safely
+        with np.errstate(divide='ignore', invalid='ignore'):
+            sims = np.dot(matrix, query_vec) / (norms_m * norm_q)
+            sims = np.nan_to_num(sims, nan=0.0)
+
+        weights = settings.recency_boost_weight
+        now = time.time()
         scored: list[tuple[float, Any]] = []
-        for row in rows:
-            if kind_filter and row["kind"] != kind_filter:
-                continue
-            mem_vec = self._db.decode_embedding(row)
-            sim = _cosine_similarity(query_vec, mem_vec)
-            boost = _recency_boost(row["created_at"], settings.recency_boost_weight)
-            score = sim + boost
+        for i, row in enumerate(filtered_rows):
+            boost = _recency_boost(row["created_at"], weights)
+            score = float(sims[i]) + boost
             scored.append((score, row))
 
         scored.sort(key=lambda x: x[0], reverse=True)

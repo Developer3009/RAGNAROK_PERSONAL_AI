@@ -141,6 +141,8 @@ def chat(
     return result
 
 
+_EMBED_CACHE: dict[tuple[str, str], list[float]] = {}
+
 def embed(text: str, model: str | None = None) -> list[float]:
     """
     Return an embedding vector for `text`.
@@ -153,6 +155,9 @@ def embed(text: str, model: str | None = None) -> list[float]:
         List[float] embedding vector.
     """
     _model = model or settings.model_embed
+    cache_key = (_model, text)
+    if cache_key in _EMBED_CACHE:
+        return _EMBED_CACHE[cache_key]
 
     t0 = time.perf_counter()
 
@@ -166,11 +171,13 @@ def embed(text: str, model: str | None = None) -> list[float]:
     latency_ms = (time.perf_counter() - t0) * 1000
 
     vector: list[float] = data["embeddings"][0]
+    _EMBED_CACHE[cache_key] = vector
     logger.info(
         "embed model=%s dims=%d latency_ms=%.1f",
         _model, len(vector), latency_ms,
     )
     return vector
+
 
 
 def chat_with_tools(
