@@ -54,7 +54,13 @@ ragnarok/
     facts.py           Automated user fact extraction from conversation turns
     working.py         Working memory with atomic disk checkpointing
     consolidation.py   Memory consolidation and forgetting with pinned protection
-  safety/              [Phase 5] Permissions, sandbox, encryption
+  safety/
+    __init__.py        Package exports
+    permissions.py     Role-based tool ACL and per-skill allow/deny/caps
+    sandbox.py         PathSandbox & ResourceGuard (traversal/size enforcement)
+    encryption.py      SecretStore (Fernet AES-128 encryption at rest)
+    audit.py           Append-only JSONL security audit log (security_audit.jsonl)
+    rate_limiter.py    Sliding-window tool rate limiter
   triggers/            [Phase 6] Scheduler, file/email watchers
   ui/                  [Phase 7] FastAPI + web frontend
 tests/
@@ -66,6 +72,7 @@ tests/
   test_agent_loop.py
   test_memory.py
   test_phase4_planning.py
+  test_phase5_safety.py
 config.toml             ALL model names, paths, and limits
 requirements.txt
 ```
@@ -89,7 +96,7 @@ pytest -m integration
 | 2     | Persistent memory                  | Done        |
 | 3     | Skills & tool calling              | Done        |
 | 4     | Planning & self-correction         | Done        |
-| 5     | Safety, sandbox, encryption        | Planned     |
+| 5     | Safety, sandbox, encryption        | Done        |
 | 6     | Always-on triggers & recovery      | Planned     |
 | 7     | Local interface & transparency     | Planned     |
 | 8     | Evaluation & write-up              | Planned     |

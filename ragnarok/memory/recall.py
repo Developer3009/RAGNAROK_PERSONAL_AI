@@ -27,6 +27,7 @@ import numpy as np
 from ragnarok import llm
 from ragnarok.config import settings
 from ragnarok.memory.db import MemoryDB
+from ragnarok.safety.encryption import SecretStore, get_secret_store
 
 logger = logging.getLogger(__name__)
 
@@ -81,8 +82,13 @@ class MemoryStore:
         db: MemoryDB instance (defaults to the configured DB file).
     """
 
-    def __init__(self, db: MemoryDB | None = None) -> None:
+    def __init__(
+        self,
+        db: MemoryDB | None = None,
+        secret_store: SecretStore | None = None,
+    ) -> None:
         self._db = db or MemoryDB()
+        self._secrets = secret_store
 
     # ── remember ───────────────────────────────────────────────────────────────
 
@@ -109,7 +115,13 @@ class MemoryStore:
         if not text:
             raise ValueError("Memory text cannot be empty")
 
+        # Embedding must always be calculated on plaintext for semantic retrieval
         vector = llm.embed(text)
+
+        # Encrypt text if marked sensitive or secret
+        stored_text = text
+        if (kind in ("secret", "sensitive", "credential") or "sensitive" in source) and self._secrets is not None:
+            stored_text = self._secrets.encrypt(text)
 
         # ── Duplicate / conflict detection ─────────────────────────────────────
         existing = self._db.get_all_active()
@@ -127,7 +139,7 @@ class MemoryStore:
                 self._db.insert(
                     memory_id=new_id,
                     kind=kind,
-                    text=text,
+                    text=stored_text,
                     embedding=vector,
                     created_at=row["created_at"],   # keep original timestamp
                     last_used_at=now,
@@ -144,7 +156,7 @@ class MemoryStore:
         self._db.insert(
             memory_id=memory_id,
             kind=kind,
-            text=text,
+            text=stored_text,
             embedding=vector,
             created_at=now,
             last_used_at=now,
@@ -222,11 +234,17 @@ class MemoryStore:
         results: list[MemoryEntry] = []
         for score, row in top:
             self._db.update_used(row["id"], now)
+            txt = row["text"]
+            if self._secrets is not None and self._secrets.is_encrypted(txt):
+                try:
+                    txt = self._secrets.decrypt(txt)
+                except Exception as exc:
+                    logger.warning("Failed to decrypt memory %s: %s", row["id"], exc)
             results.append(
                 MemoryEntry(
                     id=row["id"],
                     kind=row["kind"],
-                    text=row["text"],
+                    text=txt,
                     importance=float(row["importance"]),
                     pinned=bool(row["pinned"]),
                     source=row["source"],

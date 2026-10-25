@@ -10,6 +10,9 @@ pydantic>=2.7
 # Numerics (for Phase 2 cosine similarity)
 numpy>=1.26
 
+# Security & Encryption (Phase 5)
+cryptography>=42.0
+
 # Web framework (Phase 7)
 fastapi>=0.115
 uvicorn[standard]>=0.30

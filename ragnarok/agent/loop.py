@@ -10,13 +10,16 @@ Flow per turn:
   4. Call LLM with tool list.
   5. If LLM wants a tool:
        a. Validate call against schema — on failure, send error back to LLM.
-       b. Doom-loop check — block repeated identical failures (Phase 4).
-       c. Check risk level — high-risk pauses for approval.
-       d. Execute tool, log result.
-       e. Record call in DoomLoopDetector; generate CorrectionAdvice on error (Phase 4).
-       f. Advance plan step on success (Phase 4).
-       g. Append tool result to history.
-       h. Loop back to step 4 (up to max_steps).
+       b. Rate limiter check — sliding window per tool (Phase 5).
+       c. Permission check — explicit allow/deny/max_calls policy (Phase 5).
+       d. Doom-loop check — block repeated identical failures (Phase 4).
+       e. Risk check — high-risk pauses for approval (Phase 5 audit logged).
+       f. Execute tool safely, log audit event & latency.
+       g. Record call in RateLimiter, PermissionManager, and DoomLoopDetector.
+       h. Generate CorrectionAdvice on error (Phase 4).
+       i. Advance plan step on success (Phase 4).
+       j. Append tool result to history.
+       k. Loop back to step 4 (up to max_steps).
   6. When LLM gives a final answer, return it.
   7. Never loop forever — enforce max_steps hard cap.
 """
@@ -34,6 +37,9 @@ from ragnarok.agent.planning import Plan, Planner
 from ragnarok.agent.self_correction import DoomLoopDetector, ErrorDiagnoser
 from ragnarok.config import settings
 from ragnarok.logging_setup import log_tool_event
+from ragnarok.safety.audit import AuditLogger, audit_logger as _default_audit_logger
+from ragnarok.safety.permissions import PermissionManager
+from ragnarok.safety.rate_limiter import RateLimiter
 from ragnarok.skills.registry import SkillRegistry, registry as _default_registry
 
 logger = logging.getLogger(__name__)
@@ -62,13 +68,16 @@ class AgentLoop:
     Stateful agent that manages one conversation session.
 
     Args:
-        registry:       SkillRegistry to use (defaults to module-level singleton).
-        approval_cb:    Optional callback(skill_name, args) → bool for high-risk
-                        approval. If None, high-risk tools are blocked.
-        memory_fn:      Optional callable(user_text) → str that returns injected
-                        memory context. Wired up in Phase 2.
-        enable_planning: Whether to use the Planner for complex multi-step tasks
-                        (Phase 4). Defaults to True.
+        registry:           SkillRegistry to use (defaults to module-level singleton).
+        approval_cb:        Optional callback(skill_name, args) → bool for high-risk
+                            approval. If None, high-risk tools are blocked.
+        memory_fn:          Optional callable(user_text) → str that returns injected
+                            memory context.
+        enable_planning:    Whether to use the Planner for complex multi-step tasks
+                            (Phase 4). Defaults to True.
+        permission_manager: Optional PermissionManager instance for ACL checks (Phase 5).
+        rate_limiter:       Optional RateLimiter instance for call throttling (Phase 5).
+        audit_logger:       Optional AuditLogger instance for audit trail (Phase 5).
     """
 
     def __init__(
@@ -77,27 +86,30 @@ class AgentLoop:
         approval_cb: Callable[[str, dict], bool] | None = None,
         memory_fn: Callable[[str], str] | None = None,
         enable_planning: bool = True,
+        permission_manager: PermissionManager | None = None,
+        rate_limiter: RateLimiter | None = None,
+        audit_logger: AuditLogger | None = None,
     ) -> None:
         self._registry = registry or _default_registry
         self._approval_cb = approval_cb
         self._memory_fn = memory_fn
         self._enable_planning = enable_planning
+        self._permissions = permission_manager or PermissionManager()
+        self._rate_limiter = rate_limiter or RateLimiter()
+        self._audit = audit_logger or _default_audit_logger
+
         self._history = MessageHistory()
         self._planner = Planner(use_llm=True)
         self._doom_detector = DoomLoopDetector(max_consecutive_failures=2)
         self._active_plan: Plan | None = None
+
+        self._audit.log_session_start()
 
     # ── Public API ─────────────────────────────────────────────────────────────
 
     def chat(self, user_input: str) -> AgentResult:
         """
         Process one user turn and return the agent's final answer.
-
-        Args:
-            user_input: The raw text from the user.
-
-        Returns:
-            AgentResult with the answer and execution metadata.
         """
         t_start = time.perf_counter()
         self._history.add_user(user_input)
@@ -137,7 +149,6 @@ class AgentLoop:
             )
 
             if not result.has_tool_calls:
-                # Model gave a final answer — mark active plan step as completed
                 answer = result.final_content or "(no response)"
                 self._history.add_assistant(answer)
                 if self._active_plan:
@@ -156,13 +167,18 @@ class AgentLoop:
                 args = tc.arguments
                 tool_calls_made.append(tool_name)
 
+                skill = self._registry.get(tool_name)
+                risk_level = skill.manifest.risk_level if skill else "medium"
+
                 logger.info("Tool requested: %s args=%s", tool_name, args)
                 log_tool_event(logger, "call", tool_name, arguments=args)
+                self._audit.log_tool_call(tool_name, args, risk_level=risk_level)
 
                 # 1. Validate schema
                 valid, err_msg = self._registry.validate_call(tool_name, args)
                 if not valid:
                     log_tool_event(logger, "schema_fail", tool_name, error=err_msg)
+                    self._audit.log_tool_error(tool_name, f"Schema fail: {err_msg}")
                     advice = ErrorDiagnoser.diagnose(tool_name, args, err_msg)
                     self._history.add_tool_result(
                         tool_name,
@@ -170,28 +186,53 @@ class AgentLoop:
                     )
                     continue
 
-                # 2. Phase 4: Doom-loop check before execution
+                # 2. Phase 5: Rate Limiting
+                rate_ok, retry_after = self._rate_limiter.check_and_record(tool_name)
+                if not rate_ok:
+                    rule = self._rate_limiter._rules.get(tool_name)
+                    window_sec = rule.window_sec if rule else 60.0
+                    limit = rule.max_calls if rule else 0
+                    self._audit.log_rate_limited(tool_name, window_sec, limit)
+                    msg = (
+                        f"ERROR: Rate limit exceeded for tool '{tool_name}'. "
+                        f"Please retry after {retry_after:.1f} seconds."
+                    )
+                    self._history.add_tool_result(tool_name, msg)
+                    continue
+
+                # 3. Phase 5: Permission & Policy Check
+                perm_check = self._permissions.check(tool_name, risk_level=risk_level, args=args)
+                if not perm_check.permitted:
+                    self._audit.log_permission_denied(tool_name, perm_check.reason)
+                    self._history.add_tool_result(
+                        tool_name,
+                        f"ERROR: Permission denied: {perm_check.reason}"
+                    )
+                    continue
+
+                # 4. Phase 4: Doom-loop check before execution
                 is_loop, loop_warning = self._doom_detector.check_loop(tool_name, args)
                 if is_loop:
                     log_tool_event(logger, "doom_loop", tool_name, error=loop_warning)
+                    self._audit.log_doom_loop(tool_name)
                     self._history.add_tool_result(tool_name, loop_warning)
                     if self._active_plan:
-                        self._active_plan.fail_current_step(
-                            error=f"Doom loop: {tool_name}"
-                        )
+                        self._active_plan.fail_current_step(error=f"Doom loop: {tool_name}")
                     continue
 
-                # 3. Risk check
-                skill = self._registry.get(tool_name)
-                if skill and skill.manifest.risk_level == "high":
+                # 5. Risk & Approval check
+                if perm_check.requires_approval or risk_level == "high":
+                    self._audit.log_approval_requested(tool_name, risk_level)
                     approved = self._request_approval(tool_name, args)
                     if not approved:
+                        self._audit.log_approval_denied(tool_name)
                         msg = f"Action '{tool_name}' was not approved. Skipping."
                         log_tool_event(logger, "denied", tool_name, error=msg)
                         self._history.add_tool_result(tool_name, msg)
                         continue
+                    self._audit.log_approval_granted(tool_name)
 
-                # 4. Execute
+                # 6. Execute tool
                 t_tool = time.perf_counter()
                 try:
                     tool_result = skill.run(args)
@@ -200,7 +241,8 @@ class AgentLoop:
                         logger, "result", tool_name,
                         result=tool_result, latency_ms=latency_ms
                     )
-                    # Record success in doom detector and advance plan step
+                    self._audit.log_tool_success(tool_name, latency_ms, len(tool_result))
+                    self._permissions.record_call(tool_name)
                     self._doom_detector.record_call(tool_name, args, tool_result)
                     if self._active_plan:
                         self._active_plan.advance_step(result=tool_result[:120])
@@ -210,28 +252,25 @@ class AgentLoop:
                     log_tool_event(
                         logger, "error", tool_name, error=str(exc), latency_ms=latency_ms
                     )
+                    self._audit.log_tool_error(tool_name, str(exc), latency_ms)
                     logger.exception("Tool %s failed", tool_name)
-                    # Phase 4: diagnose error and inject advice
                     advice = ErrorDiagnoser.diagnose(tool_name, args, str(exc))
                     tool_result = f"{tool_result}\n{advice.format_prompt()}"
                     self._doom_detector.record_call(tool_name, args, tool_result)
                     if self._active_plan:
                         self._active_plan = self._planner.replan_on_failure(
-                            self._active_plan, self._active_plan.active_step().step_id
-                            if self._active_plan.active_step() else -1,
-                            str(exc)
+                            self._active_plan,
+                            self._active_plan.active_step().step_id if self._active_plan.active_step() else -1,
+                            str(exc),
                         )
 
                 self._history.add_tool_result(tool_name, tool_result)
 
-            # Refresh system prompt with updated plan context after each step
             if self._active_plan:
                 system_prompt = self._build_system_prompt(user_input)
 
         # ── Max steps exceeded ─────────────────────────────────────────────────
-        logger.warning(
-            "Agent hit max_steps=%d — forcing final answer", settings.max_steps
-        )
+        logger.warning("Agent hit max_steps=%d — forcing final answer", settings.max_steps)
         final = llm.chat(
             messages=self._history.as_dicts(),
             system=system_prompt + "\n\nYou have reached the step limit. Give the best answer you can now.",
@@ -247,18 +286,32 @@ class AgentLoop:
         )
 
     def reset(self) -> None:
-        """Clear conversation history and plan (start a new session)."""
+        """Clear conversation history, plan, and reset safety session states."""
         self._history.clear()
         self._active_plan = None
         self._doom_detector.reset()
+        self._permissions.reset()
+        self._rate_limiter.reset()
+        self._audit.log_session_reset()
 
     def history_snapshot(self) -> list[dict]:
         return self._history.snapshot()
 
     @property
     def active_plan(self) -> Plan | None:
-        """Return the current active plan, if any."""
         return self._active_plan
+
+    @property
+    def permissions(self) -> PermissionManager:
+        return self._permissions
+
+    @property
+    def rate_limiter(self) -> RateLimiter:
+        return self._rate_limiter
+
+    @property
+    def audit_logger(self) -> AuditLogger:
+        return self._audit
 
     # ── Internals ──────────────────────────────────────────────────────────────
 
@@ -279,7 +332,6 @@ class AgentLoop:
         return _SYSTEM_TEMPLATE.format(memories=memories, plan_context=plan_context)
 
     def _request_approval(self, tool_name: str, args: dict) -> bool:
-        """Ask the approval callback (or block if none configured)."""
         if self._approval_cb is None:
             logger.warning(
                 "High-risk tool '%s' blocked — no approval callback configured.", tool_name
