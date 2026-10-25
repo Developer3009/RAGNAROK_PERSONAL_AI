@@ -38,3 +38,7 @@ def run(args: dict) -> str:
     if fmt == "iso":
         return now.isoformat(timespec="seconds")
     return now.strftime("%A, %B %d %Y at %I:%M %p")
+
+
+def execute(format: str = "human") -> str:
+    return run({"format": format})

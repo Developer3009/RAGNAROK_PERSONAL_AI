@@ -48,7 +48,7 @@ allowed_skills   = ["*"]
 require_approval = ["write_file"]
 
 [permissions.roles.operator]
-allowed_skills   = ["get_time", "read_file", "search_files", "list_dir", "add_note", "remember", "fetch_web"]
+allowed_skills   = ["get_time", "read_file", "search_files", "list_dir", "add_note", "remember", "fetch_web", "write_file"]
 require_approval = ["write_file", "add_note"]
 
 [permissions.roles.guest]

@@ -3,7 +3,7 @@ ragnarok/skills/read_file.py
 ─────────────────────────────
 Skill: read_file
 Reads a text file from an allowed directory and returns its content.
-Risk level: low (read-only, allowlist-enforced).
+Risk level: low (read-only, allowlist-enforced via PathSandbox).
 """
 
 from __future__ import annotations
@@ -12,6 +12,7 @@ import logging
 from pathlib import Path
 
 from ragnarok.config import settings
+from ragnarok.safety.sandbox import PathSandbox, ResourceGuard, SandboxViolation
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +35,7 @@ MANIFEST = {
         },
         "max_chars": {
             "type": "integer",
-            "description": "Maximum characters to return (default 4000).",
+            "description": "Maximum characters to return (default 4000, max 20000).",
         },
     },
     "required": ["path"],
@@ -45,28 +46,21 @@ _MAX_CHARS_CAP = 20_000
 
 
 def run(args: dict) -> str:
-    raw_path = args.get("path", "")
+    raw_path = str(args.get("path") or "").strip().strip("'\"")
+    if not raw_path:
+        return "Error: Path cannot be empty."
+
     max_chars = min(int(args.get("max_chars", _MAX_CHARS_DEFAULT)), _MAX_CHARS_CAP)
 
-    target = Path(raw_path).resolve()
+    sandbox = PathSandbox(allowed_dirs=settings.allowed_folders)
+    guard = ResourceGuard(max_read_bytes=max_chars * 4)  # utf-8: up to 4 bytes/char
 
-    # ── Allowlist check ────────────────────────────────────────────────────────
-    allowed = [p.resolve() for p in settings.allowed_folders]
-    if not any(str(target).startswith(str(a)) for a in allowed):
-        allowed_str = ", ".join(str(a) for a in allowed)
-        return (
-            f"Error: '{target}' is outside allowed folders ({allowed_str}). "
-            "Cannot read this file."
-        )
-
-    # ── Path traversal guard ───────────────────────────────────────────────────
+    # ── Sandbox path validation (resolves symlinks, blocks traversal) ──────────
     try:
-        target.relative_to(target.parent)  # ensures no symlink escape
-    except ValueError:
-        return "Error: Path traversal detected."
+        target = sandbox.validate(raw_path, must_exist=True)
+    except SandboxViolation as exc:
+        return f"Error: {exc}"
 
-    if not target.exists():
-        return f"Error: File not found: {target}"
     if not target.is_file():
         return f"Error: '{target}' is a directory, not a file."
 
@@ -77,8 +71,16 @@ def run(args: dict) -> str:
     except OSError as exc:
         return f"Error reading file: {exc}"
 
+    # ── Apply read size guard ──────────────────────────────────────────────────
+    content = guard.truncate_read(content)
+
+    # Also apply char cap with a human note
     if len(content) > max_chars:
         content = content[:max_chars] + f"\n\n[... truncated at {max_chars} chars]"
 
     logger.info("read_file path=%s chars=%d", target, len(content))
     return content
+
+
+def execute(path: str, max_chars: int = _MAX_CHARS_DEFAULT) -> str:
+    return run({"path": path, "max_chars": max_chars})

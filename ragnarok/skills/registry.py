@@ -168,6 +168,19 @@ class SkillRegistry:
             expected_type = manifest.parameters[param_name].type
             py_type = {"string": str, "integer": int, "number": (int, float), "boolean": bool}.get(expected_type)
             if py_type and not isinstance(value, py_type):
+                # Local models (Gemma, Llama) frequently send numeric values as strings or numbers as strings
+                if expected_type == "integer" and isinstance(value, str) and value.strip().lstrip("-").isdigit():
+                    continue
+                if expected_type == "number" and isinstance(value, str):
+                    try:
+                        float(value.strip())
+                        continue
+                    except ValueError:
+                        pass
+                if expected_type == "boolean" and isinstance(value, str) and value.lower() in ("true", "false", "1", "0"):
+                    continue
+                if expected_type == "string" and isinstance(value, (int, float, bool)):
+                    continue
                 return False, (
                     f"Parameter '{param_name}' must be {expected_type}, "
                     f"got {type(value).__name__}"

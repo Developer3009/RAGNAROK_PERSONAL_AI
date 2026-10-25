@@ -85,7 +85,7 @@ class PathSandbox:
         if not self._in_allowlist(resolved):
             allowed_str = ", ".join(str(a) for a in self._allowed)
             raise SandboxViolation(
-                f"Path '{resolved}' is outside allowed directories: [{allowed_str}]"
+                f"Path '{resolved}' is outside allowed directories (not within any allowed directory): [{allowed_str}]"
             )
 
         # Symlink escape check

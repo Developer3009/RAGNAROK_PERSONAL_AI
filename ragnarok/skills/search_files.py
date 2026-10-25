@@ -50,8 +50,8 @@ _MAX_RESULTS_CAP = 100
 
 
 def run(args: dict) -> str:
-    pattern = args.get("pattern", "*").strip() or "*"
-    contains = (args.get("contains") or "").strip().lower()
+    pattern = str(args.get("pattern", "*") or "*").strip().strip("'\"") or "*"
+    contains = str(args.get("contains") or "").strip().strip("'\"").lower()
     max_results = min(int(args.get("max_results", _MAX_RESULTS_DEFAULT)), _MAX_RESULTS_CAP)
 
     allowed = [p.resolve() for p in settings.allowed_folders]
@@ -87,3 +87,7 @@ def run(args: dict) -> str:
 
     logger.info("search_files pattern=%s contains=%s results=%d", pattern, contains, len(matches))
     return "\n".join(lines)
+
+
+def execute(pattern: str = "*", contains: str = "", max_results: int = _MAX_RESULTS_DEFAULT) -> str:
+    return run({"pattern": pattern, "contains": contains, "max_results": max_results})
