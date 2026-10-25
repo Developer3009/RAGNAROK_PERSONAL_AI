@@ -1,0 +1,774 @@
+<!DOCTYPE html><html class="dark" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><title>SYNAPSE AI - Multimodal Voice Studio</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-fixed":"#7df4ff","surface-dim":"#121318","tertiary-fixed":"#ffd9e4","on-primary-container":"#006970","on-secondary-fixed":"#2c0051","surface-bright":"#38393f","outline":"#849495","secondary-fixed":"#f0dbff","on-surface":"#e3e1e9","on-tertiary-container":"#b4146e","on-tertiary":"#640039","secondary":"#ddb7ff","on-error-container":"#ffdad6","surface-container-high":"#292a2f","on-secondary-fixed-variant":"#6900b3","on-tertiary-fixed-variant":"#8c0053","on-background":"#e3e1e9","on-primary-fixed-variant":"#004f54","surface-tint":"#00dbe9","primary":"#dbfcff","surface":"#121318","error":"#ffb4ab","inverse-primary":"#006970","surface-container-lowest":"#0d0e13","on-secondary":"#490080","primary-fixed-dim":"#00dbe9","on-error":"#690005","on-primary-fixed":"#002022","surface-container-highest":"#34343a","inverse-surface":"#e3e1e9","secondary-fixed-dim":"#ddb7ff","tertiary-fixed-dim":"#ffb0cd","on-secondary-container":"#d6a9ff","outline-variant":"#3b494b","error-container":"#93000a","background":"#121318","surface-variant":"#34343a","on-surface-variant":"#b9cacb","on-primary":"#00363a","tertiary-container":"#ffccdd","on-tertiary-fixed":"#3e0022","tertiary":"#fff3f5","surface-container-low":"#1a1b21","inverse-on-surface":"#2f3036","surface-container":"#1e1f25","secondary-container":"#6f00be","primary-container":"#00f0ff"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{"gutter-mobile":"1rem","space-lg":"1.5rem","margin-tablet":"2rem","margin-mobile":"1rem","space-md":"1rem",margin:"3rem",gutter:"1.5rem","space-sm":"0.5rem","space-xs":"0.25rem","space-xl":"2.5rem"},fontFamily:{"headline-sm":["Space Grotesk"],"display-lg-mobile":["Space Grotesk"],"headline-lg-mobile":["Space Grotesk"],"display-lg":["Space Grotesk"],"body-sm":["Inter"],"body-lg":["Inter"],"label-md":["Space Grotesk"],"label-lg":["Space Grotesk"],"headline-lg":["Space Grotesk"],"headline-md":["Space Grotesk"],"body-md":["Inter"],"label-sm":["Space Grotesk"]},fontSize:{"headline-sm":["1.125rem",{lineHeight:"1.625rem",fontWeight:"500"}],"display-lg-mobile":["2.25rem",{lineHeight:"2.75rem",letterSpacing:"-0.03em",fontWeight:"700"}],"headline-lg-mobile":["1.75rem",{lineHeight:"2.25rem",letterSpacing:"-0.02em",fontWeight:"600"}],"display-lg":["4rem",{lineHeight:"4.5rem",letterSpacing:"-0.04em",fontWeight:"700"}],"body-sm":["0.8125rem",{lineHeight:"1.25rem",fontWeight:"400"}],"body-lg":["1.125rem",{lineHeight:"1.75rem",fontWeight:"400"}],"label-md":["0.75rem",{lineHeight:"1rem",letterSpacing:"0.08em",fontWeight:"500"}],"label-lg":["0.875rem",{lineHeight:"1.25rem",letterSpacing:"0.05em",fontWeight:"600"}],"headline-lg":["2.25rem",{lineHeight:"2.75rem",letterSpacing:"-0.02em",fontWeight:"600"}],"headline-md":["1.5rem",{lineHeight:"2rem",letterSpacing:"-0.01em",fontWeight:"500"}],"body-md":["0.9375rem",{lineHeight:"1.5rem",fontWeight:"400"}],"label-sm":["0.625rem",{lineHeight:"0.875rem",letterSpacing:"0.12em",fontWeight:"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased min-h-screen"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/80 backdrop-blur-2xl shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="h-16 w-full px-space-md lg:px-margin flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs"><div class="w-2.5 h-2.5 rounded-full bg-primary-container animate-pulse shadow-[0_0_12px_rgba(0,240,255,0.8)]"></div><span class="font-headline-sm text-headline-sm font-bold tracking-wider text-primary">SYNAPSE<span class="text-primary-container"> AI</span></span></div><div class="h-4 w-px bg-outline-variant hidden sm:block"></div><nav class="hidden lg:flex items-center gap-space-sm" data-active-classes="bg-surface-container text-primary font-bold rounded-lg px-space-sm py-space-xs shadow-[0_0_16px_rgba(0,240,255,0.15)]"><a aria-current="page" class="transition-colors bg-surface-container text-primary font-bold rounded-lg px-space-sm py-space-xs shadow-[0_0_16px_rgba(0,240,255,0.15)]" data-path="voice-interaction-studio" href="#">Interaction Studio</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-space-sm py-space-xs rounded-lg" data-path="multimodal-vision" href="#">Multimodal Vision</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-space-sm py-space-xs rounded-lg" data-path="telemetry-benchmarks" href="#">Telemetry &amp; Logs</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-space-sm py-space-xs rounded-lg" data-path="agent-orchestrator" href="#">Neural Agents</a></nav></div><div class="flex items-center gap-space-sm"><div class="hidden md:flex items-center gap-space-xs bg-surface-container-low px-space-sm py-space-xs rounded-full"><span class="material-symbols-outlined text-[16px] text-primary-container">bolt</span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Latency:</span><span class="font-label-sm text-label-sm text-primary font-semibold">18ms</span></div><div class="hidden sm:flex items-center gap-space-xs bg-surface-container-low px-space-sm py-space-xs rounded-full"><span class="material-symbols-outlined text-[16px] text-on-surface-variant">mic</span><span class="font-label-sm text-label-sm text-on-surface-variant truncate max-w-[110px]">Default Mic Array</span></div><button class="flex items-center justify-center w-8 h-8 rounded-lg bg-surface-container-high text-on-surface-variant hover:bg-surface-bright hover:text-on-surface transition-colors" title="Audio &amp; Multimodal Settings"><span class="material-symbols-outlined text-[18px]">tune</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-background min-h-screen"><div class="flex flex-col w-full">
+<div class="w-full px-space-md lg:px-margin py-space-lg flex flex-col gap-space-lg">
+<!-- TOP TELEMETRY STRIP -->
+<div class="flex flex-wrap items-center justify-between gap-space-md bg-surface-container-lowest/90 backdrop-blur-xl px-space-md py-space-sm rounded-xl shadow-lg">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse shadow-[0_0_10px_rgba(0,240,255,0.8)]"></span>
+<span class="font-label-md text-label-md text-primary tracking-widest uppercase">SYNAPSE NEURAL AUDIO CORE</span>
+</div>
+<div class="h-3 w-px bg-outline-variant hidden sm:block"></div>
+<div class="flex items-center gap-space-xs bg-surface-container-high px-space-sm py-0.5 rounded-full shadow-inner" id="status-badge">
+<span class="w-2 h-2 rounded-full bg-outline-variant" id="status-dot"></span>
+<span class="font-label-sm text-label-sm text-primary tracking-wider uppercase font-semibold" id="status-label">STANDBY / IDLE</span>
+</div>
+</div>
+<div class="flex items-center gap-space-lg text-on-surface-variant font-label-sm text-label-sm">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-primary-fixed-dim">graphic_eq</span>
+<span class="">AUDIO STREAM: <span class="text-primary font-medium">48kHz</span></span>
+</div>
+<div class="hidden md:flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-secondary">wifi_tethering</span>
+<span class="">BITRATE: <span class="text-secondary font-medium">384kbps</span></span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-primary-container">speed</span>
+<span class="">BUFFER: <span class="text-primary-container font-medium">12ms</span></span>
+</div>
+<div class="flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-full text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span class="">NODE: US-WEST-N1</span>
+</div>
+</div>
+</div>
+<!-- MAIN INTERACTIVE GRID: 3D HERO + DOCKS -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- HERO 3D STAGE (Centerpiece) -->
+<div class="flex flex-col gap-space-md lg:col-span-7">
+<div class="relative w-full h-[620px] rounded-3xl overflow-hidden flex items-center justify-center" id="threejs-container" style="--core-bg-center:#102a3a;--core-bg-mid:#091a28;--core-bg-edge:#030910;--core-accent:#00c7ec;--core-shadow:rgba(0,199,236,0.12);background:radial-gradient(ellipse at center,var(--core-bg-center) 0%,var(--core-bg-mid) 55%,var(--core-bg-edge) 100%);box-shadow:0 0 90px var(--core-shadow)">
+<!-- Ambient Bioluminescent Glow Orbs -->
+<div class="absolute -top-24 -left-24 w-96 h-96 rounded-full blur-[100px] pointer-events-none" style="background:color-mix(in srgb,var(--core-accent) 18%,transparent)"></div>
+<div class="absolute -bottom-28 -right-20 w-96 h-96 rounded-full blur-[110px] pointer-events-none" style="background:color-mix(in srgb,var(--core-accent) 9%,transparent)"></div>
+<!-- Holographic Grid Scanlines -->
+<div class="absolute inset-0 [background-size:32px_32px] opacity-10 pointer-events-none" style="background-image:radial-gradient(var(--core-accent) 1px,transparent 1px)"></div>
+<!-- Embedded ThreeJS Interactive Reactive Segmented Sphere -->
+<!-- STITCH_THREEJS_START:ANIMATION_27 class="absolute inset-0 w-full h-full bg-transparent" -->
+<div class="absolute inset-0 w-full h-full bg-transparent" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_27" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_27');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  (function() {
+  const container = document.getElementById('threejs-container');
+  if (!container) return;
+
+  // Clear existing canvases in container to avoid overlapping contexts
+  const oldCanvas = container.querySelectorAll('canvas');
+  oldCanvas.forEach(c => c.remove());
+
+  const width = container.clientWidth || 780;
+  const height = container.clientHeight || 620;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
+  camera.position.z = 240;
+
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.domElement.style.position = 'absolute';
+  renderer.domElement.style.inset = '0';
+  renderer.domElement.style.width = '100%';
+  renderer.domElement.style.height = '100%';
+  container.appendChild(renderer.domElement);
+
+  // Group root
+  const coreAssembly = new THREE.Group();
+  scene.add(coreAssembly);
+
+  // Lighting tuned for sleek Red & Dark Grey / Carbon metallic highlights
+  const ambientLight = new THREE.AmbientLight(0x1a1a24, 2.5);
+  scene.add(ambientLight);
+
+  const keyCoreLight = new THREE.DirectionalLight(0x00c7ec, 4.0);
+  keyCoreLight.position.set(120, 160, 180);
+  scene.add(keyCoreLight);
+
+  const fillCoreLight = new THREE.DirectionalLight(0xe8f7ff, 2.8);
+  fillCoreLight.position.set(-140, -100, -80);
+  scene.add(fillCoreLight);
+
+  const centerPointLight = new THREE.PointLight(0x00c7ec, 4.5, 300);
+  centerPointLight.position.set(0, 0, 0);
+  scene.add(centerPointLight);
+
+  const coreTransitionStart = performance.now();
+  const coreTransitionDuration = 7 * 60 * 1000 + Math.random() * 3 * 60 * 1000;
+  const coreTransitionEase = (value) => value * value * (3 - 2 * value);
+  const coreBlue = new THREE.Color(0x00c7ec);
+  const coreRed = new THREE.Color(0xff1744);
+  const coreWhite = new THREE.Color(0xf2fcff);
+  const backgroundBlueCenter = new THREE.Color(0x102a3a);
+  const backgroundRedCenter = new THREE.Color(0x241015);
+  const backgroundBlueMid = new THREE.Color(0x091a28);
+  const backgroundRedMid = new THREE.Color(0x130b10);
+  const backgroundBlueEdge = new THREE.Color(0x030910);
+  const backgroundRedEdge = new THREE.Color(0x070407);
+  const backgroundCenter = new THREE.Color();
+  const backgroundMid = new THREE.Color();
+  const backgroundEdge = new THREE.Color();
+  const particleDarkRed = new THREE.Color(0x990024);
+  const currentCoreColor = new THREE.Color();
+  const currentCoreFillColor = new THREE.Color();
+  const orbBlue = new THREE.Color(0xf2fcff);
+  const orbRed = new THREE.Color(0xff3b53);
+  const nucleusEmissiveBlue = new THREE.Color(0xc9faff);
+  const nucleusEmissiveRed = new THREE.Color(0x3d0b14);
+  const shellBlue = new THREE.Color(0x064a62);
+  const shellRed = new THREE.Color(0x4a0a14);
+  const shellEmissiveBlue = new THREE.Color(0x033b50);
+  const shellEmissiveRed = new THREE.Color(0x7f1020);
+  const shellSpecularBlue = new THREE.Color(0x3197ac);
+  const shellSpecularRed = new THREE.Color(0xff5252);
+  const cyanBlue = new THREE.Color(0x007da4);
+  const cyanRed = new THREE.Color(0x6a0b1d);
+  const cyanEmissiveBlue = new THREE.Color(0x0092b8);
+  const cyanEmissiveRed = new THREE.Color(0xa8102b);
+  const cyanSpecularBlue = new THREE.Color(0x39c5dc);
+  const cyanSpecularRed = new THREE.Color(0xff7373);
+  const violetBlue = new THREE.Color(0x6520b5);
+  const violetRed = new THREE.Color(0x700724);
+  const violetEmissiveBlue = new THREE.Color(0x3f1377);
+  const violetEmissiveRed = new THREE.Color(0x9a0c32);
+  const violetSpecularBlue = new THREE.Color(0xa85fe0);
+  const violetSpecularRed = new THREE.Color(0xff8585);
+  const magentaBlue = new THREE.Color(0xa8179b);
+  const magentaRed = new THREE.Color(0x940621);
+  const magentaEmissiveBlue = new THREE.Color(0x700b69);
+  const magentaEmissiveRed = new THREE.Color(0xb40a2c);
+  const magentaSpecularBlue = new THREE.Color(0xd85fbc);
+  const magentaSpecularRed = new THREE.Color(0xff9999);
+  const nucleusBlue = new THREE.Color(0xf2fcff);
+  const nucleusRed = new THREE.Color(0x4a0a14);
+  const greyEdgeBlue = new THREE.Color(0x16d7f4);
+  const greyEdgeRed = new THREE.Color(0xff1744);
+
+  // Core center: luminous white-cyan nucleus surrounded by a blue plasma cage.
+  const innerNucleusGeom = new THREE.IcosahedronGeometry(22, 2);
+  const darkGreyCoreMat = new THREE.MeshStandardMaterial({
+    color: 0xf2fcff,
+    roughness: 0.35,
+    metalness: 0.85,
+    emissive: 0xc9faff,
+    emissiveIntensity: 0.32
+  });
+  const nucleusMesh = new THREE.Mesh(innerNucleusGeom, darkGreyCoreMat);
+  coreAssembly.add(nucleusMesh);
+
+  // Glowing wireframe geometric cage around the nucleus in vibrant red
+  const wireGeom = new THREE.IcosahedronGeometry(27, 1);
+  const wireMat = new THREE.MeshBasicMaterial({
+    color: 0x00c7ec,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.85
+  });
+  const wireCoreMesh = new THREE.Mesh(wireGeom, wireMat);
+  coreAssembly.add(wireCoreMesh);
+
+  // Inner glowing red energy point/orb
+  const innerOrbGeom = new THREE.SphereGeometry(12, 24, 24);
+  const innerOrbMat = new THREE.MeshBasicMaterial({
+    color: 0xf2fcff,
+    transparent: true,
+    opacity: 0.95
+  });
+  const innerOrb = new THREE.Mesh(innerOrbGeom, innerOrbMat);
+  coreAssembly.add(innerOrb);
+
+  // Segmented shell plates in teal, cyan, violet, and magenta.
+  const pieces = [];
+  const baseRadius = 66;
+  const numLatitudeBands = 8;
+  const numLongitudeSegments = 14;
+
+  const darkGreyPlateMat = new THREE.MeshPhongMaterial({
+    color: 0x064a62,
+    emissive: 0x033b50,
+    specular: 0x3197ac,
+    shininess: 80,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.94
+  });
+
+  const greyEdgeMat = new THREE.LineBasicMaterial({
+    color: 0x16d7f4,
+    transparent: true,
+    opacity: 0.8
+  });
+
+  const cyanAccentMat = new THREE.MeshPhongMaterial({
+    color: 0x007da4,
+    emissive: 0x0092b8,
+    specular: 0x39c5dc,
+    shininess: 95,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.95
+  });
+
+  const violetAccentMat = new THREE.MeshPhongMaterial({
+    color: 0x6520b5,
+    emissive: 0x3f1377,
+    specular: 0xa85fe0,
+    shininess: 95,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.95
+  });
+
+  const magentaAccentMat = new THREE.MeshPhongMaterial({
+    color: 0xa8179b,
+    emissive: 0x700b69,
+    specular: 0xd85fbc,
+    shininess: 95,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.95
+  });
+
+  const cyanEdgeMat = new THREE.LineBasicMaterial({
+    color: 0x1fb6c8,
+    transparent: true,
+    opacity: 0.9
+  });
+
+  const violetEdgeMat = new THREE.LineBasicMaterial({
+    color: 0x8a3bd1,
+    transparent: true,
+    opacity: 0.9
+  });
+
+  const magentaEdgeMat = new THREE.LineBasicMaterial({
+    color: 0xd63caf,
+    transparent: true,
+    opacity: 0.9
+  });
+
+  for (let lat = 1; lat < numLatitudeBands; lat++) {
+    const phiStart = (lat / (numLatitudeBands + 1)) * Math.PI;
+    const phiLength = (1 / (numLatitudeBands + 1.3)) * Math.PI;
+
+    for (let lon = 0; lon < numLongitudeSegments; lon++) {
+      const thetaStart = (lon / numLongitudeSegments) * Math.PI * 2;
+      const thetaLength = (0.82 / numLongitudeSegments) * Math.PI * 2;
+
+      const plateGeom = new THREE.SphereGeometry(baseRadius, 8, 6, thetaStart, thetaLength, phiStart, phiLength);
+      const panelPattern = (lat * 3 + lon * 5) % 10;
+      const mat = panelPattern < 2
+        ? violetAccentMat
+        : panelPattern < 3
+          ? magentaAccentMat
+          : panelPattern < 6
+            ? cyanAccentMat
+            : darkGreyPlateMat;
+      const edgeMat = panelPattern < 2
+        ? violetEdgeMat
+        : panelPattern < 3
+          ? magentaEdgeMat
+          : panelPattern < 6
+            ? cyanEdgeMat
+            : greyEdgeMat;
+
+      const pieceMesh = new THREE.Mesh(plateGeom, mat);
+
+      const wireEdges = new THREE.EdgesGeometry(plateGeom);
+      const line = new THREE.LineSegments(wireEdges, edgeMat);
+      pieceMesh.add(line);
+
+      const midPhi = phiStart + phiLength * 0.5;
+      const midTheta = thetaStart + thetaLength * 0.5;
+      const normal = new THREE.Vector3(
+        Math.sin(midPhi) * Math.cos(midTheta),
+        Math.cos(midPhi),
+        Math.sin(midPhi) * Math.sin(midTheta)
+      ).normalize();
+
+      pieces.push({
+        mesh: pieceMesh,
+        normal: normal,
+        randomSpeed: 0.8 + Math.random() * 1.6,
+        phase: Math.random() * Math.PI * 2,
+        driftAxis: new THREE.Vector3((Math.random() - 0.5) * 0.2, (Math.random() - 0.5) * 0.2, (Math.random() - 0.5) * 0.2)
+      });
+
+      coreAssembly.add(pieceMesh);
+    }
+  }
+
+  // Floating micro-particles use the same cool spectrum as the shell.
+  const particleCount = 2200;
+  const pGeom = new THREE.BufferGeometry();
+  const pPositions = new Float32Array(particleCount * 3);
+  const pColors = new Float32Array(particleCount * 3);
+  const pBlueColors = new Float32Array(particleCount * 3);
+  const pRedColors = new Float32Array(particleCount * 3);
+
+  const cBlue = new THREE.Color(0x075cce);
+  const cCyan = new THREE.Color(0x00dff5);
+  const cViolet = new THREE.Color(0x932aff);
+  const cMagenta = new THREE.Color(0xff38d0);
+  const cWhite = new THREE.Color(0xf2fcff);
+  const cRed = new THREE.Color(0xff1744);
+  const cHotRed = new THREE.Color(0xff5363);
+
+  for (let i = 0; i < particleCount; i++) {
+    const r = (baseRadius * 0.35) + Math.random() * (baseRadius * 1.15);
+    const u = Math.random();
+    const v = Math.random();
+    const theta = u * 2.0 * Math.PI;
+    const phi = Math.acos(2.0 * v - 1.0);
+    const sinPhi = Math.sin(phi);
+
+    pPositions[i * 3] = r * sinPhi * Math.cos(theta);
+    pPositions[i * 3 + 1] = r * sinPhi * Math.sin(theta);
+    pPositions[i * 3 + 2] = r * Math.cos(phi);
+
+    const mix = Math.random();
+    const blueColor = mix < 0.35
+      ? cBlue.clone().lerp(cCyan, mix / 0.35)
+      : mix < 0.6
+        ? cCyan.clone().lerp(cWhite, (mix - 0.35) / 0.25)
+        : mix < 0.8
+          ? cViolet.clone().lerp(cMagenta, (mix - 0.6) / 0.2)
+          : cWhite;
+    const redColor = mix < 0.6
+      ? cRed.clone().lerp(particleDarkRed, mix / 0.6)
+      : cRed.clone().lerp(cHotRed, (mix - 0.6) / 0.4);
+    pBlueColors[i * 3] = blueColor.r;
+    pBlueColors[i * 3 + 1] = blueColor.g;
+    pBlueColors[i * 3 + 2] = blueColor.b;
+    pRedColors[i * 3] = redColor.r;
+    pRedColors[i * 3 + 1] = redColor.g;
+    pRedColors[i * 3 + 2] = redColor.b;
+    pColors[i * 3] = blueColor.r;
+    pColors[i * 3 + 1] = blueColor.g;
+    pColors[i * 3 + 2] = blueColor.b;
+  }
+
+  pGeom.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+  pGeom.setAttribute('color', new THREE.BufferAttribute(pColors, 3));
+
+  const pMat = new THREE.PointsMaterial({
+    size: 2.3,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.82,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  });
+  const sparkPoints = new THREE.Points(pGeom, pMat);
+  coreAssembly.add(sparkPoints);
+
+  // Concentric Orbit HUD Ring in red/grey
+  const ringGeom = new THREE.RingGeometry(baseRadius * 1.48, baseRadius * 1.51, 64);
+  const ringMat = new THREE.MeshBasicMaterial({
+    color: 0x168cff,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.4
+  });
+  const hudRing = new THREE.Mesh(ringGeom, ringMat);
+  hudRing.rotation.x = Math.PI / 2.7;
+  coreAssembly.add(hudRing);
+
+  // Secondary fine ring in dark metallic grey
+  const ringGeom2 = new THREE.RingGeometry(baseRadius * 1.25, baseRadius * 1.27, 64);
+  const ringMat2 = new THREE.MeshBasicMaterial({
+    color: 0xe8f7ff,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.3
+  });
+  const hudRing2 = new THREE.Mesh(ringGeom2, ringMat2);
+  hudRing2.rotation.y = Math.PI / 3.2;
+  coreAssembly.add(hudRing2);
+
+  // Interactive Mouse Parallax
+  let mouseX = 0, mouseY = 0, targetRotX = 0, targetRotY = 0;
+  window.addEventListener('mousemove', (e) => {
+    const rect = container.getBoundingClientRect();
+    const x = e.clientX - rect.left - (rect.width / 2);
+    const y = e.clientY - rect.top - (rect.height / 2);
+    mouseX = (x / rect.width) * 2;
+    mouseY = (y / rect.height) * 2;
+  });
+
+  const clock = new THREE.Clock();
+  let baseExpansion = 8;
+  let dynamicExpansion = 0;
+  let rotationMultiplier = 0.35;
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const deltaTime = clock.getDelta();
+    const time = clock.elapsedTime;
+
+    const state = window.aiVoiceState || { currentMode: 'listening' };
+    const curMode = state.currentMode || 'listening';
+    const transitionProgress = coreTransitionEase(
+      Math.min((performance.now() - coreTransitionStart) / coreTransitionDuration, 1),
+    );
+
+    currentCoreColor.copy(coreBlue).lerp(coreRed, transitionProgress);
+    currentCoreFillColor.copy(coreWhite).lerp(coreRed, transitionProgress);
+    backgroundCenter.copy(backgroundBlueCenter).lerp(backgroundRedCenter, transitionProgress);
+    backgroundMid.copy(backgroundBlueMid).lerp(backgroundRedMid, transitionProgress);
+    backgroundEdge.copy(backgroundBlueEdge).lerp(backgroundRedEdge, transitionProgress);
+    container.style.setProperty('--core-bg-center', backgroundCenter.getStyle());
+    container.style.setProperty('--core-bg-mid', backgroundMid.getStyle());
+    container.style.setProperty('--core-bg-edge', backgroundEdge.getStyle());
+    container.style.setProperty('--core-accent', currentCoreColor.getStyle());
+    container.style.setProperty(
+      '--core-shadow',
+      `rgba(${Math.round(currentCoreColor.r * 255)},${Math.round(currentCoreColor.g * 255)},${Math.round(currentCoreColor.b * 255)},0.12)`,
+    );
+    wireMat.color.copy(currentCoreColor);
+    innerOrbMat.color.copy(orbBlue).lerp(orbRed, transitionProgress);
+    centerPointLight.color.copy(currentCoreColor);
+    keyCoreLight.color.copy(currentCoreColor);
+    fillCoreLight.color.copy(currentCoreFillColor);
+    darkGreyCoreMat.color.copy(nucleusBlue).lerp(nucleusRed, transitionProgress);
+    darkGreyCoreMat.emissive.copy(nucleusEmissiveBlue).lerp(nucleusEmissiveRed, transitionProgress);
+    darkGreyPlateMat.color.copy(shellBlue).lerp(shellRed, transitionProgress);
+    darkGreyPlateMat.emissive.copy(shellEmissiveBlue).lerp(shellEmissiveRed, transitionProgress);
+    darkGreyPlateMat.specular.copy(shellSpecularBlue).lerp(shellSpecularRed, transitionProgress);
+    greyEdgeMat.color.copy(greyEdgeBlue).lerp(greyEdgeRed, transitionProgress);
+    cyanAccentMat.color.copy(cyanBlue).lerp(cyanRed, transitionProgress);
+    cyanAccentMat.emissive.copy(cyanEmissiveBlue).lerp(cyanEmissiveRed, transitionProgress);
+    cyanAccentMat.specular.copy(cyanSpecularBlue).lerp(cyanSpecularRed, transitionProgress);
+    violetAccentMat.color.copy(violetBlue).lerp(violetRed, transitionProgress);
+    violetAccentMat.emissive.copy(violetEmissiveBlue).lerp(violetEmissiveRed, transitionProgress);
+    violetAccentMat.specular.copy(violetSpecularBlue).lerp(violetSpecularRed, transitionProgress);
+    magentaAccentMat.color.copy(magentaBlue).lerp(magentaRed, transitionProgress);
+    magentaAccentMat.emissive.copy(magentaEmissiveBlue).lerp(magentaEmissiveRed, transitionProgress);
+    magentaAccentMat.specular.copy(magentaSpecularBlue).lerp(magentaSpecularRed, transitionProgress);
+    cyanEdgeMat.color.copy(currentCoreColor);
+    violetEdgeMat.color.copy(violetSpecularBlue).lerp(violetSpecularRed, transitionProgress);
+    magentaEdgeMat.color.copy(magentaSpecularBlue).lerp(magentaSpecularRed, transitionProgress);
+    ringMat.color.copy(currentCoreColor);
+    ringMat2.color.copy(currentCoreFillColor);
+
+    const particleColors = pGeom.attributes.color.array;
+    for (let i = 0; i < particleColors.length; i++) {
+      particleColors[i] = pBlueColors[i] + (pRedColors[i] - pBlueColors[i]) * transitionProgress;
+    }
+    pGeom.attributes.color.needsUpdate = true;
+
+    let simulatedAudioLevel = 0.32;
+    const pulseSpeed = curMode === 'speaking' ? 7.5 : (curMode === 'thinking' ? 4.5 : 2.5);
+    simulatedAudioLevel = 0.28 + 0.35 * Math.sin(time * pulseSpeed) * Math.cos(time * 1.8 + 0.4);
+    if (curMode === 'listening') {
+      simulatedAudioLevel += 0.2 * Math.sin(time * 9.5);
+    }
+    const currentLevel = Math.max(0.12, simulatedAudioLevel * 0.75);
+
+    let targetBaseExpansion = 8;
+    let targetDynamicExpansion = 28 * currentLevel;
+    let targetRotationMultiplier = 0.35;
+
+    if (curMode === 'speaking') {
+      targetBaseExpansion = 16;
+      targetDynamicExpansion = 40 * currentLevel;
+      targetRotationMultiplier = 0.65;
+    } else if (curMode === 'thinking') {
+      targetBaseExpansion = 22;
+      targetDynamicExpansion = 24 + Math.sin(time * 5.0) * 16;
+      targetRotationMultiplier = 0.22;
+    } else if (curMode === 'listening') {
+      targetBaseExpansion = 10;
+      targetDynamicExpansion = 30 * currentLevel;
+      targetRotationMultiplier = 0.45;
+    } else if (curMode === 'idle') {
+      targetBaseExpansion = 4;
+      targetDynamicExpansion = 6;
+      targetRotationMultiplier = 0.15;
+    }
+
+    const motionEase = 1 - Math.exp(-4 * deltaTime);
+    baseExpansion += (targetBaseExpansion - baseExpansion) * motionEase;
+    dynamicExpansion += (targetDynamicExpansion - dynamicExpansion) * motionEase;
+    rotationMultiplier += (targetRotationMultiplier - rotationMultiplier) * motionEase;
+
+    for (let i = 0; i < pieces.length; i++) {
+      const p = pieces[i];
+      const pieceOsc = Math.sin(time * p.randomSpeed + p.phase);
+      const pieceDist = baseExpansion + dynamicExpansion + pieceOsc * 6.0;
+
+      p.mesh.position.x = p.normal.x * pieceDist;
+      p.mesh.position.y = p.normal.y * pieceDist;
+      p.mesh.position.z = p.normal.z * pieceDist;
+
+      p.mesh.rotation.x = pieceOsc * 0.12 + p.driftAxis.x * time;
+      p.mesh.rotation.y = pieceOsc * 0.15 + p.driftAxis.y * time;
+      p.mesh.rotation.z = pieceOsc * 0.08 + p.driftAxis.z * time;
+    }
+
+    // Nucleus & Wire Core rotations in the center
+    nucleusMesh.rotation.x += 0.012;
+    nucleusMesh.rotation.y += 0.018;
+    const coreScale = 1.0 + currentLevel * 0.38 + Math.sin(time * 3.5) * 0.08;
+    nucleusMesh.scale.set(coreScale, coreScale, coreScale);
+
+    wireCoreMesh.rotation.x -= 0.015;
+    wireCoreMesh.rotation.z += 0.02;
+    wireCoreMesh.scale.set(coreScale * 1.05, coreScale * 1.05, coreScale * 1.05);
+
+    innerOrb.scale.setScalar(1.0 + currentLevel * 0.55);
+    centerPointLight.intensity = 3.0 + currentLevel * 5.0;
+
+    sparkPoints.rotation.y = time * 0.07;
+    sparkPoints.rotation.x = time * 0.035;
+    hudRing.rotation.z = time * 0.14;
+    hudRing2.rotation.x = time * -0.1;
+
+    targetRotY += (mouseX * 0.5 - targetRotY) * 0.05;
+    targetRotX += (mouseY * 0.35 - targetRotX) * 0.05;
+
+    coreAssembly.rotation.y = targetRotY + time * rotationMultiplier * 0.38;
+    coreAssembly.rotation.x = targetRotX + Math.sin(time * 0.3) * 0.08;
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+
+  function onResize() {
+    const newW = container.clientWidth || 780;
+    const newH = container.clientHeight || 620;
+    camera.aspect = newW / newH;
+    camera.updateProjectionMatrix();
+    renderer.setSize(newW, newH);
+  }
+
+  window.addEventListener('resize', onResize);
+  setTimeout(onResize, 100);
+})();
+})();
+</script>
+</div><canvas width="976" height="775" style="display: block; width: 781px; height: 620px; position: absolute; inset: 0px;"></canvas>
+<!-- STITCH_THREEJS_END:ANIMATION_27 -->
+<!-- Top-Left HUD Telemetry Overlays -->
+<div class="absolute top-6 left-6 z-10 flex flex-col gap-1.5 pointer-events-none">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant flex items-center gap-1">
+<span class="w-1 h-3 bg-[#ff1744] inline-block"></span>
+              KINETIC OBSIDIAN &amp; CRIMSON CORE // QUANTUM MATRIX
+            </span>
+<span class="font-headline-sm text-headline-sm text-primary tracking-tight">FRACTURED ACOUSTIC CORE</span>
+</div>
+<!-- Top-Right Dynamic Mode Tag -->
+<div class="absolute top-6 right-6 z-10 flex items-center gap-2">
+<div class="backdrop-blur-md bg-surface-container-lowest/80 px-3 py-1.5 rounded-full flex items-center gap-2 shadow-md">
+<span class="w-2 h-2 rounded-full bg-outline-variant" id="active-state-indicator"></span>
+<span class="font-label-sm text-label-sm text-primary tracking-widest uppercase" id="active-state-text">MODE: STANDBY SLEEP</span>
+</div>
+</div>
+<!-- Center-Bottom Floating Action Controls -->
+<div class="absolute bottom-6 left-4 right-4 md:left-8 md:right-8 z-20 flex flex-col items-center gap-3">
+<!-- State Mode Switches Pill -->
+<div class="flex items-center gap-1 bg-surface-container-lowest/85 backdrop-blur-2xl p-1.5 rounded-full shadow-2xl">
+<button class="state-pill px-4 py-1.5 rounded-full font-label-sm text-label-sm tracking-wider uppercase transition-all duration-300 text-on-surface-variant hover:text-on-surface" id="btn-mode-listening" onclick="window.aiVoiceState.setMode('listening')">
+                Listening
+              </button>
+
+
+
+</div>
+<!-- Main Mic Orb Dock -->
+
+</div>
+</div>
+<!-- FREQUENCY SPECTRUM & ACOUSTIC TELEMETRY PANEL -->
+
+</div><div class="lg:col-span-5 flex flex-col h-[620px] bg-surface-container-lowest/90 backdrop-blur-xl border border-outline-variant/30 rounded-3xl shadow-2xl overflow-hidden"><div class="px-4 py-3 border-b border-outline-variant/20 bg-surface-container-low/60 flex items-center justify-between shrink-0"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary-container text-[18px]">smart_toy</span><div class="flex flex-col"><div class="flex items-center gap-1.5"><span class="font-label-sm text-label-sm text-primary tracking-wider uppercase font-bold">AI Output Artifact</span><span class="px-1.5 py-0.2 bg-primary-container/15 text-primary text-[10px] rounded-full border border-primary-container/30 uppercase font-mono tracking-tight">Live Stream</span></div><span class="text-[11px] text-on-surface-variant">Obsidian Beamforming &amp; Latency Report</span></div></div><div class="flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded-full border border-outline-variant/30"><span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span><span class="text-[10px] font-mono text-on-surface-variant uppercase">142 tps</span></div></div><div class="flex items-center justify-between px-3 py-1.5 bg-surface-container-high/40 border-b border-outline-variant/20 shrink-0"><div class="flex items-center gap-1" id="artifact-tab-container"><button id="tab-btn-text" onclick="switchArtifactTab('text')" class="px-3 py-1 rounded-lg text-label-sm font-label-sm transition-all duration-300 bg-surface-container text-primary shadow-sm border border-outline-variant/20 flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">article</span>Analysis</button><button id="tab-btn-diagram" onclick="switchArtifactTab('diagram')" class="px-3 py-1 rounded-lg text-label-sm font-label-sm transition-all duration-300 text-on-surface-variant hover:text-on-surface flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">account_tree</span>Architecture</button><button id="tab-btn-code" onclick="switchArtifactTab('code')" class="px-3 py-1 rounded-lg text-label-sm font-label-sm transition-all duration-300 text-on-surface-variant hover:text-on-surface flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">terminal</span>DSP Code</button></div><div class="flex items-center gap-1"><span class="text-[10px] text-on-surface-variant font-mono bg-surface-container px-1.5 py-0.5 rounded">v2.4-rt</span></div></div><div class="flex-1 overflow-y-auto p-4 relative font-body-md text-body-sm" id="artifact-content-container"><div id="artifact-pane-text" class="flex flex-col gap-3.5"><div class="p-3 rounded-xl bg-surface-container/60 border border-outline-variant/20 backdrop-blur-md"><div class="flex items-center justify-between pb-2 border-b border-outline-variant/15 text-[11px] font-mono text-on-surface-variant"><span class="">SPATIAL BEAMFORMING MATRIX</span><span class="text-primary font-semibold">CONFIDENCE: 99.4%</span></div><p class="mt-2 text-on-surface text-body-sm leading-relaxed">The 3D fractured acoustic core is currently isolating user vocal formants through <span class="text-primary-container font-mono font-medium">Eigen-beamforming</span> in a spherical harmonic domain (order <span class="text-secondary font-mono">N=3</span>). Ambient diffuse reverberation suppressed by <span class="text-primary font-semibold">-28.4 dB</span>.</p></div><div class="grid grid-cols-2 gap-2 text-label-sm"><div class="p-2.5 rounded-lg bg-surface-container-high/40 border border-outline-variant/15 flex flex-col gap-0.5"><span class="text-on-surface-variant text-[10px] uppercase font-mono">Formant Center (F1/F2)</span><span class="text-primary font-mono font-semibold text-body-sm">742 Hz / 2180 Hz</span></div><div class="p-2.5 rounded-lg bg-surface-container-high/40 border border-outline-variant/15 flex flex-col gap-0.5"><span class="text-on-surface-variant text-[10px] uppercase font-mono">Neural Ingestion Lag</span><span class="text-primary-container font-mono font-semibold text-body-sm">11.8 ms</span></div><div class="p-2.5 rounded-lg bg-surface-container-high/40 border border-outline-variant/15 flex flex-col gap-0.5"><span class="text-on-surface-variant text-[10px] uppercase font-mono">Direct-to-Reverberant</span><span class="text-secondary font-mono font-semibold text-body-sm">+14.2 dB</span></div><div class="p-2.5 rounded-lg bg-surface-container-high/40 border border-outline-variant/15 flex flex-col gap-0.5"><span class="text-on-surface-variant text-[10px] uppercase font-mono">Quantization Noise</span><span class="text-on-surface font-mono font-semibold text-body-sm">-92.6 dBFS</span></div></div><div class="p-3 rounded-xl bg-surface-container-lowest/80 border border-outline-variant/15"><span class="text-[11px] font-mono uppercase text-on-surface-variant tracking-wider block mb-1.5">Key Pipeline Conclusions</span><ul class="flex flex-col gap-1.5 text-on-surface-variant text-[12px]"><li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary-container text-[14px] shrink-0 mt-0.5">check_circle</span><span class="">Obsidian core fragments expand dynamically along radial axes proportional to spectral entropy.</span></li><li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary-container text-[14px] shrink-0 mt-0.5">check_circle</span><span class="">Lossless Opus/WebRTC stream synchronized at 48kHz with zero buffer underruns.</span></li><li class="flex items-start gap-2"><span class="material-symbols-outlined text-primary-container text-[14px] shrink-0 mt-0.5">check_circle</span><span class="">Adaptive HRTF rendering updates coordinate frame at 120 FPS.</span></li></ul></div></div><div id="artifact-pane-diagram" class="hidden flex-col gap-3 h-full"><div class="flex items-center justify-between text-[11px] font-mono text-on-surface-variant pb-1"><span class="text-primary font-semibold">SPATIAL ACOUSTIC TOPOLOGY</span><span class="text-primary-container">HRTF 3D MESH</span></div><div class="flex-1 bg-surface-container-lowest rounded-2xl border border-outline-variant/20 p-3 flex flex-col items-center justify-center relative overflow-hidden"><svg class="w-full h-full max-h-[340px]" viewBox="0 0 420 280" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="80" height="50" rx="8" fill="#1e1f25" stroke="#3b494b" stroke-width="1.5"></rect><text x="60" y="43" fill="#dbfcff" font-family="Space Grotesk" font-size="10" font-weight="600" text-anchor="middle">MIC ARRAY</text><text x="60" y="58" fill="#849495" font-family="monospace" font-size="8" text-anchor="middle">48kHz 24-bit</text><path d="M100 45 L150 45" stroke="#00dbe9" stroke-width="1.5" stroke-dasharray="3 3"></path><polygon points="150,42 156,45 150,48" fill="#00dbe9"></polygon><rect x="156" y="20" width="108" height="50" rx="8" fill="#1e1f25" stroke="#00f0ff" stroke-width="1.5"></rect><text x="210" y="43" fill="#00f0ff" font-family="Space Grotesk" font-size="10" font-weight="600" text-anchor="middle">DEEP FILTER NET</text><text x="210" y="58" fill="#849495" font-family="monospace" font-size="8" text-anchor="middle">SNR +18dB Boost</text><path d="M264 45 L314 45" stroke="#00dbe9" stroke-width="1.5" stroke-dasharray="3 3"></path><polygon points="314,42 320,45 314,48" fill="#00dbe9"></polygon><rect x="320" y="20" width="80" height="50" rx="8" fill="#1e1f25" stroke="#3b494b" stroke-width="1.5"></rect><text x="360" y="43" fill="#ddb7ff" font-family="Space Grotesk" font-size="10" font-weight="600" text-anchor="middle">SPEECH VAD</text><text x="360" y="58" fill="#849495" font-family="monospace" font-size="8" text-anchor="middle">Gate: 99.2%</text><path d="M210 70 L210 115" stroke="#00f0ff" stroke-width="1.5"></path><polygon points="207,115 210,121 213,115" fill="#00f0ff"></polygon><rect x="130" y="121" width="160" height="60" rx="10" fill="#1e1f25" stroke="#ff1744" stroke-width="1.5"></rect><text x="210" y="146" fill="#ff1744" font-family="Space Grotesk" font-size="11" font-weight="700" text-anchor="middle">FRACTURED 3D CORE</text><text x="210" y="162" fill="#e3e1e9" font-family="monospace" font-size="8.5" text-anchor="middle">Reactive Kinetic Lattice</text><text x="210" y="173" fill="#00f0ff" font-family="monospace" font-size="7.5" text-anchor="middle">Lat: 11.8ms | Buf: 12ms</text><path d="M130 151 L80 151 L80 205" stroke="#3b494b" stroke-width="1.5"></path><polygon points="77,205 80,211 83,205" fill="#3b494b"></polygon><rect x="20" y="211" width="120" height="45" rx="8" fill="#1e1f25" stroke="#3b494b" stroke-width="1.2"></rect><text x="80" y="230" fill="#dbfcff" font-family="Space Grotesk" font-size="9" font-weight="600" text-anchor="middle">NEURAL SYNTHESIS</text><text x="80" y="244" fill="#849495" font-family="monospace" font-size="8" text-anchor="middle">Voice Prompt Flow</text><path d="M290 151 L340 151 L340 205" stroke="#ddb7ff" stroke-width="1.5"></path><polygon points="337,205 340,211 343,205" fill="#ddb7ff"></polygon><rect x="280" y="211" width="120" height="45" rx="8" fill="#1e1f25" stroke="#ddb7ff" stroke-width="1.2"></rect><text x="340" y="230" fill="#ddb7ff" font-family="Space Grotesk" font-size="9" font-weight="600" text-anchor="middle">BINAURAL HRTF</text><text x="340" y="244" fill="#849495" font-family="monospace" font-size="8" text-anchor="middle">3D Spatial Sound</text><circle cx="210" cy="95" r="3" fill="#00f0ff"><animate attributeName="opacity" values="0.2;1;0.2" dur="1.6s" repeatCount="indefinite"></animate></circle></svg></div><div class="flex items-center justify-between text-[11px] text-on-surface-variant font-mono bg-surface-container px-3 py-1.5 rounded-lg border border-outline-variant/15"><span class="">Nodes: 5 Active</span><span class="text-primary">Clock Drift: &lt;0.02ms</span></div></div><div id="artifact-pane-code" class="hidden flex-col gap-2.5 h-full"><div class="flex items-center justify-between text-[11px] font-mono text-on-surface-variant"><span class="">dsp_beamformer_stream.py</span><div class="flex items-center gap-2"><span class="text-primary-container">Python 3.11</span><span class="px-1.5 py-0.5 rounded bg-surface-container text-[10px] text-on-surface-variant">WebAudio API</span></div></div><div class="flex-1 bg-surface-container-lowest rounded-xl p-3 font-mono text-[11px] leading-relaxed border border-outline-variant/20 overflow-x-auto text-on-surface-variant"><pre class="text-[11px]"><span class="text-secondary">import</span> numpy <span class="text-secondary">as</span> np
+<span class="text-secondary">from</span> synapse.dsp <span class="text-secondary">import</span> SphericalBeamformer
+<span class="text-secondary">from</span> synapse.webrtc <span class="text-secondary">import</span> AudioFrameProcessor
+
+<span class="text-on-surface-variant/60"># Initialize reactive fractured acoustic matrix</span>
+beamformer = SphericalBeamformer(
+    num_mics=<span class="text-primary-container">8</span>,
+    sample_rate=<span class="text-primary-container">48000</span>,
+    order=<span class="text-primary-container">3</span>,
+    steering_vector=[<span class="text-primary-container">0.12</span>, <span class="text-primary-container">-0.45</span>, <span class="text-primary-container">0.88</span>]
+)
+
+<span class="text-secondary">def</span> <span class="text-primary">process_audio_chunk</span>(pcm_frame: np.ndarray):
+    <span class="text-on-surface-variant/60"># Suppress diffuse room reverberation</span>
+    clean_frame = beamformer.filter_spatial(pcm_frame)
+    energy = np.linalg.norm(clean_frame)
+    <span class="text-secondary">return</span> {
+        <span class="text-primary-fixed-dim">"energy"</span>: float(energy),
+        <span class="text-primary-fixed-dim">"f1"</span>: <span class="text-primary-container">742.0</span>,
+        <span class="text-primary-fixed-dim">"latency_ms"</span>: <span class="text-primary-container">11.8</span>
+    }</pre></div></div></div><div class="px-4 py-2.5 bg-surface-container-low/70 border-t border-outline-variant/20 flex items-center justify-between gap-2 shrink-0"><div class="flex items-center gap-1.5"><button class="px-2.5 py-1 rounded-lg bg-surface-container hover:bg-surface-bright text-on-surface-variant hover:text-on-surface text-[11px] font-label-sm flex items-center gap-1 transition-colors border border-outline-variant/20" onclick="copyArtifactContent()"><span class="material-symbols-outlined text-[14px] text-primary-container" id="copy-icon">content_copy</span><span id="copy-text" class="">Copy</span></button><button class="px-2.5 py-1 rounded-lg bg-surface-container hover:bg-surface-bright text-on-surface-variant hover:text-on-surface text-[11px] font-label-sm flex items-center gap-1 transition-colors border border-outline-variant/20" onclick="alert('Exporting JSON artifact specification...')"><span class="material-symbols-outlined text-[14px]">download</span>JSON</button></div><button class="px-3 py-1 rounded-lg bg-primary-container/15 hover:bg-primary-container/25 text-primary text-[11px] font-label-sm font-semibold flex items-center gap-1.5 transition-colors border border-primary-container/30" onclick="regenerateArtifactStream()"><span class="material-symbols-outlined text-[14px] text-primary-container animate-spin" id="regen-spin" style="animation-duration: 2s; animation-play-state: paused;">refresh</span>Regenerate</button></div></div>
+<!-- RIGHT COLUMN: MULTIMODAL CONVERSATIONAL TRANSCRIPT & PLAYBACK DOCK -->
+
+</div>
+<!-- ADVANCED AUDIO SYSTEM SETTINGS & PARAMETERS (Bottom Row) -->
+<div class="w-full bg-surface-container-lowest/90 backdrop-blur-xl px-4 py-2.5 rounded-xl shadow-lg border border-outline-variant/30 flex flex-wrap items-center justify-between gap-3 text-body-sm">
+<!-- Title & DSP Badge -->
+<div class="flex items-center gap-2 shrink-0">
+<span class="material-symbols-outlined text-primary-container text-[18px]">tune</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold tracking-wide">DSP PIPELINE</span>
+
+</div>
+<!-- Condensed Horizontal Controls Toolbar -->
+<div class="flex flex-wrap items-center gap-4 flex-1 justify-end">
+<!-- Compact Temperature Slider -->
+<div class="flex items-center gap-2 bg-surface-container px-2.5 py-1 rounded-lg border border-outline-variant/15">
+<span class="text-[11px] font-label-sm text-on-surface-variant uppercase tracking-wider">Temp:</span>
+<span class="font-mono text-primary font-semibold text-[11px] w-6" id="temp-val">0.70</span>
+<input class="w-16 h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary-container" max="1" min="0" oninput="document.getElementById('temp-val').textContent = parseFloat(this.value).toFixed(2)" step="0.05" type="range" value="0.7">
+</div>
+<!-- Compact Voice Style Segmented Toggle -->
+<div class="flex items-center gap-1 bg-surface-container px-1 py-0.5 rounded-lg border border-outline-variant/15">
+<button class="style-toggle px-2 py-0.5 rounded text-center text-[11px] font-label-sm text-on-surface-variant hover:text-on-surface transition-colors" onclick="setStyle(this)">Concise</button>
+<button class="style-toggle px-2 py-0.5 rounded text-center text-[11px] font-label-sm bg-surface-container-lowest text-primary font-semibold shadow-sm transition-colors" onclick="setStyle(this)">Conversational</button>
+<button class="style-toggle px-2 py-0.5 rounded text-center text-[11px] font-label-sm text-on-surface-variant hover:text-on-surface transition-colors" onclick="setStyle(this)">Technical</button>
+</div>
+<!-- Compact DeepFilterNet Toggle -->
+
+<!-- Compact HRTF 3D Spatial Audio Toggle -->
+
+</div>
+</div>
+</div>
+<!-- INTERACTIVE LOGIC & STATE MACHINE CONTROLLERS -->
+<script>
+    (function initVoiceInterface() {
+      // Global Audio Voice State Machine
+      window.aiVoiceState = {
+        currentMode: 'listening',
+        isMuted: false,
+        isPlaying: false,
+
+        setMode: function(mode) {
+          this.currentMode = mode;
+          const statusBadge = document.getElementById('status-badge');
+          const statusDot = document.getElementById('status-dot');
+          const statusLabel = document.getElementById('status-label');
+          const activeStateIndicator = document.getElementById('active-state-indicator');
+          const activeStateText = document.getElementById('active-state-text');
+          const micPulseRing = document.getElementById('mic-pulse-ring');
+          const micTitle = document.getElementById('mic-title');
+
+          // Reset button styling
+          const buttons = ['listening', 'thinking', 'speaking', 'idle'];
+          buttons.forEach(function(b) {
+            const el = document.getElementById('btn-mode-' + b);
+            if (el) {
+              if (b === mode) {
+                el.className = 'state-pill px-4 py-1.5 rounded-full font-label-sm text-label-sm tracking-wider uppercase transition-all duration-300 bg-surface-container text-primary shadow-[0_0_15px_rgba(0,240,255,0.3)]';
+              } else {
+                el.className = 'state-pill px-4 py-1.5 rounded-full font-label-sm text-label-sm tracking-wider uppercase transition-all duration-300 text-on-surface-variant hover:text-on-surface';
+              }
+            }
+          });
+
+          if (mode === 'listening') {
+            statusLabel.textContent = 'SYSTEM LISTENING';
+            statusDot.className = 'w-2 h-2 rounded-full bg-primary-container animate-ping';
+            activeStateIndicator.className = 'w-2 h-2 rounded-full bg-primary-container';
+            activeStateText.textContent = 'MODE: REAL-TIME INGESTION';
+            if (micPulseRing) micPulseRing.className = 'absolute -inset-1.5 rounded-full bg-primary-container/30 blur-sm animate-pulse';
+            if (micTitle) micTitle.textContent = 'Listening for “Hawk”';
+          } else if (mode === 'thinking') {
+            statusLabel.textContent = 'NEURAL INFERENCE';
+            statusDot.className = 'w-2 h-2 rounded-full bg-secondary animate-ping';
+            activeStateIndicator.className = 'w-2 h-2 rounded-full bg-secondary';
+            activeStateText.textContent = 'MODE: TOKEN COGNITION';
+            if (micPulseRing) micPulseRing.className = 'absolute -inset-1.5 rounded-full bg-secondary/30 blur-sm animate-spin';
+            if (micTitle) micTitle.textContent = 'Processing…';
+          } else if (mode === 'speaking') {
+            statusLabel.textContent = 'SYNTHESIZING AUDIO';
+            statusDot.className = 'w-2 h-2 rounded-full bg-primary-fixed-dim animate-pulse';
+            activeStateIndicator.className = 'w-2 h-2 rounded-full bg-primary-fixed-dim';
+            activeStateText.textContent = 'MODE: NEURAL BROADCAST';
+            if (micPulseRing) micPulseRing.className = 'absolute -inset-2 rounded-full bg-primary/40 blur-md animate-pulse';
+            if (micTitle) micTitle.textContent = 'AI Speaking';
+          } else if (mode === 'idle') {
+            statusLabel.textContent = 'STANDBY / IDLE';
+            statusDot.className = 'w-2 h-2 rounded-full bg-outline-variant';
+            activeStateIndicator.className = 'w-2 h-2 rounded-full bg-outline-variant';
+            activeStateText.textContent = 'MODE: STANDBY SLEEP';
+            if (micPulseRing) micPulseRing.className = 'hidden';
+            if (micTitle) micTitle.textContent = 'Voice listening stopped';
+          }
+        }
+      };
+
+      // Voice capture trigger function
+      window.startLiveVoiceCapture = function() {
+        if (window.aiVoiceState.currentMode === 'listening') {
+          window.aiVoiceState.setMode('thinking');
+          setTimeout(function() {
+            window.aiVoiceState.setMode('speaking');
+          }, 1400);
+        } else {
+          window.aiVoiceState.setMode('listening');
+        }
+      };
+
+      // Toggle Mute
+      window.toggleMute = function() {
+        window.aiVoiceState.isMuted = !window.aiVoiceState.isMuted;
+        const icon = document.getElementById('mute-icon');
+        if (window.aiVoiceState.isMuted) {
+          icon.textContent = 'mic_off';
+          icon.classList.add('text-error');
+        } else {
+          icon.textContent = 'volume_up';
+          icon.classList.remove('text-error');
+        }
+      };
+
+      // Audio Playback toggle
+      window.togglePlayback = function() {
+        window.aiVoiceState.isPlaying = !window.aiVoiceState.isPlaying;
+        const icon = document.getElementById('playback-icon');
+        icon.textContent = window.aiVoiceState.isPlaying ? 'pause' : 'play_arrow';
+      };
+
+      // Audio Response Style button toggle
+      window.setStyle = function(btn) {
+        const parent = btn.parentElement;
+        parent.querySelectorAll('.style-toggle').forEach(function(b) {
+          b.className = 'style-toggle px-2 py-1 rounded text-center font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors';
+        });
+        btn.className = 'style-toggle px-2 py-1 rounded text-center font-label-sm text-label-sm bg-surface-container-lowest text-primary font-semibold shadow-sm transition-colors';
+      };
+
+      // Live Spectrum Bars & VU Simulation Loop
+      setInterval(function() {
+        if (window.aiVoiceState.currentMode === 'idle') return;
+        
+        const bars = document.querySelectorAll('.spectrum-bar');
+        bars.forEach(function(bar) {
+          const rand = Math.floor(Math.random() * 85) + 15;
+          bar.style.height = rand + '%';
+        });
+
+        // Small VU updates
+        const vu1 = document.getElementById('vu-1');
+        const vu2 = document.getElementById('vu-2');
+        const vu3 = document.getElementById('vu-3');
+        const vu4 = document.getElementById('vu-4');
+        if (vu1 && vu2 && vu3 && vu4) {
+          vu1.style.height = (Math.random() * 12 + 6) + 'px';
+          vu2.style.height = (Math.random() * 16 + 8) + 'px';
+          vu3.style.height = (Math.random() * 20 + 4) + 'px';
+          vu4.style.height = (Math.random() * 14 + 4) + 'px';
+        }
+      }, 120);
+
+    })();
+  </script>
+<script>window.switchArtifactTab = function(tabName) { const tabs = ['text', 'diagram', 'code']; tabs.forEach(function(t) { const btn = document.getElementById('tab-btn-' + t); const pane = document.getElementById('artifact-pane-' + t); if (btn && pane) { if (t === tabName) { btn.className = 'px-3 py-1 rounded-lg text-label-sm font-label-sm transition-all duration-300 bg-surface-container text-primary shadow-sm border border-outline-variant/20 flex items-center gap-1.5'; pane.classList.remove('hidden'); pane.classList.add('flex'); } else { btn.className = 'px-3 py-1 rounded-lg text-label-sm font-label-sm transition-all duration-300 text-on-surface-variant hover:text-on-surface flex items-center gap-1.5'; pane.classList.add('hidden'); pane.classList.remove('flex'); } } }); }; window.copyArtifactContent = function() { const copyText = document.getElementById('copy-text'); const copyIcon = document.getElementById('copy-icon'); if (copyText && copyIcon) { copyText.textContent = 'Copied!'; copyIcon.textContent = 'check'; setTimeout(function() { copyText.textContent = 'Copy'; copyIcon.textContent = 'content_copy'; }, 2000); } }; window.regenerateArtifactStream = function() { const spin = document.getElementById('regen-spin'); if (spin) { spin.style.animationPlayState = 'running'; setTimeout(function() { spin.style.animationPlayState = 'paused'; }, 1200); } };</script></div></main><footer class="w-full bg-surface-container-lowest py-space-lg"><div class="w-full px-space-md lg:px-margin flex flex-col sm:flex-row items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm"><span class="font-label-sm text-label-sm text-on-surface-variant">© 2025 SYNAPSE AI LABS. OBSIDIAN MULTIMODAL CORE.</span></div><div class="flex items-center gap-space-md font-label-sm text-label-sm text-on-surface-variant"><span class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>WebRTC v2 Active</span><span class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim"></span>48.0 kHz 24-bit Lossless</span></div></div></footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/ort.wasm.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.31/dist/bundle.min.js" defer></script><script src="/assistant.js" defer></script></body></html>
