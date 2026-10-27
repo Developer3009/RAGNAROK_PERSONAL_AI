@@ -1,32 +1,31 @@
-# Core LLM / HTTP
+# Core LLM / HTTP Communication
 httpx>=0.27
 
-# Config
+# Configuration
 tomli>=2.0; python_version < "3.11"
 
-# Data validation
+# Data Validation & Schemas
 pydantic>=2.7
 
-# Numerics (for Phase 2 cosine similarity)
+# Numerics & Embeddings Vector Math
 numpy>=1.26
 
-# Security & Encryption (Phase 5)
+# Security & Encryption (AES-128 Fernet & HMAC)
 cryptography>=42.0
 
-# Web framework (Phase 7)
+# Web Framework & Dashboard
 fastapi>=0.115
 uvicorn[standard]>=0.30
 psutil>=6.0
 
-# Scheduling (Phase 6)
+# Scheduling & Always-On Automation
 apscheduler>=3.10
-
-# File watching (Phase 6)
 watchdog>=4.0
 
-# Testing
+# Voice I/O & Audio Processing
+sounddevice>=0.5.0
+pyttsx3>=2.90
+
+# Testing & Quality Assurance
 pytest>=8.0
 pytest-asyncio>=0.23
-
-# Optional: vector DB for Phase 2 (install separately if slow)
-# chromadb>=0.5

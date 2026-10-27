@@ -159,7 +159,7 @@ def run(args: dict) -> str:
         return _transcribe_openai_whisper(audio, sample_rate, model_size, language)
     except ImportError:
         return (
-            "No Whisper backend found. Install one of:\n"
+            "Error: No Whisper backend found. Install one of:\n"
             "  pip install faster-whisper\n"
             "  pip install openai-whisper soundfile\n"
             "  pip install sounddevice"

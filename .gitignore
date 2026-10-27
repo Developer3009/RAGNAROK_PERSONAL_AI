@@ -16,15 +16,18 @@ venv/
 env/
 
 # Database & Data
-db/
-*.db
-*.db-journal
+db/*.db
+db/*.db-wal
+db/*.db-shm
+db/*.db-journal
 *.sqlite
 *.sqlite3
+!db/.gitkeep
 
 # Logs
-logs/
-*.log
+logs/*.log
+logs/*.jsonl
+!logs/.gitkeep
 
 # Models (Ollama stores separately, but exclude any local model files)
 *.bin
@@ -35,6 +38,7 @@ logs/
 .DS_Store
 Thumbs.db
 desktop.ini
+%SystemDrive%/
 
 # IDE
 .vscode/settings.json
