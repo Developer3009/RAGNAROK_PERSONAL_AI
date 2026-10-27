@@ -25,6 +25,7 @@
 ---
 
 ## 📖 Table of Contents
+- [🎯 Problem Statement: Why Did We Build Ragnarok?](#-problem-statement-why-did-we-build-ragnarok)
 - [🌟 What is Ragnarok?](#-what-is-ragnarok)
 - [🚀 3-Minute Quickstart (Zero Tech Skills Needed)](#-3-minute-quickstart-zero-tech-skills-needed)
 - [🧠 The Memory System Explained Simply](#-the-memory-system-explained-simply)
@@ -34,6 +35,21 @@
 - [🛡️ Privacy, Security & Sandboxing](#-privacy-security--sandboxing)
 - [❓ Frequently Asked Questions (FAQ)](#-frequently-asked-questions-faq)
 - [📜 License](#-license)
+
+---
+
+## 🎯 Problem Statement: Why Did We Build Ragnarok?
+
+> 📄 *Read the full research proposal & requirements document in [PROBLEM_STATEMENT.md](PROBLEM_STATEMENT.md).*
+
+Despite the rapid advancement of modern AI capabilities, there exists a critical dichotomy between **agent autonomy** and **user data sovereignty**. Today's cloud-dependent assistants suffer from three fundamental flaws:
+
+1. **Loss of Data Sovereignty**: Users do not own or control the data used to personalize their assistants. Personal notes, workflow habits, and private context are harvested and transmitted to third-party servers.
+2. **Contextual Amnesia**: Existing systems lack persistent memory. They act as reactive, single-turn chatbots that forget previous interactions, user preferences, and evolving project state by the next morning.
+3. **Siloed & Ephemeral Execution**: Agents are restricted to isolated dialog boxes, lacking a modular skill system and autonomous orchestration capabilities to navigate real-world desktop and web tasks.
+
+### 🛡️ The Ragnarok Solution:
+To solve this, **Ragnarok** was created as a localized, privacy-preserving, "always-on" personal AI companion where **every model call runs locally via Ollama**. It keeps all data on your physical hardware, remembers past interactions across sessions, executes reusable skills in a sandboxed shield-wall, and orchestrates multi-step workflows with zero external API keys and zero telemetry.
 
 ---
 
