@@ -40,7 +40,7 @@
 
 ## 🎯 Problem Statement: Why Did We Build Ragnarok?
 
-> 📄 *Read the full research proposal & requirements document in [PROBLEM_STATEMENT.md](PROBLEM_STATEMENT.md).*
+> 📄 *Read the full research proposal in [PROBLEM_STATEMENT.md](PROBLEM_STATEMENT.md) and technical deep-dive in [SYSTEM_ARCHITECTURE.md](SYSTEM_ARCHITECTURE.md).*
 
 Despite the rapid advancement of modern AI capabilities, there exists a critical dichotomy between **agent autonomy** and **user data sovereignty**. Today's cloud-dependent assistants suffer from three fundamental flaws:
 

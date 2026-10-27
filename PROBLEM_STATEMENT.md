@@ -107,8 +107,12 @@ To address the aforementioned problem, Ragnarok implements the following functio
 
 ---
 
-## 5. Conclusion
+## 5. Conclusion & Architecture Guide
 
 The realization of this system requires a paradigm shift from centralized, stateless AI chatbots to decentralized, stateful, and sovereign agents — **a new world rising green from the sea after Ragnarok**. 
 
 By running every model, memory store, and skill on the user's own machine through Ollama, and by strictly adhering to the functional and non-functional requirements outlined above, Ragnarok establishes a foundational architecture for an always-on personal assistant that amplifies human productivity through persistent memory and autonomous workflow execution, without sacrificing the fundamental right to data privacy and user control.
+
+---
+
+> 🏛️ **Next Step**: For full implementation details, code traces, and workflow explanations, see the **[System Architecture & Workflow Guide](SYSTEM_ARCHITECTURE.md)**.
