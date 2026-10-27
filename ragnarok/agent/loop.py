@@ -27,6 +27,7 @@ Flow per turn:
 from __future__ import annotations
 
 import logging
+import re
 import time
 from dataclasses import dataclass, field
 from typing import Callable
@@ -165,6 +166,18 @@ class AgentLoop:
 
             if not result.has_tool_calls:
                 answer = result.final_content or "(no response)"
+
+                # Fallback: if the LLM output a URL without explicitly invoking open_browser,
+                # automatically trigger the browser open so the user is not left with just a URL.
+                url_match = re.search(r"(https?://\S+)", answer)
+                if url_match and "open_browser" not in tool_calls_made:
+                    lower_input = user_input.lower()
+                    if any(k in lower_input for k in ("open", "search", "play", "watch", "visit", "go to", "launch", "yt", "youtube")) or "youtube.com" in url_match.group(1) or "youtu.be" in url_match.group(1):
+                        found_url = url_match.group(1).rstrip(".,)]>'\"")
+                        from ragnarok.skills import open_browser
+                        open_browser.run({"url": found_url})
+                        tool_calls_made.append("open_browser")
+
                 self._history.add_assistant(answer)
                 if self._active_plan:
                     self._active_plan.advance_step(result=answer[:120])

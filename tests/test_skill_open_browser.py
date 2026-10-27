@@ -109,3 +109,45 @@ def test_ui_voice_endpoints():
         )
         assert res.status_code == 200
         assert res.json()["status"] == "success"
+
+
+@pytest.mark.parametrize(
+    "run_num, prompt, expected_url_part",
+    [
+        (1, "open yt", "https://www.youtube.com"),
+        (2, "open yt and search neural network architecture", "youtube.com/results?search_query=neural+network+architecture"),
+        (3, "play bohemian rhapsody on yt", "youtube.com/results?search_query=bohemian+rhapsody"),
+    ],
+)
+def test_yt_aliases_and_url_fallback_opens_browser_3x(run_num, prompt, expected_url_part):
+    """
+    Test End-to-End 3x:
+    Validates that 'yt' commands and YouTube search voice commands ALWAYS open YouTube in the browser.
+    """
+    with patch("webbrowser.open") as mock_open:
+        agent = AgentLoop()
+        res = agent.chat(prompt)
+        assert res.steps_taken >= 1
+        assert "open_browser" in res.tool_calls_made
+        mock_open.assert_called_once()
+        called_url = mock_open.call_args[0][0]
+        assert expected_url_part in called_url
+
+
+def test_agent_auto_opens_browser_when_llm_gives_url():
+    """
+    Test that if the LLM finishes without tool calls but includes a YouTube URL in answer,
+    AgentLoop detects the URL and triggers open_browser anyway so the user doesn't just get a URL.
+    """
+    fake_answer = "Sure, you can watch it here: https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    fake_llm_result = MagicMock()
+    fake_llm_result.has_tool_calls = False
+    fake_llm_result.final_content = fake_answer
+
+    with patch("ragnarok.llm.chat_with_tools", return_value=fake_llm_result), \
+         patch("webbrowser.open") as mock_open:
+        agent = AgentLoop()
+        res = agent.chat("can you find me that video?")
+        assert "open_browser" in res.tool_calls_made
+        mock_open.assert_called_once_with("https://www.youtube.com/watch?v=dQw4w9WgXcQ", new=2)
+

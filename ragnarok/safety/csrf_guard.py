@@ -15,6 +15,7 @@ from __future__ import annotations
 import logging
 
 from fastapi import HTTPException, Request, status
+from starlette.requests import HTTPConnection
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +35,7 @@ def _host_is_local(host: str) -> bool:
     return base in _LOCALHOST_HOSTS
 
 
-def require_local_origin(request: Request) -> None:
+def require_local_origin(request: HTTPConnection) -> None:
     """
     FastAPI dependency that rejects non-local origins.
 

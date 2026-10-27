@@ -1096,6 +1096,8 @@
       escaped = escaped.replace(/`([^`]+)`/g, '<code class="px-1 py-0.5 rounded bg-surface-container border border-outline-variant/20 text-primary-container text-[11px] font-mono">$1</code>');
       // Bold
       escaped = escaped.replace(/\*\*([^*]+)\*\*/g, '<strong class="text-primary font-semibold">$1</strong>');
+      // Clickable Links
+      escaped = escaped.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-primary-container underline hover:text-primary font-semibold">$1</a>');
       // Line breaks
       return escaped.replace(/\n/g, '<br/>');
     }
@@ -1422,10 +1424,36 @@
           `);
         }
 
+        // Detect if a browser or YouTube target URL was navigated or provided
+        const urlMatch = data.answer ? data.answer.match(/https?:\/\/[^\s"'<>]+/) : null;
+        let launchBtnHtml = '';
+        if (urlMatch) {
+          const targetUrl = urlMatch[0].replace(/[.,;:)]+$/, '');
+          const isYt = targetUrl.includes('youtube.com') || targetUrl.includes('youtu.be');
+          const btnLabel = isYt ? '▶ Open in YouTube' : '🌐 Open Web Link';
+          launchBtnHtml = `
+            <div class="pt-2">
+              <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-container/20 hover:bg-primary-container/30 text-primary-container border border-primary-container/40 text-[11px] font-bold shadow-[0_0_12px_rgba(51,204,255,0.25)] transition-all">
+                <span>${btnLabel}</span>
+                <span class="material-symbols-outlined text-[13px]">open_in_new</span>
+              </a>
+            </div>
+          `;
+          // If browser popup allowed, open tab directly in web UI
+          if (data.tool_calls && data.tool_calls.includes('open_browser')) {
+            try {
+              window.open(targetUrl, '_blank');
+            } catch(e) {
+              console.debug('Direct window.open blocked by browser:', e);
+            }
+          }
+        }
+
         // Render AI Answer
         appendCliOutput(`
           <div class="p-3 rounded-2xl bg-surface-container-low/70 border border-outline-variant/20 text-[11.5px] text-on-surface leading-relaxed shadow-sm font-mono">
             ${formatResponse(data.answer)}
+            ${launchBtnHtml}
           </div>
         `);
 
