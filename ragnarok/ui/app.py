@@ -103,17 +103,25 @@ def verify_token(
     x_ragnarok_token: Optional[str] = Header(None, alias="X-Ragnarok-Token"),
     token: Optional[str] = Query(None),
 ) -> str:
-    """Verifies the token using the rotator (supports grace-period tokens)."""
+    """Verifies the token using the rotator (supports grace-period tokens and persistent master token)."""
     # Also check if rotation is due
     _rotator.maybe_rotate()
 
     provided = x_ragnarok_token or token
-    if not provided or not _rotator.is_valid(provided):
+    if not provided:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or missing Ragnarok security token",
         )
-    return provided
+    if _rotator.is_valid(provided):
+        return provided
+    if ACTIVE_TOKEN and secrets.compare_digest(provided, ACTIVE_TOKEN):
+        return provided
+
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Invalid or missing Ragnarok security token",
+    )
 
 
 # ── In-Memory Execution Trace Buffer ──────────────────────────────────────────
@@ -696,7 +704,11 @@ def update_settings(
     if req.approval_timeout_sec is not None:
         state.approval_manager.timeout_sec = req.approval_timeout_sec
 
-    return {"status": "updated", "active_role": state.permission_manager.active_role}
+@app.get("/api/security/token")
+def get_session_token(_origin: None = Depends(require_local_origin)) -> dict[str, str]:
+    """Returns the active security token to verified local browser sessions."""
+    current_tok = _rotator.active_token if _rotator else ACTIVE_TOKEN
+    return {"token": current_tok}
 
 
 # ── Static UI Mounting ────────────────────────────────────────────────────────
@@ -712,7 +724,8 @@ def index_page() -> HTMLResponse:
 
     content = index_file.read_text(encoding="utf-8")
     # Seamlessly inject token into the HTML so local user doesn't need to manually copy-paste
-    injected = content.replace("{{RAGNAROK_TOKEN}}", ACTIVE_TOKEN)
+    current_token = _rotator.active_token if _rotator else ACTIVE_TOKEN
+    injected = content.replace("{{RAGNAROK_TOKEN}}", current_token)
     return HTMLResponse(content=injected)
 
 

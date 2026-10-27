@@ -834,19 +834,84 @@
     const modelNameEl = document.getElementById('cli-model-name');
     const hwStatEl = document.getElementById('cli-hw-stat');
 
-    // Retrieve Ragnarok Security Token
-    function getToken() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const qToken = urlParams.get('token');
-      if (qToken) return qToken;
+    // Retrieve Ragnarok Security Token dynamically
+    let currentToken = '';
+
+    async function resolveActiveToken() {
+      // 1. Meta tag injected by backend
       const meta = document.querySelector('meta[name="ragnarok-token"]');
       if (meta && meta.content && !meta.content.startsWith('{{')) {
-        return meta.content;
+        currentToken = meta.content;
+        return currentToken;
+      }
+      // 2. Query param
+      const urlParams = new URLSearchParams(window.location.search);
+      const qToken = urlParams.get('token');
+      if (qToken) {
+        currentToken = qToken;
+        return currentToken;
+      }
+      // 3. LocalStorage
+      const stored = localStorage.getItem('ragnarok_token');
+      if (stored) {
+        currentToken = stored;
+        return currentToken;
+      }
+      // 4. Local origin endpoint fallback
+      try {
+        const res = await fetch('/api/security/token');
+        if (res.ok) {
+          const d = await res.json();
+          if (d.token) {
+            currentToken = d.token;
+            localStorage.setItem('ragnarok_token', currentToken);
+            if (meta) meta.content = currentToken;
+            return currentToken;
+          }
+        }
+      } catch(e) {}
+      return '';
+    }
+
+    function getToken() {
+      if (currentToken) return currentToken;
+      const meta = document.querySelector('meta[name="ragnarok-token"]');
+      if (meta && meta.content && !meta.content.startsWith('{{')) {
+        currentToken = meta.content;
+        return currentToken;
+      }
+      const urlParams = new URLSearchParams(window.location.search);
+      const qToken = urlParams.get('token');
+      if (qToken) {
+        currentToken = qToken;
+        return currentToken;
+      }
+      const stored = localStorage.getItem('ragnarok_token');
+      if (stored) {
+        currentToken = stored;
+        return stored;
       }
       return '';
     }
 
-    const token = getToken();
+    // Connect WebSocket to stay synchronized with rotated tokens in real-time
+    (function initTokenWs() {
+      try {
+        const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const ws = new WebSocket(`${proto}//${window.location.host}/ws/token`);
+        ws.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            if (data.type === 'token_rotated' && data.token) {
+              currentToken = data.token;
+              localStorage.setItem('ragnarok_token', data.token);
+              const meta = document.querySelector('meta[name="ragnarok-token"]');
+              if (meta) meta.content = data.token;
+            }
+          } catch(e) {}
+        };
+      } catch(e) {}
+    })();
 
     // Command History
     const history = [];
@@ -894,7 +959,7 @@
       appendCliOutput(`<div class="text-primary-container text-[11px]">&gt; Querying local system telemetry...</div>`);
       try {
         const res = await fetch('/api/status', {
-          headers: { 'X-Ragnarok-Token': token }
+          headers: { 'X-Ragnarok-Token': getToken() }
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
         const data = await res.json();
@@ -936,7 +1001,7 @@
       appendCliOutput(`<div class="text-primary-container text-[11px]">&gt; Loading persistent memory store...</div>`);
       try {
         const res = await fetch('/api/memory', {
-          headers: { 'X-Ragnarok-Token': token }
+          headers: { 'X-Ragnarok-Token': getToken() }
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const items = await res.json();
@@ -969,7 +1034,7 @@
       appendCliOutput(`<div class="text-primary-container text-[11px]">&gt; Checking pending tool approvals...</div>`);
       try {
         const res = await fetch('/api/approvals', {
-          headers: { 'X-Ragnarok-Token': token }
+          headers: { 'X-Ragnarok-Token': getToken() }
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const items = await res.json();
@@ -1006,7 +1071,7 @@
       try {
         const res = await fetch(`/api/approvals/${reqId}`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-Ragnarok-Token': token },
+          headers: { 'Content-Type': 'application/json', 'X-Ragnarok-Token': getToken() },
           body: JSON.stringify({ status: status, comment: `Responded via CLI terminal: ${status}` })
         });
         if (res.ok) {
@@ -1088,7 +1153,7 @@
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Ragnarok-Token': token
+          'X-Ragnarok-Token': getToken()
         },
         body: JSON.stringify({ text: clean.slice(0, 400) })
       }).catch(() => {});
@@ -1168,7 +1233,7 @@
       try {
         const res = await fetch('/api/voice/listen?duration_sec=4.0', {
           method: 'POST',
-          headers: { 'X-Ragnarok-Token': token }
+          headers: { 'X-Ragnarok-Token': getToken() }
         });
         const d = await res.json();
         isVoiceListening = false;
@@ -1299,14 +1364,40 @@
       `);
 
       try {
-        const response = await fetch('/api/chat', {
+        let activeTok = await resolveActiveToken();
+        let response = await fetch('/api/chat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Ragnarok-Token': token
+            'X-Ragnarok-Token': activeTok
           },
           body: JSON.stringify({ message: cleanCmd })
         });
+
+        // Auto-recover from token desynchronization
+        if (response.status === 401) {
+          try {
+            const tokRes = await fetch('/api/security/token');
+            if (tokRes.ok) {
+              const tokData = await tokRes.json();
+              if (tokData.token) {
+                currentToken = tokData.token;
+                activeTok = currentToken;
+                localStorage.setItem('ragnarok_token', currentToken);
+                const meta = document.querySelector('meta[name="ragnarok-token"]');
+                if (meta) meta.content = currentToken;
+                response = await fetch('/api/chat', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'X-Ragnarok-Token': activeTok
+                  },
+                  body: JSON.stringify({ message: cleanCmd })
+                });
+              }
+            }
+          } catch(e) {}
+        }
 
         // Remove loading indicator
         const loadEl = document.getElementById(loadingId);

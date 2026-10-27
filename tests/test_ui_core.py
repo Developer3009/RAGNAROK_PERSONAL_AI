@@ -183,4 +183,50 @@ def test_voice_input_tool_use_and_voice_output_end_to_end_3x(
         mock_speak.assert_called_once_with({"text": chat_data["answer"]})
 
 
+@pytest.mark.parametrize(
+    "run_num, token_source, voice_cmd",
+    [
+        (1, "master_active_token", 'open youtube and search "reinforcement learning"'),
+        (2, "auto_refreshed_token", 'open youtube and search "convolutional neural networks"'),
+        (3, "query_param_token", 'open youtube and search "graph neural networks"'),
+    ],
+)
+def test_security_token_voice_command_resilience_3x(client, run_num, token_source, voice_cmd):
+    """
+    Test End-to-End 3x:
+    Validates that voice commands NEVER fail with 'Invalid or missing Ragnarok security token'
+    under rotation, master token persistence, and query param passing.
+    """
+    from ragnarok.ui.app import ACTIVE_TOKEN, _rotator
+    from unittest.mock import patch
+
+    # Ensure rotator has rotated to a fresh token
+    new_token = _rotator.force_rotate()
+
+    if token_source == "master_active_token":
+        # Master token MUST remain accepted even after force_rotate
+        token_to_use = ACTIVE_TOKEN
+        headers = {"X-Ragnarok-Token": token_to_use}
+        url = "/api/chat"
+    elif token_source == "auto_refreshed_token":
+        # Client discovers active token from local discovery endpoint
+        token_res = client.get("/api/security/token")
+        assert token_res.status_code == 200
+        token_to_use = token_res.json()["token"]
+        headers = {"X-Ragnarok-Token": token_to_use}
+        url = "/api/chat"
+    else:  # query_param_token
+        token_to_use = ACTIVE_TOKEN
+        headers = {}
+        url = f"/api/chat?token={token_to_use}"
+
+    with patch("webbrowser.open"):
+        res = client.post(url, headers=headers, json={"message": voice_cmd})
+        assert res.status_code == 200, f"Expected 200 OK on run {run_num}, got {res.status_code}: {res.text}"
+        data = res.json()
+        assert "open_browser" in data["tool_calls"]
+        assert "youtube.com" in data["answer"].lower()
+
+
+
 

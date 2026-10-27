@@ -22,7 +22,7 @@ from threading import Lock
 
 logger = logging.getLogger(__name__)
 
-_DEFAULT_ROTATION_INTERVAL_SEC = 30 * 60   # 30 minutes
+_DEFAULT_ROTATION_INTERVAL_SEC = 24 * 3600   # 24 hours (prevents premature session invalidation)
 
 
 @dataclass
@@ -51,7 +51,7 @@ class TokenRotator:
         self,
         initial_token: str | None = None,
         rotation_interval_sec: float = _DEFAULT_ROTATION_INTERVAL_SEC,
-        grace_sec: float = 30.0,
+        grace_sec: float = 300.0,
     ) -> None:
         self._interval = rotation_interval_sec
         self._grace = grace_sec
