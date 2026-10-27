@@ -1424,18 +1424,72 @@
           `);
         }
 
-        // Detect if a browser or YouTube target URL was navigated or provided
+        // Detect if a browser, search, or web application URL was navigated or provided
         const urlMatch = data.answer ? data.answer.match(/https?:\/\/[^\s"'<>]+/) : null;
         let launchBtnHtml = '';
         if (urlMatch) {
           const targetUrl = urlMatch[0].replace(/[.,;:)]+$/, '');
-          const isYt = targetUrl.includes('youtube.com') || targetUrl.includes('youtu.be');
-          const btnLabel = isYt ? '▶ Open in YouTube' : '🌐 Open Web Link';
+          let btnLabel = '🌐 Open Link';
+          let btnIcon = 'open_in_new';
+
+          if (targetUrl.includes('youtube.com') || targetUrl.includes('youtu.be')) {
+            btnLabel = '▶ Open in YouTube';
+            btnIcon = 'play_circle';
+          } else if (targetUrl.includes('mail.google.com')) {
+            btnLabel = '✉ Open in Gmail';
+            btnIcon = 'mail';
+          } else if (targetUrl.includes('google.com/maps') || targetUrl.includes('maps.google.com')) {
+            btnLabel = '🗺 Open in Google Maps';
+            btnIcon = 'map';
+          } else if (targetUrl.includes('google.com/search')) {
+            btnLabel = '🔍 View on Google';
+            btnIcon = 'search';
+          } else if (targetUrl.includes('drive.google.com')) {
+            btnLabel = '📁 Open in Google Drive';
+            btnIcon = 'folder';
+          } else if (targetUrl.includes('docs.google.com')) {
+            btnLabel = '📄 Open in Google Docs';
+            btnIcon = 'description';
+          } else if (targetUrl.includes('sheets.google.com')) {
+            btnLabel = '📊 Open in Google Sheets';
+            btnIcon = 'table_chart';
+          } else if (targetUrl.includes('calendar.google.com')) {
+            btnLabel = '📅 Open in Calendar';
+            btnIcon = 'calendar_month';
+          } else if (targetUrl.includes('github.com')) {
+            btnLabel = '💻 Open in GitHub';
+            btnIcon = 'code';
+          } else if (targetUrl.includes('wikipedia.org')) {
+            btnLabel = '📚 Open in Wikipedia';
+            btnIcon = 'menu_book';
+          } else if (targetUrl.includes('spotify.com')) {
+            btnLabel = '🎵 Open in Spotify';
+            btnIcon = 'music_note';
+          } else if (targetUrl.includes('reddit.com')) {
+            btnLabel = '💬 Open in Reddit';
+            btnIcon = 'forum';
+          } else if (targetUrl.includes('chatgpt.com')) {
+            btnLabel = '🤖 Open in ChatGPT';
+            btnIcon = 'smart_toy';
+          } else if (targetUrl.includes('claude.ai')) {
+            btnLabel = '🧠 Open in Claude';
+            btnIcon = 'psychology';
+          } else if (targetUrl.includes('web.whatsapp.com')) {
+            btnLabel = '💬 Open WhatsApp';
+            btnIcon = 'chat';
+          } else if (targetUrl.includes('linkedin.com')) {
+            btnLabel = '💼 Open LinkedIn';
+            btnIcon = 'work';
+          } else if (targetUrl.includes('notion.so')) {
+            btnLabel = '📝 Open Notion';
+            btnIcon = 'edit_note';
+          }
+
           launchBtnHtml = `
             <div class="pt-2">
               <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-container/20 hover:bg-primary-container/30 text-primary-container border border-primary-container/40 text-[11px] font-bold shadow-[0_0_12px_rgba(51,204,255,0.25)] transition-all">
                 <span>${btnLabel}</span>
-                <span class="material-symbols-outlined text-[13px]">open_in_new</span>
+                <span class="material-symbols-outlined text-[13px]">${btnIcon}</span>
               </a>
             </div>
           `;
