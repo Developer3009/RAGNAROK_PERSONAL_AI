@@ -81,6 +81,21 @@ class PathSandbox:
                 f"Access to protected system file '{resolved.name}' is strictly forbidden for agent tools."
             )
 
+        # Windows Alternate Data Stream (ADS) and reserved device name defense
+        if ":" in resolved.name:
+            raise SandboxViolation(
+                f"Invalid characters or NTFS Alternate Data Stream detected in '{resolved.name}'."
+            )
+        _RESERVED_DEVICE_NAMES = {
+            "CON", "PRN", "AUX", "NUL",
+            *(f"COM{i}" for i in range(1, 10)),
+            *(f"LPT{i}" for i in range(1, 10)),
+        }
+        if resolved.stem.upper() in _RESERVED_DEVICE_NAMES or resolved.name.upper() in _RESERVED_DEVICE_NAMES:
+            raise SandboxViolation(
+                f"Access to reserved Windows system device name '{resolved.name}' is strictly blocked."
+            )
+
         # Allowlist check
         if not self._in_allowlist(resolved):
             allowed_str = ", ".join(str(a) for a in self._allowed)
@@ -119,10 +134,14 @@ class PathSandbox:
     # ── Internal ───────────────────────────────────────────────────────────────
 
     def _in_allowlist(self, resolved: Path) -> bool:
-        return any(
-            str(resolved).startswith(str(allowed))
-            for allowed in self._allowed
-        )
+        """Check genuine path containment using relative_to, avoiding prefix collision attacks."""
+        for allowed in self._allowed:
+            try:
+                resolved.relative_to(allowed)
+                return True
+            except ValueError:
+                continue
+        return False
 
 
 class ResourceGuard:

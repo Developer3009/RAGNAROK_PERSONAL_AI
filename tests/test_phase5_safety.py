@@ -91,6 +91,41 @@ class TestPathSandbox:
             sandbox.validate(non_existent, must_exist=True)
         assert "does not exist" in str(exc_info.value).lower()
 
+    def test_prefix_collision_blocked(self, tmp_path):
+        allowed = tmp_path / "allowed"
+        allowed.mkdir()
+        # Same prefix as allowed folder, but a distinct directory
+        fake_allowed = tmp_path / "allowed_attacker"
+        fake_allowed.mkdir()
+        leak_file = fake_allowed / "leak.txt"
+        leak_file.write_text("evil")
+
+        sandbox = PathSandbox(allowed_dirs=[allowed])
+        assert sandbox.is_allowed(leak_file) is False
+        with pytest.raises(SandboxViolation) as exc_info:
+            sandbox.validate(leak_file)
+        assert "outside allowed directories" in str(exc_info.value)
+
+    def test_alternate_data_stream_blocked(self, tmp_path):
+        allowed = tmp_path / "allowed"
+        allowed.mkdir()
+        ads_target = allowed / "notes.txt:secret.exe"
+        sandbox = PathSandbox(allowed_dirs=[allowed])
+        assert sandbox.is_allowed(ads_target) is False
+        with pytest.raises(SandboxViolation) as exc_info:
+            sandbox.validate(ads_target)
+        assert "Alternate Data Stream" in str(exc_info.value)
+
+    def test_windows_reserved_device_blocked(self, tmp_path):
+        allowed = tmp_path / "allowed"
+        allowed.mkdir()
+        con_target = allowed / "NUL.txt"
+        sandbox = PathSandbox(allowed_dirs=[allowed])
+        assert sandbox.is_allowed(con_target) is False
+        with pytest.raises(SandboxViolation) as exc_info:
+            sandbox.validate(con_target)
+        assert "reserved Windows system device" in str(exc_info.value)
+
 
 class TestResourceGuard:
     def test_check_write_under_limit(self):

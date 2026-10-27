@@ -114,6 +114,21 @@ class AgentLoop:
         t_start = time.perf_counter()
         self._history.add_user(user_input)
 
+        # Direct voice/browser action commands (e.g. "open youtube and search working of LLM")
+        from ragnarok.skills import open_browser
+        voice_cmd = open_browser.parse_voice_command(user_input)
+        if voice_cmd:
+            res_text = open_browser.run(voice_cmd)
+            self._history.add_assistant(res_text)
+            self._audit.log_tool_call("open_browser", voice_cmd, risk_level="low")
+            log_tool_event(logger, "direct_call", "open_browser", arguments=voice_cmd)
+            return AgentResult(
+                answer=res_text,
+                steps_taken=1,
+                tool_calls_made=["open_browser"],
+                latency_ms=(time.perf_counter() - t_start) * 1000,
+            )
+
         # ── Phase 4: Optionally create a plan ──────────────────────────────────
         if self._enable_planning and self._planner.should_plan(user_input):
             available_tools = list(self._registry._skills.keys())

@@ -112,7 +112,8 @@ class TestChatEndpoint:
 # ── 4. Memory Manager CRUD Tests ──────────────────────────────────────────────
 
 class TestMemoryManager:
-    def test_add_and_list_memory(self, client, auth_headers):
+    @patch("ragnarok.llm.embed", return_value=[0.05] * 768)
+    def test_add_and_list_memory(self, mock_embed, client, auth_headers):
         # 1. Add memory
         res = client.post(
             "/api/memory",

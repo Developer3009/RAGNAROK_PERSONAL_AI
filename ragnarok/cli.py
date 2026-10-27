@@ -39,27 +39,33 @@ from ragnarok.triggers.watchdog import Watchdog
 
 logger = logging.getLogger(__name__)
 
+_BANNER_COLOR = "\033[38;2;51;204;255m"  # Hex #33ccff TrueColor
+_RESET = "\033[0m"
+
 _BANNER = r"""
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                                                                                      ║
-║  ██████╗  █████╗  ██████╗ ███╗   ██╗ █████╗ ██████╗  ██████╗ ██╗  ██╗              ║
-║  ██╔══██╗██╔══██╗██╔════╝ ████╗  ██║██╔══██╗██╔══██╗██╔═══██╗██║ ██╔╝              ║
-║  ██████╔╝███████║██║  ███╗██╔██╗ ██║███████║██████╔╝██║   ██║█████╔╝               ║
-║  ██╔══██╗██╔══██║██║   ██║██║╚██╗██║██╔══██║██╔══██╗██║   ██║██╔═██╗               ║
-║  ██║  ██║██║  ██║╚██████╔╝██║ ╚████║██║  ██║██║  ██║╚██████╔╝██║  ██╗              ║
-║  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝              ║
+║    █████▄       ▄▄      ▄████▄   ██    ██     ▄▄     █████▄     ▄████▄   ██   ▄██    ║
+║    ▀██ ▀██      ██     ▄█▀  ▀▀█  ███▄  ██     ██     ▀██ ▀██   ██▀  ▀██  ██  ██▀     ║
+║    ▄██▄██▀     ████    ██   ▄▄▄  ████▄ ██    ████    ▄██▄██▀   ██    ██  ██▄██▀      ║
+║    ██▀██      ▄█  █▄   ██  ▀▀██  ██ ▀████   ▄█  █▄   ██▀██     ▀██▄▄██▀  ██▀██▄      ║
+║    ██ ▀█▄     ██▄▄██   ██▄  ▄██  ██   ▀██   ██▄▄██   ██ ▀█▄              ██  ██▄     ║
+║    ██  ▀█▄   ██ ▀▀▀▀██  ▀█████▀  ▀█     ▀  ██ ▀▀▀▀██ ██  ▀█▄    ██████   ██   ▀█▄    ║
 ║                                                                                      ║
-║          ★  L O C A L   A I   A G E N T   —   v 0 . 8   ★                          ║
+║                    ★  L O C A L   A I   A G E N T   —   v 1 . 0   ★                  ║
 ║                                                                                      ║
-║    ◈ Privacy-First    ◈ Always-On Triggers    ◈ Local Dashboard    ◈ Gemma 3        ║
+║        ◈ Privacy-First    ◈ Always-On Triggers    ◈ Local Dashboard    ◈ Gemma 3     ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
   Type your message and press Enter.
-  Commands: /help  /ui  /plan  /memory  /remember  /reset  /history  /status  /quit
+  Commands: /help  /ui  /voice  /listen  /speak  /plan  /memory  /remember  /reset  /history  /status  /quit
 """
 
 _HELP = """
 /help              -- show this message
 /ui                -- launch or open the Phase 7 local web dashboard
+/voice [on|off]    -- toggle hands-free voice mode (mic input, tool execution, voice output)
+/listen            -- record a voice prompt from microphone and run tools
+/speak <text>      -- speak text aloud using local TTS engine
 /plan              -- show the current active execution plan and its step status
 /memory            -- list active memories stored in SQLite
 /remember <fact>   -- manually save a lasting semantic fact to memory
@@ -139,7 +145,7 @@ def main() -> None:
         name="ragnarok-turn-watchdog",
     )
 
-    print(_BANNER)
+    print(f"{_BANNER_COLOR}{_BANNER}{_RESET}")
     _print_status(memory_store)
 
     # ── Phase 6: offer to resume from checkpoint after crash ───────────────
@@ -199,13 +205,38 @@ def main() -> None:
         for msg in resumed_history:
             agent.history.add(msg["role"], msg["content"])
 
+    # Voice mode state
+    voice_mode: bool = False
+    from ragnarok.skills import voice_listen, voice_speak
+
     while True:
-        try:
-            user_input = input("\nYou: ").strip()
-        except (EOFError, KeyboardInterrupt):
-            print("\nGoodbye.")
-            scheduler.stop()
-            break
+        voice_turn = False
+        if voice_mode:
+            print(f"\n{_BANNER_COLOR}[VOICE MODE ACTIVE]{_RESET} Listening to microphone (5s)...")
+            try:
+                transcript = voice_listen.run({"duration_sec": 5.0})
+                if transcript and not any(transcript.startswith(err) for err in ("Audio recording failed", "No Whisper backend", "Transcription failed")):
+                    print(f"You (voice): {transcript}")
+                    user_input = transcript
+                    voice_turn = True
+                else:
+                    print(f"  [Voice Info: {transcript.strip() if transcript else 'No speech detected'}]")
+                    try:
+                        user_input = input("\nYou (or type /voice off): ").strip()
+                    except (EOFError, KeyboardInterrupt):
+                        print("\nGoodbye.")
+                        scheduler.stop()
+                        break
+            except Exception as v_err:
+                print(f"  [Voice listen error: {v_err}]")
+                user_input = input("\nYou: ").strip()
+        else:
+            try:
+                user_input = input("\nYou: ").strip()
+            except (EOFError, KeyboardInterrupt):
+                print("\nGoodbye.")
+                scheduler.stop()
+                break
 
         if not user_input:
             continue
@@ -219,6 +250,41 @@ def main() -> None:
                 break
             elif cmd == "/help":
                 print(_HELP)
+            elif cmd == "/voice" or cmd.startswith("/voice "):
+                sub = cmd[len("/voice"):].strip()
+                if sub == "on":
+                    voice_mode = True
+                    print(f"  {_BANNER_COLOR}[VOICE MODE: ON]{_RESET} Hands-free microphone input, tool execution, and voice output enabled.")
+                elif sub == "off":
+                    voice_mode = False
+                    print("  [VOICE MODE: OFF] Switched to keyboard input.")
+                else:
+                    voice_mode = not voice_mode
+                    state_str = "ON" if voice_mode else "OFF"
+                    print(f"  {_BANNER_COLOR}[VOICE MODE: {state_str}]{_RESET} (use '/voice on' or '/voice off' to set explicitly)")
+                continue
+            elif cmd == "/listen":
+                print(f"  {_BANNER_COLOR}[LISTENING...]{_RESET} Speak your command into the microphone (5s)...")
+                try:
+                    transcript = voice_listen.run({"duration_sec": 5.0})
+                    if transcript and not any(transcript.startswith(err) for err in ("Audio recording failed", "No Whisper backend", "Transcription failed")):
+                        print(f"  Heard: \"{transcript}\"")
+                        user_input = transcript
+                        voice_turn = True
+                    else:
+                        print(f"  [Voice Info: {transcript.strip() if transcript else 'No speech detected'}]")
+                        continue
+                except Exception as l_err:
+                    print(f"  [Voice listen error: {l_err}]")
+                    continue
+            elif cmd.startswith("/speak"):
+                text_to_speak = user_input[len("/speak"):].strip()
+                if not text_to_speak:
+                    print("Usage: /speak <text to speak aloud>")
+                else:
+                    out = voice_speak.run({"text": text_to_speak})
+                    print(f"  {out}")
+                continue
             elif cmd == "/ui":
                 from ragnarok.ui.app import ACTIVE_TOKEN
                 print("  Starting local web UI server...")
@@ -296,6 +362,14 @@ def main() -> None:
                 print(f"  [plan: {completed}/{total} steps done | status: {result.plan.status}]")
             if result.stopped_early:
                 print("  [WARNING] Reached maximum steps -- answer may be incomplete.")
+
+            # Voice Output: speak the answer aloud if voice_turn or voice_mode is active
+            if voice_turn or voice_mode:
+                try:
+                    print(f"  {_BANNER_COLOR}[AI Speaking answer...]{_RESET}")
+                    voice_speak.run({"text": result.answer})
+                except Exception as spk_err:
+                    logger.debug("Voice speak error: %s", spk_err)
 
             # Phase 6: save checkpoint after every successful turn
             try:
