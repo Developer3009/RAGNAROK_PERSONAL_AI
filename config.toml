@@ -62,3 +62,51 @@ max_embed_latency_ms    = 200
 max_idle_cpu_pct        = 30
 
 
+# ── Innovation #1: Vision / GUI Grounding ────────────────────────────────────
+[vision]
+default_vision_model = "llava"          # Ollama vision model for screen grounding
+gui_failsafe         = true             # pyautogui failsafe (move mouse to corner to abort)
+screenshot_monitor   = 1               # Monitor index (1 = primary)
+
+# ── Innovation #2: Knowledge Graph ───────────────────────────────────────────
+[knowledge_graph]
+enabled              = true
+db_file              = "ragnarok_kg.db"
+max_hops             = 3               # Max multi-hop traversal depth
+
+# ── Innovation #3: P2P Mesh Swarm (Valhalla Cluster) ─────────────────────────
+[mesh]
+enabled              = true
+port                 = 47890           # TCP port for mesh communication
+secret               = "ragnarok-valhalla-mesh"  # Shared mesh authentication secret
+prefer_capability    = "gpu"           # Capability to prefer when routing tasks to peers
+
+# ── Innovation #4: Streaming Voice Pipeline ──────────────────────────────────
+[streaming_voice]
+enabled              = true
+whisper_model        = "base"          # faster-whisper model: tiny/base/small/medium
+tts_engine           = "kokoro"        # kokoro | piper | pyttsx3
+tts_voice            = "af_sarah"      # Kokoro voice name
+listen_timeout_sec   = 10.0
+vad_threshold        = 0.5             # Silero VAD speech probability threshold
+silence_duration_sec = 1.5            # Seconds of silence to stop recording
+
+# ── Innovation #5: MCP Hub & Auto-Forge ──────────────────────────────────────
+[mcp_hub]
+enabled              = true
+auto_forge_enabled   = true            # Allow LLM to generate and register new skills
+forge_require_approval = true          # Require user approval before activating forged skills
+
+# ── Innovation #6: Shadow Worker ─────────────────────────────────────────────
+[shadow_worker]
+enabled              = true
+brief_time           = "08:30"         # Daily morning briefing time (HH:MM)
+error_sentinel       = true            # Enable background error monitoring
+scan_interval_sec    = 30              # How often to scan log files for errors
+sentinel_cooldown_sec = 60             # Min seconds between alerts for same file
+
+# ── Innovation #7: Hardware-Bound Vault + Merkle Audit ───────────────────────
+[vault]
+enabled              = true
+use_dpapi            = true            # Use Windows DPAPI hardware binding (Windows only)
+merkle_audit         = true            # Enable Merkle-chained audit log

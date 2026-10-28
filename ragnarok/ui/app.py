@@ -703,6 +703,11 @@ def update_settings(
         state.permission_manager.active_role = req.active_role
     if req.approval_timeout_sec is not None:
         state.approval_manager.timeout_sec = req.approval_timeout_sec
+    return {
+        "status": "updated",
+        "active_role": state.permission_manager.active_role,
+        "approval_timeout_sec": state.approval_manager.timeout_sec,
+    }
 
 @app.get("/api/security/token")
 def get_session_token(_origin: None = Depends(require_local_origin)) -> dict[str, str]:

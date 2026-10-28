@@ -244,6 +244,42 @@ Ragnarok was engineered with **zero-trust security principles**:
 
 ---
 
+## ⚡ Next-Generation Innovations (The 7 Pillars)
+
+Ragnarok includes 7 state-of-the-art innovations that elevate it from a standard terminal assistant into a self-evolving, hardware-secured, multimodal operating agent:
+
+### 1. 👁️ Offline VLM GUI Grounding (`gui_action.py`)
+- **What it does**: Enables true local "Computer Use" without Anthropic cloud APIs. Uses local Ollama vision models (e.g. `llava`, `llama3.2-vision`) to inspect screen state, locate visual targets with normalized coordinates, and execute mouse/keyboard automation via `pyautogui` + `mss`.
+- **Safety**: Built-in failsafe triggers, bounded display coordinates, and high-risk permission gate.
+
+### 2. 🌲 Temporal Knowledge Graph Memory ("Yggdrasil") (`knowledge_graph.py`)
+- **What it does**: Augments vector similarity search with structured relational graph memory. Tracks multi-hop relationships (`User` → `works_on` → `Project X` → `written_in` → `Rust`) and enforces **temporal validity**: updating a fact automatically timestamps and deprecates the old fact rather than overwriting it, giving Ragnarok perfect time-aware recall.
+
+### 3. 🛡️ P2P Local LAN Mesh Swarm ("Valhalla Cluster") (`mesh_swarm.py`)
+- **What it does**: Discovers other Ragnarok nodes across the local home or office network via mDNS/Zeroconf. Enables secure task offloading (e.g. sending GPU-heavy embedding or LLM inference to a desktop workstation while commanding from a lightweight laptop).
+- **Security**: AES-128 Fernet encrypted TCP transport with private-IP RFC1918 enforcement — strictly refuses any public internet routing.
+
+### 4. 🎙️ Sub-300ms Real-Time Voice Duplex (`streaming_voice.py`)
+- **What it does**: Replaces high-latency voice loops with a pipelined audio architecture: Silero-VAD speech detection → local `faster-whisper` transcription → Ollama token streaming → neural TTS chunk playback.
+- **Barge-in Support**: Thread-safe interrupt flag enables users to speak over Ragnarok mid-sentence, immediately cutting audio playback just like a human conversation.
+
+### 5. 🔌 Native MCP Client Hub & Auto-Forge (`mcp_hub.py`)
+- **What it does**: 
+  - **MCP Client**: Seamlessly connects to community Model Context Protocol (MCP) servers (GitHub, Docker, PostgreSQL, Brave Search, Filesystem) over stdio JSON-RPC, dynamically exposing external tools as native Ragnarok skills.
+  - **Auto-Forge**: When encountering an unmet need, the agent autonomously drafts, sandbox-validates, and permanently registers a new Python skill module adhering to security AST policies.
+
+### 6. 🌙 Autonomous Shadow-Worker (`shadow_worker.py`)
+- **What it does**: Proactive daemon background engine running two silent services:
+  - **Morning Standup Briefing**: Automatically synthesizes recent git activity, pending pinned tasks, and notes into an executive spoken/displayed briefing at configured morning hours.
+  - **Silent Error Sentinel**: Continuously monitors project logs and test outputs. When a Python traceback or test failure occurs, it diagnoses root cause and pre-computes a proposed fix in pinned memory.
+
+### 7. 🔐 Hardware-Bound Vault & Merkle Audit Tree (`vault.py`)
+- **What it does**:
+  - **Hardware Binding**: Derives encryption keys bound to physical machine hardware identifiers via Windows DPAPI and machine fingerprinting — secrets copied to another PC cannot be decrypted.
+  - **Cryptographic Merkle Audit**: Links every audit event to previous entries via SHA-256 hash pointers (`entry_n.hash = SHA256(data + prev_hash)`). Any manual tampering with historical logs instantly breaks the chain and is flagged in health checks.
+
+---
+
 ## ❓ Frequently Asked Questions (FAQ)
 
 ### Q: Does Ragnarok require an internet connection?

@@ -1,5 +1,6 @@
 # Core LLM / HTTP Communication
 httpx>=0.27
+requests>=2.31
 
 # Configuration
 tomli>=2.0; python_version < "3.11"
@@ -24,7 +25,35 @@ watchdog>=4.0
 
 # Voice I/O & Audio Processing
 sounddevice>=0.5.0
+soundfile>=0.12.1
 pyttsx3>=2.90
+
+# ── Innovation #1: Vision-Based GUI Grounding ──────────────────────────────────
+mss>=9.0                    # Fast cross-platform screen capture
+Pillow>=10.0                # Image processing for screen frames
+pyautogui>=0.9.54           # Mouse & keyboard automation
+
+# ── Innovation #2: Knowledge Graph ────────────────────────────────────────────
+# (Uses stdlib sqlite3 + existing numpy — no extra dependencies)
+
+# ── Innovation #3: P2P Mesh Swarm (Valhalla Cluster) ─────────────────────────
+zeroconf>=0.131             # mDNS/Zeroconf peer discovery
+# (Encrypted sockets via existing cryptography package)
+
+# ── Innovation #4: Streaming Voice Duplex ─────────────────────────────────────
+faster-whisper>=1.0         # Local offline STT (faster than original whisper)
+# kokoro>=0.9.4             # Neural TTS (install separately: pip install kokoro)
+# piper-tts                 # Alternative TTS (install separately)
+
+# ── Innovation #5: MCP Hub & Auto-Forge ───────────────────────────────────────
+# (MCP servers started via npx — Node.js required for JS-based servers)
+# (No additional Python packages needed — uses stdlib subprocess + json)
+
+# ── Innovation #6: Shadow Worker ──────────────────────────────────────────────
+# (Uses stdlib subprocess, threading, pathlib — no extra dependencies)
+
+# ── Innovation #7: Hardware-Bound Vault + Merkle Audit ────────────────────────
+# (Uses stdlib ctypes for DPAPI on Windows + existing cryptography package)
 
 # Testing & Quality Assurance
 pytest>=8.0
