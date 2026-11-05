@@ -55,6 +55,18 @@ faster-whisper>=1.0         # Local offline STT (faster than original whisper)
 # ── Innovation #7: Hardware-Bound Vault + Merkle Audit ────────────────────────
 # (Uses stdlib ctypes for DPAPI on Windows + existing cryptography package)
 
+# ── Innovation #8: Hierarchical Multi-Agent Governance (Council) ──────────────
+# (Uses stdlib asyncio, dataclasses, json + existing LLM interface)
+
+# ── Innovation #9: Headless Autonomous Web Browser Agent ─────────────────────
+playwright>=1.49            # Headless Chromium browser automation
+
+# ── Innovation #10: Ambient Cognitive Context Stream ──────────────────────────
+# (Uses existing mss, Pillow, numpy + win32gui/psutil fallback)
+
+# ── Innovation #11: Experience Replay Buffer & Playbooks ─────────────────────
+# (Uses stdlib sqlite3, json, struct + existing LLM embeddings)
+
 # Testing & Quality Assurance
 pytest>=8.0
 pytest-asyncio>=0.23

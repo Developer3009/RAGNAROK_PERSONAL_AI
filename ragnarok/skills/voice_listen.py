@@ -142,10 +142,26 @@ def run(args: dict) -> str:
     language = str(args.get("language", "")).strip() or None
     sample_rate = 16_000
 
-    try:
-        audio = _record_audio(duration_sec, sample_rate)
-    except Exception as exc:
-        return f"Audio recording failed: {exc}"
+    audio_path = args.get("audio_path")
+    if audio_path:
+        from pathlib import Path
+        p = Path(str(audio_path).strip())
+        if not p.exists():
+            return f"Error: Audio file not found: {audio_path}"
+        try:
+            import soundfile as sf
+            data, sr = sf.read(str(p))
+            if sr != sample_rate:
+                # convert or use as is
+                pass
+            audio = data.flatten()
+        except Exception as exc:
+            return f"Error reading audio file: {exc}"
+    else:
+        try:
+            audio = _record_audio(duration_sec, sample_rate)
+        except Exception as exc:
+            return f"Audio recording failed: {exc}"
 
     # Try faster-whisper first, fall back to openai-whisper
     try:

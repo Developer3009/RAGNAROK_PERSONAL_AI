@@ -244,9 +244,9 @@ Ragnarok was engineered with **zero-trust security principles**:
 
 ---
 
-## ⚡ Next-Generation Innovations (The 7 Pillars)
+## ⚡ Next-Generation Innovations (The 11 Pillars of Super AI Agents)
 
-Ragnarok includes 7 state-of-the-art innovations that elevate it from a standard terminal assistant into a self-evolving, hardware-secured, multimodal operating agent:
+Ragnarok includes 11 state-of-the-art innovations that elevate it from a standard terminal assistant into a self-evolving, hardware-secured, multimodal super-agent:
 
 ### 1. 👁️ Offline VLM GUI Grounding (`gui_action.py`)
 - **What it does**: Enables true local "Computer Use" without Anthropic cloud APIs. Uses local Ollama vision models (e.g. `llava`, `llama3.2-vision`) to inspect screen state, locate visual targets with normalized coordinates, and execute mouse/keyboard automation via `pyautogui` + `mss`.
@@ -277,6 +277,32 @@ Ragnarok includes 7 state-of-the-art innovations that elevate it from a standard
 - **What it does**:
   - **Hardware Binding**: Derives encryption keys bound to physical machine hardware identifiers via Windows DPAPI and machine fingerprinting — secrets copied to another PC cannot be decrypted.
   - **Cryptographic Merkle Audit**: Links every audit event to previous entries via SHA-256 hash pointers (`entry_n.hash = SHA256(data + prev_hash)`). Any manual tampering with historical logs instantly breaks the chain and is flagged in health checks.
+
+### 8. 👥 Hierarchical Multi-Agent Governance ("The Council") (`council.py`)
+- **What it does**: Implements a four-role governance model for complex problem solving:
+  - **Architect**: Decomposes goals into a Directed Acyclic Graph (DAG) of interdependent sub-tasks with strict topological sequencing.
+  - **Critic Swarm**: Adversarially stress-tests plans, identifying execution risks, dependency bottlenecks, and failure modes before execution.
+  - **Worker Agents**: Concurrently execute task nodes with progress tracing.
+  - **Synthesizer**: Condenses diverse worker deliverables into an executive brief.
+
+### 9. 🌐 Headless Autonomous Web Browser Agent (`web_agent.py`)
+- **What it does**: Integrates headless Chromium via Playwright directly into the agent's cognition:
+  - **Pruned Accessibility Tree**: Extracts compact semantic nodes (links, buttons, text fields) into a minimal token footprint (<500 tokens).
+  - **Self-Reflective Loop**: Inspects page state, plans clicks, form fills, extracts structured text, and handles complex multi-step navigation tasks completely locally.
+  - **Security Barrier**: Strictly blocks non-HTTP/HTTPS schemes and disallows unapproved domain traversals.
+
+### 10. 👁️ Ambient Cognitive Context Stream (`ambient_context.py`)
+- **What it does**: Provides passive background situational awareness:
+  - **Foreground Window Observation**: Continuously tracks active applications and document context.
+  - **Differential Screen Analysis**: Computes pixel-level frame diffs to trigger visual reasoning only when meaningful screen state changes occur.
+  - **Episodic Ring Buffer**: Retains recent ambient episodes in local SQLite for instantaneous memory context retrieval.
+  - **Proactive Assist**: Detects when a developer is blocked on the same error screen and proactively injects hints into working memory.
+
+### 11. 📚 Experience Replay Buffer & Self-Reflective "Playbooks" (`playbook.py`)
+- **What it does**: Turns one-off task execution into reusable system capabilities:
+  - **Trajectory Abstraction**: Analyzes successfully completed multi-step tool sequences and abstracts specific values into parameterized templates (`{{PROJECT_DIR}}`, `{{DB_NAME}}`).
+  - **Semantic Retrieval**: Matches new user requests against past successes using cosine similarity over local embeddings.
+  - **Instant Replay**: Executes battle-tested workflows without redundant LLM trial-and-error reasoning.
 
 ---
 

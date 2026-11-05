@@ -110,3 +110,30 @@ sentinel_cooldown_sec = 60             # Min seconds between alerts for same fil
 enabled              = true
 use_dpapi            = true            # Use Windows DPAPI hardware binding (Windows only)
 merkle_audit         = true            # Enable Merkle-chained audit log
+
+# ── Innovation #8: Hierarchical Multi-Agent Governance (Council) ──────────────
+[council]
+enabled              = true
+max_dag_depth        = 5               # Maximum depth of the task dependency graph
+critique_enabled     = true            # Enable CRITIC agent to review plans
+worker_parallelism   = 3              # Max concurrent WORKER agents (future use)
+
+# ── Innovation #9: Headless Autonomous Web Browser Agent ─────────────────────
+[web_agent]
+enabled              = true
+headless             = true            # Run Chromium in headless mode
+max_steps            = 15             # Max browser actions per task
+timeout_sec          = 30             # Page load timeout in seconds
+
+# ── Innovation #10: Ambient Cognitive Context Stream ──────────────────────────
+[ambient_context]
+enabled              = true
+poll_interval_sec    = 15.0           # How often to sample the foreground window
+diff_threshold       = 0.05           # Min pixel-diff fraction to trigger OCR/LLM
+ring_buffer_size     = 100            # Max episodes stored in SQLite ring buffer
+
+# ── Innovation #11: Experience Replay Buffer & Playbooks ─────────────────────
+[playbook]
+enabled              = true
+min_steps_to_record  = 3             # Minimum steps in trajectory to auto-record
+similarity_threshold = 0.80          # Cosine similarity threshold for playbook matching
