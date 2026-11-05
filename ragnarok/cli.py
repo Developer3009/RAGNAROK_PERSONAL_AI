@@ -138,6 +138,10 @@ def main() -> None:
 
     setup_logging(level=logging.WARNING)   # console: warnings only; file: debug
 
+    # Load skills upfront
+    registry.load_all()
+    logger.info("Skills loaded: %s", registry)
+
     memory_store = MemoryStore()
     checkpoint = SessionCheckpoint()       # Phase 6: crash recovery
     watchdog = Watchdog(                   # Phase 6: hang detection
@@ -166,10 +170,6 @@ def main() -> None:
             print(f"  [WARNING] Corrupt checkpoint discarded: {exc}")
             checkpoint.clear()
     print()
-
-    # Load skills
-    registry.load_all()
-    logger.info("Skills loaded: %s", registry)
 
     # ── Phase 6: Background trigger scheduler ─────────────────────────────
     def _daily_brief(name: str):
