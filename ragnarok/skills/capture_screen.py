@@ -153,10 +153,22 @@ def run(args: dict) -> str:
 
     logger.info("capture_screen: capturing monitor=%d model=%s", monitor_idx, vision_model)
 
+    png_bytes = None
+    # Check if user has an active screen share from the UI
     try:
-        png_bytes = _capture_screenshot(monitor_idx)
-    except Exception as exc:
-        return f"Screenshot capture failed: {exc}"
+        from ragnarok.ui.app import _latest_screen_frame
+        import time as _t
+        if _latest_screen_frame.get("image_bytes") and (_t.time() - _latest_screen_frame.get("timestamp", 0) < 60):
+            png_bytes = _latest_screen_frame["image_bytes"]
+            logger.info("capture_screen: using active shared laptop screen from browser stream")
+    except Exception:
+        pass
+
+    if not png_bytes:
+        try:
+            png_bytes = _capture_screenshot(monitor_idx)
+        except Exception as exc:
+            return f"Screenshot capture failed: {exc}"
 
     # Save screenshot to a temp file for audit trail
     try:

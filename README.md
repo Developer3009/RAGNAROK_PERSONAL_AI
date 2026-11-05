@@ -31,6 +31,7 @@
 - [🧠 The Memory System Explained Simply](#-the-memory-system-explained-simply)
 - [🎙️ Voice & Application Launcher Guide](#-voice--application-launcher-guide)
 - [📅 Agenda, Calendar, To-Do List & Date/Time Schedule Watcher](#-agenda-calendar-to-do-list--datetime-schedule-watcher)
+- [🖥️ Laptop Screen Sharing & Multimodal Vision Stream](#-laptop-screen-sharing--multimodal-vision-stream)
 - [💻 Technical User & Developer Setup](#-technical-user--developer-setup)
 - [📂 Project Directory Structure](#-project-directory-structure)
 - [🛡️ Privacy, Security & Sandboxing](#-privacy-security--sandboxing)
@@ -177,6 +178,33 @@ Ragnarok includes a built-in, 100% offline **Personal Agenda & Calendar Suite** 
      - `"Parse this email and add it to my agenda: [email text]"`
 
 ---
+
+## 🖥️ Laptop Screen Sharing & Multimodal Vision Stream
+
+Ragnarok features live, 100% on-device **Screen Sharing & Multimodal Vision Inspection** directly inside the Web UI (`http://localhost:8000` -> **Multimodal Vision** tab).
+
+### Features & Capabilities:
+1. **Interactive WebRTC Laptop Screen Mirroring**:
+   - One-click **"Share Laptop Screen"** button launches your browser's native screen picker.
+   - Choose to share your **Entire Screen**, a specific application window (**VS Code**, **Terminal**, **IDE**), or a **Browser Tab**.
+   - Displays real-time resolution (`1920 × 1080`), live FPS counter, and streaming status indicator.
+2. **Continuous Ambient Frame Sync**:
+   - Automatically synchronizes high-resolution frames with the local AI agent every 5 seconds.
+   - Keeps the agent's visual context buffer updated in real time without manual prompts.
+3. **Interactive Multimodal Ask Dock**:
+   - Ask Ragnarok questions about what is currently visible on your display:
+     - *"What error message is shown in my terminal?"*
+     - *"Find any syntax errors or bugs in this code"*
+     - *"Summarize this technical article or PDF"*
+     - *"Explain the trend shown in this chart"*
+   - Preset one-click quick inspection chips for Instant Full Screen Overview, Bug Hunting, and Text Extraction.
+   - Select local vision models (`llava`, `minicpm-v`, `llama3.2-vision`) with automatic diagnostics and fallback.
+4. **Voice & Tool Integration (`capture_screen`)**:
+   - When screen sharing is active in the Web UI, any voice command (e.g. `"Ragnarok, look at my screen and tell me what's wrong"`) or background agent tool call automatically inspects the user's shared laptop screen!
+
+---
+
+## 💻 Technical User & Developer Setup
 
 If you are a developer and want to run, modify, or extend Ragnarok manually:
 

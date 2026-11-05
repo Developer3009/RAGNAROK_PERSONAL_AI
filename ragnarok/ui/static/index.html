@@ -1,6 +1,6 @@
 <!DOCTYPE html><html class="dark" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><title>Ragnarok AI — Multimodal Core & CLI Studio</title><meta name="ragnarok-token" content="{{RAGNAROK_TOKEN}}"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-fixed":"#7df4ff","surface-dim":"#121318","tertiary-fixed":"#ffd9e4","on-primary-container":"#006970","on-secondary-fixed":"#2c0051","surface-bright":"#38393f","outline":"#849495","secondary-fixed":"#f0dbff","on-surface":"#e3e1e9","on-tertiary-container":"#b4146e","on-tertiary":"#640039","secondary":"#ddb7ff","on-error-container":"#ffdad6","surface-container-high":"#292a2f","on-secondary-fixed-variant":"#6900b3","on-tertiary-fixed-variant":"#8c0053","on-background":"#e3e1e9","on-primary-fixed-variant":"#004f54","surface-tint":"#00dbe9","primary":"#dbfcff","surface":"#121318","error":"#ffb4ab","inverse-primary":"#006970","surface-container-lowest":"#0d0e13","on-secondary":"#490080","primary-fixed-dim":"#00dbe9","on-error":"#690005","on-primary-fixed":"#002022","surface-container-highest":"#34343a","inverse-surface":"#e3e1e9","secondary-fixed-dim":"#ddb7ff","tertiary-fixed-dim":"#ffb0cd","on-secondary-container":"#d6a9ff","outline-variant":"#3b494b","error-container":"#93000a","background":"#121318","surface-variant":"#34343a","on-surface-variant":"#b9cacb","on-primary":"#00363a","tertiary-container":"#ffccdd","on-tertiary-fixed":"#3e0022","tertiary":"#fff3f5","surface-container-low":"#1a1b21","inverse-on-surface":"#2f3036","surface-container":"#1e1f25","secondary-container":"#6f00be","primary-container":"#00f0ff"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{"gutter-mobile":"1rem","space-lg":"1.5rem","margin-tablet":"2rem","margin-mobile":"1rem","space-md":"1rem",margin:"3rem",gutter:"1.5rem","space-sm":"0.5rem","space-xs":"0.25rem","space-xl":"2.5rem"},fontFamily:{"headline-sm":["Space Grotesk"],"display-lg-mobile":["Space Grotesk"],"headline-lg-mobile":["Space Grotesk"],"display-lg":["Space Grotesk"],"body-sm":["Inter"],"body-lg":["Inter"],"label-md":["Space Grotesk"],"label-lg":["Space Grotesk"],"headline-lg":["Space Grotesk"],"headline-md":["Space Grotesk"],"body-md":["Inter"],"label-sm":["Space Grotesk"]},fontSize:{"headline-sm":["1.125rem",{lineHeight:"1.625rem",fontWeight:"500"}],"display-lg-mobile":["2.25rem",{lineHeight:"2.75rem",letterSpacing:"-0.03em",fontWeight:"700"}],"headline-lg-mobile":["1.75rem",{lineHeight:"2.25rem",letterSpacing:"-0.02em",fontWeight:"600"}],"display-lg":["4rem",{lineHeight:"4.5rem",letterSpacing:"-0.04em",fontWeight:"700"}],"body-sm":["0.8125rem",{lineHeight:"1.25rem",fontWeight:"400"}],"body-lg":["1.125rem",{lineHeight:"1.75rem",fontWeight:"400"}],"label-md":["0.75rem",{lineHeight:"1rem",letterSpacing:"0.08em",fontWeight:"500"}],"label-lg":["0.875rem",{lineHeight:"1.25rem",letterSpacing:"0.05em",fontWeight:"600"}],"headline-lg":["2.25rem",{lineHeight:"2.75rem",letterSpacing:"-0.02em",fontWeight:"600"}],"headline-md":["1.5rem",{lineHeight:"2rem",letterSpacing:"-0.01em",fontWeight:"500"}],"body-md":["0.9375rem",{lineHeight:"1.5rem",fontWeight:"400"}],"label-sm":["0.625rem",{lineHeight:"0.875rem",letterSpacing:"0.12em",fontWeight:"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased min-h-screen"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/80 backdrop-blur-2xl shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="h-16 w-full px-space-md lg:px-margin flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs"><div class="w-2.5 h-2.5 rounded-full bg-primary-container animate-pulse shadow-[0_0_12px_rgba(0,240,255,0.8)]"></div><img src="/static/ragnarok_logo.png" alt="RAGNAROK" class="h-6 md:h-7 object-contain drop-shadow-[0_0_12px_rgba(0,240,255,0.5)]" /></div><div class="h-4 w-px bg-outline-variant hidden sm:block"></div><nav class="hidden lg:flex items-center gap-space-sm" data-active-classes="bg-surface-container text-primary font-bold rounded-lg px-space-sm py-space-xs shadow-[0_0_16px_rgba(0,240,255,0.15)]"><a aria-current="page" class="transition-colors bg-surface-container text-primary font-bold rounded-lg px-space-sm py-space-xs shadow-[0_0_16px_rgba(0,240,255,0.15)]" data-path="voice-interaction-studio" href="#">Interaction Studio</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-space-sm py-space-xs rounded-lg" data-path="multimodal-vision" href="#">Multimodal Vision</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-space-sm py-space-xs rounded-lg" data-path="telemetry-benchmarks" href="#">Telemetry &amp; Logs</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-space-sm py-space-xs rounded-lg" data-path="agent-orchestrator" href="#">Neural Agents</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-space-sm py-space-xs rounded-lg" data-path="agenda-calendar" href="#">📅 Agenda</a></nav></div><div class="flex items-center gap-2"><div class="flex items-center gap-1.5 bg-surface-container px-2.5 py-1 rounded-full text-[10.5px] font-mono text-on-surface border border-outline-variant/30"><span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span><span>PORT 8000</span></div></div></div></header><main class="w-full pt-16 bg-background min-h-screen"><div class="flex flex-col w-full">
-<div class="w-full px-space-md lg:px-margin py-space-lg flex flex-col gap-space-lg">
+<div id="view-voice-interaction-studio" class="w-full px-space-md lg:px-margin py-space-lg flex flex-col gap-space-lg">
 <!-- TOP TELEMETRY STRIP -->
 <div class="flex flex-wrap items-center justify-between gap-space-md bg-surface-container-lowest/90 backdrop-blur-xl px-space-md py-space-sm rounded-xl shadow-lg">
 <div class="flex items-center gap-space-md">
@@ -1588,6 +1588,158 @@
 
   })();
 </script>
+</div> <!-- /view-voice-interaction-studio -->
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     MULTIMODAL VISION & SCREEN SHARING VIEW (data-path="multimodal-vision")
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="view-multimodal-vision" class="hidden w-full px-space-md lg:px-margin py-space-lg flex flex-col gap-space-lg">
+  <!-- Top Banner & Action Controls -->
+  <div class="flex flex-wrap items-center justify-between gap-space-md bg-surface-container-lowest/90 backdrop-blur-xl px-space-md py-space-sm rounded-xl shadow-lg border border-outline-variant/30">
+    <div class="flex items-center gap-space-md">
+      <div class="flex items-center gap-space-xs">
+        <span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse shadow-[0_0_10px_rgba(0,240,255,0.8)]"></span>
+        <span class="font-label-md text-label-md text-primary tracking-widest uppercase">LAPTOP SCREEN SHARING &amp; VISION STREAM</span>
+      </div>
+      <div class="h-4 w-px bg-outline-variant hidden sm:block"></div>
+      <div id="vision-status-badge" class="flex items-center gap-1.5 bg-surface-container-high px-space-sm py-1 rounded-full border border-outline-variant/40">
+        <span id="vision-status-dot" class="w-2 h-2 rounded-full bg-outline-variant"></span>
+        <span id="vision-status-text" class="font-label-sm text-label-sm text-on-surface-variant font-semibold uppercase">NOT SHARING</span>
+      </div>
+    </div>
+
+    <!-- Screen Sharing Actions -->
+    <div class="flex items-center gap-2">
+      <button id="btn-start-screen-share" onclick="startScreenShare()" class="flex items-center gap-2 px-4 py-2 rounded-xl text-[12px] font-semibold bg-primary-container text-on-primary hover:bg-primary-container/80 transition-all shadow-[0_0_16px_rgba(0,240,255,0.25)]">
+        <span class="material-symbols-outlined text-[18px]">screen_share</span> Share Laptop Screen
+      </button>
+      <button id="btn-stop-screen-share" onclick="stopScreenShare()" class="hidden flex items-center gap-1.5 px-3 py-2 rounded-xl text-[12px] font-semibold bg-error/20 hover:bg-error/30 text-error border border-error/40 transition-all">
+        <span class="material-symbols-outlined text-[16px]">stop_screen_share</span> Stop Share
+      </button>
+      <button onclick="captureScreenSnapshot()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-[12px] font-semibold bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant/30 transition-all" title="Download snapshot">
+        <span class="material-symbols-outlined text-[16px]">photo_camera</span> Snapshot
+      </button>
+    </div>
+  </div>
+
+  <!-- Screen Sharing Stage + Multimodal Analysis Dock -->
+  <div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg">
+
+    <!-- ── LEFT: Live Screen Monitor Stage (7 cols) ───────────────────── -->
+    <div class="xl:col-span-7 flex flex-col gap-space-md">
+      <div class="bg-surface-container-low rounded-2xl p-space-md shadow-lg border border-outline-variant/30 flex flex-col gap-space-sm">
+        
+        <!-- Monitor Header -->
+        <div class="flex items-center justify-between pb-2 border-b border-outline-variant/20">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-[20px]">laptop_chromebook</span>
+            <span class="font-label-lg text-label-lg text-on-surface font-semibold">Active Screen Feed</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <label class="flex items-center gap-1.5 text-[11px] text-on-surface-variant cursor-pointer select-none">
+              <input type="checkbox" id="screen-auto-sync" onchange="toggleAutoSync(this.checked)" class="accent-primary rounded" checked>
+              <span>Auto-sync to Agent (5s)</span>
+            </label>
+            <span id="screen-stream-res" class="text-[11px] font-mono text-primary px-2 py-0.5 rounded-full bg-surface-container border border-outline-variant/30">0 × 0 (0 FPS)</span>
+          </div>
+        </div>
+
+        <!-- Video Player & Canvas Container -->
+        <div class="relative w-full rounded-xl overflow-hidden bg-surface-container-lowest flex items-center justify-center min-h-[360px] md:min-h-[460px] border border-outline-variant/30 shadow-inner">
+          <video id="screen-video" autoplay playsinline muted class="w-full h-full object-contain"></video>
+          <canvas id="screen-canvas" class="hidden"></canvas>
+
+          <!-- Placeholder when screen is not yet shared -->
+          <div id="screen-placeholder" class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center gap-3 bg-gradient-to-b from-surface-container-low/95 to-surface-container-lowest/98 backdrop-blur-sm z-10">
+            <div class="w-16 h-16 rounded-2xl bg-surface-container flex items-center justify-center border border-primary/30 shadow-[0_0_24px_rgba(0,240,255,0.15)]">
+              <span class="material-symbols-outlined text-primary text-[32px]">desktop_windows</span>
+            </div>
+            <div>
+              <h3 class="font-headline-sm text-headline-sm text-on-surface mb-1">Laptop Screen Sharing Inactive</h3>
+              <p class="text-[12px] text-on-surface-variant max-w-md">
+                Click <strong>"Share Laptop Screen"</strong> to share your laptop display, external monitor, VS Code, or browser window with Ragnarok AI for local visual inspection and OCR.
+              </p>
+            </div>
+            <button onclick="startScreenShare()" class="mt-2 flex items-center gap-2 px-5 py-2.5 rounded-xl text-[13px] font-bold bg-primary-container text-on-primary hover:bg-primary-container/80 transition-all shadow-[0_0_20px_rgba(0,240,255,0.3)]">
+              <span class="material-symbols-outlined text-[18px]">screen_share</span> Select Screen to Share
+            </button>
+            <span class="text-[10px] text-on-surface-variant/70 font-mono">100% On-Device · Zero External Cloud Transmission</span>
+          </div>
+        </div>
+
+        <!-- Footer strip under monitor -->
+        <div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-1">
+          <span id="screen-last-sync" class="font-mono">Last frame synced: none</span>
+          <span class="flex items-center gap-1 font-mono text-[10px] text-primary">
+            <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> WebRTC DisplayCapture v1.2
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RIGHT: Multimodal Vision Ask Dock (5 cols) ────────────────── -->
+    <div class="xl:col-span-5 flex flex-col gap-space-md">
+
+      <!-- Ask About Screen Box -->
+      <div class="bg-surface-container-low rounded-2xl p-space-md shadow-lg border border-outline-variant/30 flex flex-col gap-space-sm">
+        <div class="flex items-center justify-between">
+          <h3 class="font-label-lg text-label-lg text-on-surface font-semibold flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-[20px]">psychology</span> Ask Agent About Screen
+          </h3>
+          <select id="vision-model-select" class="bg-surface-container-high rounded-lg px-2 py-1 text-on-surface text-[11px] border border-outline-variant/40 focus:border-primary focus:outline-none">
+            <option value="llava" selected>llava (Local Vision)</option>
+            <option value="minicpm-v">minicpm-v (Fast OCR)</option>
+            <option value="llama3.2-vision">llama3.2-vision</option>
+          </select>
+        </div>
+
+        <textarea id="screen-question-input" rows="3" placeholder="What would you like the agent to inspect on this screen?&#10;e.g. 'What error is shown in the terminal?', 'Summarize this code', 'Explain the chart'" class="w-full bg-surface-container-high rounded-xl p-3 text-[13px] text-on-surface border border-outline-variant/40 focus:border-primary focus:outline-none resize-none placeholder-on-surface-variant/50 transition-colors"></textarea>
+
+        <!-- Preset Query Chips -->
+        <div class="flex flex-wrap gap-1.5">
+          <button onclick="setVisionQuestion('Describe what you see on this shared laptop screen in detail.')" class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors border border-outline-variant/30">
+            🔍 Describe Screen
+          </button>
+          <button onclick="setVisionQuestion('Find any bugs, syntax errors, or exceptions shown in the code or logs on this screen and explain how to fix them.')" class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors border border-outline-variant/30">
+            🐞 Find Errors/Bugs
+          </button>
+          <button onclick="setVisionQuestion('Extract and summarize all visible text and key takeaways from this screen.')" class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors border border-outline-variant/30">
+            📝 Summarize Content
+          </button>
+          <button onclick="setVisionQuestion('Analyze the data, charts, numbers, or UI layout displayed on this screen.')" class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors border border-outline-variant/30">
+            📊 Analyze Data &amp; UI
+          </button>
+        </div>
+
+        <!-- Analyze Button -->
+        <button id="btn-analyze-screen" onclick="analyzeCurrentScreen()" class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-primary-container text-on-primary font-bold text-[13px] shadow-[0_0_16px_rgba(0,240,255,0.25)] hover:shadow-[0_0_24px_rgba(0,240,255,0.4)] transition-all">
+          <span class="material-symbols-outlined text-[18px]">psychology</span> Analyze Screen with Local AI
+        </button>
+      </div>
+
+      <!-- Real-Time Vision Output Card -->
+      <div id="vision-result-card" class="bg-surface-container-low rounded-2xl p-space-md shadow-lg border border-outline-variant/30 hidden flex flex-col gap-2">
+        <div class="flex items-center justify-between pb-2 border-b border-outline-variant/20">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-secondary text-[18px]">smart_toy</span>
+            <span class="text-[12px] font-semibold text-on-surface">Agent Visual Analysis</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="vision-result-model" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container">llava</span>
+            <span id="vision-result-latency" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">0ms</span>
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <img id="vision-result-thumb" class="w-20 h-16 object-cover rounded-lg border border-outline-variant/30 hidden flex-shrink-0" alt="Frame Thumbnail" />
+          <div id="vision-result-content" class="flex-1 text-[12.5px] text-on-surface leading-relaxed max-h-80 overflow-y-auto pr-1"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════════════════════════════════════════════════════════════
      AGENDA & CALENDAR VIEW  (data-path="agenda-calendar")
      ═══════════════════════════════════════════════════════════════════════ -->
@@ -2688,12 +2840,20 @@
     const navLinks = document.querySelectorAll('nav[data-active-classes] a[data-path]');
     navLinks.forEach(function(link) {
       link.addEventListener('click', function(e) {
-        if (link.getAttribute('data-path') === 'agenda-calendar') {
+        const path = link.getAttribute('data-path');
+        if (['voice-interaction-studio', 'multimodal-vision', 'agenda-calendar', 'telemetry-benchmarks', 'agent-orchestrator'].includes(path)) {
           e.preventDefault();
           e.stopPropagation();
-          document.querySelectorAll('main section[id^="view-"]').forEach(function(s) { s.classList.add('hidden'); });
-          const agendaSection = document.getElementById('view-agenda-calendar');
-          if (agendaSection) agendaSection.classList.remove('hidden');
+
+          // Hide all view sections
+          const views = [
+            document.getElementById('view-voice-interaction-studio'),
+            document.getElementById('view-multimodal-vision'),
+            document.getElementById('view-agenda-calendar'),
+          ];
+          views.forEach(v => { if (v) v.classList.add('hidden'); });
+
+          // Update active link styles
           const activeClasses = (link.closest('nav[data-active-classes]')?.getAttribute('data-active-classes')||'').split(' ');
           navLinks.forEach(function(l) {
             l.removeAttribute('aria-current');
@@ -2703,13 +2863,272 @@
           link.setAttribute('aria-current','page');
           activeClasses.forEach(c => { if(c) link.classList.add(c); });
           link.classList.remove('text-on-surface-variant');
-          agendaRenderCalendar();
-          agendaLoadTodos('all');
+
+          if (path === 'voice-interaction-studio') {
+            const el = document.getElementById('view-voice-interaction-studio');
+            if (el) el.classList.remove('hidden');
+          } else if (path === 'multimodal-vision') {
+            const el = document.getElementById('view-multimodal-vision');
+            if (el) el.classList.remove('hidden');
+          } else if (path === 'agenda-calendar') {
+            const el = document.getElementById('view-agenda-calendar');
+            if (el) el.classList.remove('hidden');
+            agendaRenderCalendar();
+            agendaLoadTodos('all');
+          } else {
+            const el = document.getElementById('view-voice-interaction-studio');
+            if (el) el.classList.remove('hidden');
+          }
         }
       }, true);
     });
   });
 })();
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  SCREEN SHARING & MULTIMODAL VISION MODULE
+// ═══════════════════════════════════════════════════════════════════════════
+(function() {
+  let screenStream = null;
+  let autoSyncInterval = null;
+  let frameCount = 0;
+  let lastFpsCheck = performance.now();
+  let currentFps = 0;
+
+  window.startScreenShare = async function() {
+    const video = document.getElementById('screen-video');
+    const placeholder = document.getElementById('screen-placeholder');
+    const btnStart = document.getElementById('btn-start-screen-share');
+    const btnStop = document.getElementById('btn-stop-screen-share');
+    const statusText = document.getElementById('vision-status-text');
+    const statusDot = document.getElementById('vision-status-dot');
+
+    try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+        alert('Screen sharing is not supported by this browser. Please use Chrome, Edge, or Firefox.');
+        return;
+      }
+
+      screenStream = await navigator.mediaDevices.getDisplayMedia({
+        video: { cursor: "always" },
+        audio: false
+      });
+
+      if (video) {
+        video.srcObject = screenStream;
+        video.onloadedmetadata = () => {
+          video.play();
+          updateStreamResolution();
+        };
+      }
+
+      // Handle user clicking "Stop Sharing" from browser toolbar
+      const track = screenStream.getVideoTracks()[0];
+      track.onended = () => {
+        window.stopScreenShare();
+      };
+
+      if (placeholder) placeholder.classList.add('hidden');
+      if (btnStart) btnStart.classList.add('hidden');
+      if (btnStop) btnStop.classList.remove('hidden');
+      if (statusText) statusText.textContent = 'STREAMING LIVE TO AGENT';
+      if (statusDot) statusDot.className = 'w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(0,240,255,0.8)]';
+
+      startFpsTracker();
+      setupAutoSync(document.getElementById('screen-auto-sync')?.checked ?? true);
+      setTimeout(syncCurrentFrameToAgent, 600);
+
+    } catch (err) {
+      console.warn('Screen share canceled or failed:', err);
+      if (statusText) statusText.textContent = 'PERMISSION NOT GRANTED';
+      if (statusDot) statusDot.className = 'w-2 h-2 rounded-full bg-error';
+    }
+  };
+
+  window.stopScreenShare = function() {
+    if (screenStream) {
+      screenStream.getTracks().forEach(t => t.stop());
+      screenStream = null;
+    }
+    clearInterval(autoSyncInterval);
+    autoSyncInterval = null;
+
+    const video = document.getElementById('screen-video');
+    const placeholder = document.getElementById('screen-placeholder');
+    const btnStart = document.getElementById('btn-start-screen-share');
+    const btnStop = document.getElementById('btn-stop-screen-share');
+    const statusText = document.getElementById('vision-status-text');
+    const statusDot = document.getElementById('vision-status-dot');
+    const resText = document.getElementById('screen-stream-res');
+
+    if (video) video.srcObject = null;
+    if (placeholder) placeholder.classList.remove('hidden');
+    if (btnStart) btnStart.classList.remove('hidden');
+    if (btnStop) btnStop.classList.add('hidden');
+    if (statusText) statusText.textContent = 'NOT SHARING';
+    if (statusDot) statusDot.className = 'w-2 h-2 rounded-full bg-outline-variant';
+    if (resText) resText.textContent = '0 × 0 (0 FPS)';
+  };
+
+  function updateStreamResolution() {
+    const video = document.getElementById('screen-video');
+    const resText = document.getElementById('screen-stream-res');
+    if (video && resText) {
+      const w = video.videoWidth || 1920;
+      const h = video.videoHeight || 1080;
+      resText.textContent = `${w} × ${h} (${currentFps || 30} FPS)`;
+    }
+  }
+
+  function startFpsTracker() {
+    const video = document.getElementById('screen-video');
+    if (!video) return;
+    if ('requestVideoFrameCallback' in HTMLVideoElement.prototype) {
+      function onFrame() {
+        frameCount++;
+        const now = performance.now();
+        if (now - lastFpsCheck >= 1000) {
+          currentFps = Math.round((frameCount * 1000) / (now - lastFpsCheck));
+          frameCount = 0;
+          lastFpsCheck = now;
+          updateStreamResolution();
+        }
+        if (screenStream) {
+          video.requestVideoFrameCallback(onFrame);
+        }
+      }
+      video.requestVideoFrameCallback(onFrame);
+    }
+  }
+
+  window.toggleAutoSync = function(enabled) {
+    setupAutoSync(enabled);
+  };
+
+  function setupAutoSync(enabled) {
+    clearInterval(autoSyncInterval);
+    autoSyncInterval = null;
+    if (enabled && screenStream) {
+      autoSyncInterval = setInterval(syncCurrentFrameToAgent, 5000);
+    }
+  }
+
+  function grabCurrentFrameBase64() {
+    const video = document.getElementById('screen-video');
+    if (!video || !video.videoWidth || !video.videoHeight) return null;
+    const canvas = document.getElementById('screen-canvas') || document.createElement('canvas');
+    canvas.width = Math.min(video.videoWidth, 1920);
+    canvas.height = Math.round(canvas.width * (video.videoHeight / video.videoWidth));
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL('image/jpeg', 0.85);
+  }
+
+  async function syncCurrentFrameToAgent() {
+    if (!screenStream) return;
+    const b64 = grabCurrentFrameBase64();
+    if (!b64) return;
+    try {
+      const token = document.querySelector('meta[name="ragnarok-token"]')?.content || '';
+      await fetch('/api/vision/stream-frame', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Ragnarok-Token': token },
+        body: JSON.stringify({ image_base64: b64 })
+      });
+      const syncBadge = document.getElementById('screen-last-sync');
+      if (syncBadge) {
+        const d = new Date();
+        syncBadge.textContent = `Last frame synced: ${d.toLocaleTimeString()}`;
+      }
+    } catch(e) {}
+  }
+
+  window.captureScreenSnapshot = function() {
+    const b64 = grabCurrentFrameBase64();
+    if (!b64) {
+      alert('Please start screen sharing first, or click "Analyze Screen with Local AI" to capture the desktop directly.');
+      return;
+    }
+    const a = document.createElement('a');
+    a.href = b64;
+    a.download = `ragnarok_screen_${Date.now()}.jpg`;
+    a.click();
+  };
+
+  window.setVisionQuestion = function(q) {
+    const input = document.getElementById('screen-question-input');
+    if (input) {
+      input.value = q;
+      input.focus();
+    }
+  };
+
+  window.analyzeCurrentScreen = async function(presetQuestion) {
+    const input = document.getElementById('screen-question-input');
+    const modelSelect = document.getElementById('vision-model-select');
+    const resultCard = document.getElementById('vision-result-card');
+    const resultContent = document.getElementById('vision-result-content');
+    const modelBadge = document.getElementById('vision-result-model');
+    const latencyBadge = document.getElementById('vision-result-latency');
+    const thumbImg = document.getElementById('vision-result-thumb');
+    const btnAnalyze = document.getElementById('btn-analyze-screen');
+
+    const question = presetQuestion || input?.value?.trim() || "Describe what you see on this shared laptop screen in detail.";
+    const visionModel = modelSelect?.value || "llava";
+    const b64 = grabCurrentFrameBase64();
+
+    if (btnAnalyze) {
+      btnAnalyze.disabled = true;
+      btnAnalyze.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span> Analyzing Screen with AI…';
+    }
+    if (resultCard) resultCard.classList.remove('hidden');
+    if (resultContent) resultContent.innerHTML = '<span class="text-on-surface-variant font-mono animate-pulse">Agent inspecting pixels &amp; querying local vision model…</span>';
+
+    try {
+      const token = document.querySelector('meta[name="ragnarok-token"]')?.content || '';
+      const r = await fetch('/api/vision/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Ragnarok-Token': token },
+        body: JSON.stringify({
+          image_base64: b64,
+          question: question,
+          vision_model: visionModel
+        })
+      });
+
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.detail || 'Vision call failed');
+
+      if (resultContent) {
+        let formatted = d.answer || 'No description returned.';
+        formatted = formatted.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-surface-container font-mono text-[11px] text-primary">$1</code>');
+        formatted = formatted.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+        resultContent.innerHTML = formatted;
+      }
+      if (modelBadge) modelBadge.textContent = d.model || visionModel;
+      if (latencyBadge) latencyBadge.textContent = `${d.latency_ms || 0}ms`;
+      if (thumbImg) {
+        if (b64) {
+          thumbImg.src = b64;
+          thumbImg.classList.remove('hidden');
+        } else {
+          thumbImg.classList.add('hidden');
+        }
+      }
+
+    } catch (err) {
+      if (resultContent) {
+        resultContent.innerHTML = `<span class="text-error font-medium">Vision analysis error: ${err.message}</span>`;
+      }
+    } finally {
+      if (btnAnalyze) {
+        btnAnalyze.disabled = false;
+        btnAnalyze.innerHTML = '<span class="material-symbols-outlined text-[18px]">psychology</span> Analyze Screen with Local AI';
+      }
+    }
+  };
+})();
+
 </script>
 
 </div></main><footer class="w-full bg-surface-container-lowest py-space-lg">

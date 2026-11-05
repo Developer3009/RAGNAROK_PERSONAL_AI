@@ -25,6 +25,7 @@ Security hardening applied:
 
 from __future__ import annotations
 
+import base64
 import json
 import logging
 import os
@@ -56,6 +57,7 @@ from ragnarok.safety.input_guard import InputValidator, check_ip_rate_limit
 from ragnarok.safety.permissions import PermissionManager
 from ragnarok.safety.token_rotation import get_rotator
 from ragnarok.skills.registry import SkillRegistry, registry as default_registry
+from ragnarok.vision.screen_analyzer import analyze_screen_frame, get_screen_metadata
 
 logger = logging.getLogger(__name__)
 
@@ -143,6 +145,19 @@ class ExecutionTraceStore:
 
 trace_store = ExecutionTraceStore()
 _audit_signer = get_audit_signer()
+
+# ── Screen Sharing & Multimodal Vision Buffer ─────────────────────────────────
+_latest_screen_frame: dict[str, Any] = {
+    "image_bytes": None,
+    "timestamp": 0.0,
+    "width": 0,
+    "height": 0,
+    "format": "PNG",
+    "source": "none",
+}
+
+def get_latest_screen_frame() -> dict[str, Any]:
+    return _latest_screen_frame
 
 # WebSocket clients subscribed to token rotation events
 _token_ws_clients: list[WebSocket] = []
@@ -786,6 +801,125 @@ def parse_email_schedule(
     scheduler = EmailScheduler(agenda_db=db)
     result = scheduler.parse_and_schedule(body.email_text)
     return result
+
+
+# ── Screen Sharing & Multimodal Vision Endpoints ──────────────────────────────
+
+class ScreenAnalyzeRequest(BaseModel):
+    """Request to inspect or ask questions about the shared laptop screen."""
+    image_base64: Optional[str] = Field(None, description="Base64 encoded PNG/JPEG from browser screen share")
+    question: Optional[str] = Field("Describe what you see on this screen in detail.", max_length=4000)
+    vision_model: Optional[str] = Field("llava", max_length=100)
+
+
+class ScreenStreamFrameRequest(BaseModel):
+    """Periodic frame pushed from WebRTC screen share stream to keep the agent updated."""
+    image_base64: str = Field(..., description="Base64 encoded image frame")
+    width: Optional[int] = 0
+    height: Optional[int] = 0
+
+
+@app.post("/api/vision/analyze")
+def analyze_screen(
+    body: ScreenAnalyzeRequest,
+    _: str = Depends(verify_token),
+) -> dict[str, Any]:
+    """Analyze a shared laptop screen frame or capture the desktop using local vision AI."""
+    image_bytes: bytes | None = None
+
+    if body.image_base64:
+        raw_b64 = body.image_base64
+        if "," in raw_b64:
+            raw_b64 = raw_b64.split(",", 1)[1]
+        try:
+            image_bytes = base64.b64decode(raw_b64)
+        except Exception as exc:
+            raise HTTPException(status_code=400, detail=f"Invalid base64 image: {exc}")
+
+        # Update in-memory buffer
+        meta = get_screen_metadata(image_bytes)
+        _latest_screen_frame["image_bytes"] = image_bytes
+        _latest_screen_frame["timestamp"] = time.time()
+        _latest_screen_frame["width"] = meta.get("width", 0)
+        _latest_screen_frame["height"] = meta.get("height", 0)
+        _latest_screen_frame["format"] = meta.get("format", "PNG")
+        _latest_screen_frame["source"] = "browser_share"
+
+    elif _latest_screen_frame.get("image_bytes") and (time.time() - _latest_screen_frame.get("timestamp", 0) < 60):
+        # Use recent frame from stream
+        image_bytes = _latest_screen_frame["image_bytes"]
+
+    else:
+        # Fallback to local desktop screenshot
+        try:
+            from ragnarok.skills.capture_screen import _capture_screenshot
+            image_bytes = _capture_screenshot(1)
+            meta = get_screen_metadata(image_bytes)
+            _latest_screen_frame["image_bytes"] = image_bytes
+            _latest_screen_frame["timestamp"] = time.time()
+            _latest_screen_frame["width"] = meta.get("width", 0)
+            _latest_screen_frame["height"] = meta.get("height", 0)
+            _latest_screen_frame["format"] = meta.get("format", "PNG")
+            _latest_screen_frame["source"] = "os_capture"
+        except Exception as exc:
+            raise HTTPException(status_code=500, detail=f"Screen capture failed: {exc}")
+
+    result = analyze_screen_frame(
+        image_bytes=image_bytes,
+        question=body.question or "",
+        vision_model=body.vision_model or "llava",
+    )
+    return result
+
+
+@app.post("/api/vision/stream-frame")
+def stream_screen_frame(
+    body: ScreenStreamFrameRequest,
+    _: str = Depends(verify_token),
+) -> dict[str, Any]:
+    """Receive a lightweight video frame from the browser's live screen share stream."""
+    raw_b64 = body.image_base64
+    if "," in raw_b64:
+        raw_b64 = raw_b64.split(",", 1)[1]
+    try:
+        image_bytes = base64.b64decode(raw_b64)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"Invalid base64 frame: {exc}")
+
+    meta = get_screen_metadata(image_bytes)
+    _latest_screen_frame["image_bytes"] = image_bytes
+    _latest_screen_frame["timestamp"] = time.time()
+    _latest_screen_frame["width"] = meta.get("width", body.width or 0)
+    _latest_screen_frame["height"] = meta.get("height", body.height or 0)
+    _latest_screen_frame["format"] = meta.get("format", "JPEG")
+    _latest_screen_frame["source"] = "browser_share"
+
+    return {
+        "status": "received",
+        "timestamp": _latest_screen_frame["timestamp"],
+        "width": _latest_screen_frame["width"],
+        "height": _latest_screen_frame["height"],
+    }
+
+
+@app.get("/api/vision/screen-status")
+def get_screen_status(_: str = Depends(verify_token)) -> dict[str, Any]:
+    """Check if the user is currently sharing their laptop screen with the agent."""
+    has_frame = _latest_screen_frame.get("image_bytes") is not None
+    ts = _latest_screen_frame.get("timestamp", 0.0)
+    age = (time.time() - ts) if ts > 0 else -1.0
+    is_active = has_frame and (age < 20.0)
+
+    return {
+        "active": is_active,
+        "has_frame": has_frame,
+        "timestamp": ts,
+        "age_sec": round(age, 1) if age >= 0 else None,
+        "width": _latest_screen_frame.get("width", 0),
+        "height": _latest_screen_frame.get("height", 0),
+        "source": _latest_screen_frame.get("source", "none"),
+    }
+
 
 
 # ── Approvals Endpoint ────────────────────────────────────────────────────────
