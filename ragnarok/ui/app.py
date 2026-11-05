@@ -1060,8 +1060,9 @@ def get_session_token(_origin: None = Depends(require_local_origin)) -> dict[str
 @app.get("/", response_class=HTMLResponse)
 def index_page() -> HTMLResponse:
     """Serves the single page frontend, injecting the active security token."""
+    static_file = STATIC_DIR / "index.html"
     root_file = Path(__file__).resolve().parent.parent.parent / "index.html"
-    index_file = root_file if root_file.exists() else (STATIC_DIR / "index.html")
+    index_file = static_file if static_file.exists() else root_file
     if not index_file.exists():
         return HTMLResponse(
             "<h1>Ragnarok UI Static Files Missing</h1><p>Please ensure index.html exists in ragnarok/ui/static/</p>"

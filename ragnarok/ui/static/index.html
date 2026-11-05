@@ -1979,6 +1979,220 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════════════
+     TELEMETRY & LOGS VIEW (data-path="telemetry-benchmarks")
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="view-telemetry-benchmarks" class="hidden w-full px-space-md lg:px-margin py-space-lg flex flex-col gap-space-lg">
+  <!-- Top Banner -->
+  <div class="flex flex-wrap items-center justify-between gap-space-md bg-surface-container-lowest/90 backdrop-blur-xl px-space-md py-space-sm rounded-xl shadow-lg border border-outline-variant/30">
+    <div class="flex items-center gap-space-md">
+      <div class="flex items-center gap-space-xs">
+        <span class="w-2.5 h-2.5 rounded-full bg-primary-container animate-pulse shadow-[0_0_10px_rgba(0,240,255,0.8)]"></span>
+        <span class="font-label-md text-label-md text-primary tracking-widest uppercase">HARDWARE TELEMETRY &amp; TOOL LOGS</span>
+      </div>
+      <div class="h-4 w-px bg-outline-variant hidden sm:block"></div>
+      <div class="flex items-center gap-1.5 bg-surface-container-high px-space-sm py-1 rounded-full border border-outline-variant/40">
+        <span class="w-2 h-2 rounded-full bg-green-400"></span>
+        <span id="telemetry-status-text" class="font-label-sm text-label-sm text-green-300 font-semibold uppercase">TELEMETRY LIVE</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="refreshTelemetryAndLogs()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[12px] font-semibold bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant/30 transition-all">
+        <span class="material-symbols-outlined text-[16px]">refresh</span> Refresh Metrics
+      </button>
+    </div>
+  </div>
+
+  <!-- Hardware Metrics Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+    <!-- CPU Card -->
+    <div class="bg-surface-container-low rounded-2xl p-space-md border border-outline-variant/30 flex flex-col justify-between">
+      <div class="flex items-center justify-between text-on-surface-variant font-label-sm">
+        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px] text-primary">memory</span> CPU LOAD</span>
+        <span id="telemetry-cpu-pct" class="text-primary font-mono text-[14px] font-bold">--%</span>
+      </div>
+      <div class="my-3 w-full bg-surface-container-highest rounded-full h-2 overflow-hidden">
+        <div id="telemetry-cpu-bar" class="bg-primary-container h-full transition-all duration-500" style="width: 0%"></div>
+      </div>
+      <div class="text-[11px] text-on-surface-variant/80 font-mono flex justify-between">
+        <span>Cores: Native</span>
+        <span id="telemetry-cpu-status">Nominal</span>
+      </div>
+    </div>
+
+    <!-- RAM Card -->
+    <div class="bg-surface-container-low rounded-2xl p-space-md border border-outline-variant/30 flex flex-col justify-between">
+      <div class="flex items-center justify-between text-on-surface-variant font-label-sm">
+        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px] text-secondary">storage</span> SYSTEM RAM</span>
+        <span id="telemetry-ram-text" class="text-secondary font-mono text-[13px] font-bold">-- / -- MB</span>
+      </div>
+      <div class="my-3 w-full bg-surface-container-highest rounded-full h-2 overflow-hidden">
+        <div id="telemetry-ram-bar" class="bg-secondary-container h-full transition-all duration-500" style="width: 0%"></div>
+      </div>
+      <div class="text-[11px] text-on-surface-variant/80 font-mono flex justify-between">
+        <span>RAM Usage</span>
+        <span id="telemetry-ram-pct">--%</span>
+      </div>
+    </div>
+
+    <!-- Active Models Card -->
+    <div class="bg-surface-container-low rounded-2xl p-space-md border border-outline-variant/30 flex flex-col justify-between">
+      <div class="flex items-center justify-between text-on-surface-variant font-label-sm">
+        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px] text-primary-fixed-dim">psychology</span> LOCAL MODELS</span>
+        <span class="text-primary-fixed-dim font-mono text-[12px] font-semibold">OLLAMA</span>
+      </div>
+      <div class="my-2 flex flex-col gap-1 font-mono text-[11px]">
+        <div class="truncate text-on-surface">Main: <span id="telemetry-model-main" class="text-primary">--</span></div>
+        <div class="truncate text-on-surface-variant">Fast: <span id="telemetry-model-small" class="text-primary-fixed-dim">--</span></div>
+      </div>
+      <div class="text-[10px] text-on-surface-variant/80 font-mono truncate">
+        URL: <span id="telemetry-ollama-url" class="text-on-surface">http://localhost:11434</span>
+      </div>
+    </div>
+
+    <!-- Uptime & System Health Card -->
+    <div class="bg-surface-container-low rounded-2xl p-space-md border border-outline-variant/30 flex flex-col justify-between">
+      <div class="flex items-center justify-between text-on-surface-variant font-label-sm">
+        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px] text-green-400">timer</span> SYSTEM UPTIME</span>
+        <span id="telemetry-uptime" class="text-green-300 font-mono text-[13px] font-bold">0s</span>
+      </div>
+      <div class="my-2 flex flex-col gap-1 font-mono text-[11px]">
+        <div class="text-on-surface">Role: <span id="telemetry-active-role" class="text-primary uppercase font-bold">DEFAULT</span></div>
+        <div class="text-on-surface-variant">Memories: <span id="telemetry-memory-count" class="text-on-surface font-semibold">0</span> items</div>
+      </div>
+      <div class="text-[10px] text-on-surface-variant/80 font-mono flex justify-between">
+        <span>Sandbox: Airgapped</span>
+        <span class="text-primary-container font-semibold">SECURE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-time Execution Traces & Structured Tool Logs -->
+  <div class="bg-surface-container-low rounded-2xl p-space-md border border-outline-variant/30 flex flex-col gap-space-md">
+    <div class="flex flex-wrap items-center justify-between gap-space-sm border-b border-outline-variant/30 pb-3">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary text-[20px]">terminal</span>
+        <h3 class="font-headline-sm text-headline-sm text-on-surface">Visual Execution Timeline &amp; Tool Logs</h3>
+      </div>
+      <div class="flex items-center gap-2">
+        <!-- Log Filter Buttons -->
+        <div class="flex items-center bg-surface-container rounded-lg p-0.5 border border-outline-variant/30 text-[11px] font-mono">
+          <button onclick="setLogFilter('all')" id="log-filter-all" class="px-2.5 py-1 rounded bg-primary-container/20 text-primary font-bold">ALL</button>
+          <button onclick="setLogFilter('tools')" id="log-filter-tools" class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface">TOOLS</button>
+          <button onclick="setLogFilter('traces')" id="log-filter-traces" class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface">TRACES</button>
+        </div>
+        <button onclick="clearUiLogs()" class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface text-[12px] border border-outline-variant/30" title="Clear logs view">
+          <span class="material-symbols-outlined text-[16px]">clear_all</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Logs Container -->
+    <div id="telemetry-logs-stream" class="bg-surface-container-lowest rounded-xl p-4 font-mono text-[11px] leading-relaxed max-h-[460px] overflow-y-auto flex flex-col gap-2 border border-outline-variant/20 shadow-inner">
+      <div class="text-on-surface-variant italic">Polling execution logs &amp; system telemetry...</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     NEURAL AGENT ORCHESTRATOR VIEW (data-path="agent-orchestrator")
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="view-agent-orchestrator" class="hidden w-full px-space-md lg:px-margin py-space-lg flex flex-col gap-space-lg">
+  <!-- Top Banner -->
+  <div class="flex flex-wrap items-center justify-between gap-space-md bg-surface-container-lowest/90 backdrop-blur-xl px-space-md py-space-sm rounded-xl shadow-lg border border-outline-variant/30">
+    <div class="flex items-center gap-space-md">
+      <div class="flex items-center gap-space-xs">
+        <span class="w-2.5 h-2.5 rounded-full bg-secondary-fixed-dim animate-pulse shadow-[0_0_10px_rgba(221,183,255,0.8)]"></span>
+        <span class="font-label-md text-label-md text-secondary tracking-widest uppercase">NEURAL AGENT SWARM &amp; TOOL GOVERNANCE</span>
+      </div>
+      <div class="h-4 w-px bg-outline-variant hidden sm:block"></div>
+      <div class="flex items-center gap-1.5 bg-surface-container-high px-space-sm py-1 rounded-full border border-outline-variant/40">
+        <span class="w-2 h-2 rounded-full bg-primary-container"></span>
+        <span class="font-label-sm text-label-sm text-primary font-semibold uppercase">MULTI-WORKER ENGINE ACTIVE</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="refreshAgentOrchestrator()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[12px] font-semibold bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant/30 transition-all">
+        <span class="material-symbols-outlined text-[16px]">refresh</span> Refresh Swarm State
+      </button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+    <!-- Left Column: Pending Approvals & Security Gate (7 cols) -->
+    <div class="lg:col-span-7 flex flex-col gap-space-lg">
+      <div class="bg-surface-container-low rounded-2xl p-space-md border border-outline-variant/30 flex flex-col gap-space-md">
+        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-amber-400 text-[22px]">shield</span>
+            <h3 class="font-headline-sm text-headline-sm text-on-surface">High-Risk Tool Approvals</h3>
+          </div>
+          <span id="orchestrator-pending-badge" class="font-mono text-[11px] px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">0 Pending</span>
+        </div>
+        
+        <!-- Pending Approvals Queue -->
+        <div id="orchestrator-approvals-queue" class="flex flex-col gap-3 min-h-[140px]">
+          <div class="flex flex-col items-center justify-center p-8 text-on-surface-variant font-mono text-[12px] border border-dashed border-outline-variant/30 rounded-xl">
+            <span class="material-symbols-outlined text-[28px] text-green-400 mb-1">verified_user</span>
+            <span>No pending approval requests. System running safely within security thresholds.</span>
+          </div>
+        </div>
+
+        <!-- Recent Resolved Approvals History -->
+        <div class="mt-2 border-t border-outline-variant/30 pt-3">
+          <div class="text-[12px] font-semibold text-on-surface-variant mb-2 flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">history</span> Recent Approval Decisions
+          </div>
+          <div id="orchestrator-approvals-history" class="flex flex-col gap-2 max-h-48 overflow-y-auto font-mono text-[11px]">
+            <div class="text-on-surface-variant italic">No recent approval history.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Autonomous Workers & Shadow Execution Status -->
+      <div class="bg-surface-container-low rounded-2xl p-space-md border border-outline-variant/30 flex flex-col gap-space-sm">
+        <div class="flex items-center gap-2 border-b border-outline-variant/30 pb-2">
+          <span class="material-symbols-outlined text-primary text-[20px]">smart_toy</span>
+          <h3 class="font-headline-sm text-headline-sm text-on-surface">Autonomous Background Workers</h3>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-1">
+          <div class="bg-surface-container rounded-xl p-3 border border-outline-variant/30 flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-[13px] text-on-surface flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-green-400"></span> Shadow Worker</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-green-500/20 text-green-300">STANDBY</span>
+            </div>
+            <p class="text-[11px] text-on-surface-variant">Continuous background goal execution &amp; autonomous self-healing engine.</p>
+          </div>
+          <div class="bg-surface-container rounded-xl p-3 border border-outline-variant/30 flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-[13px] text-on-surface flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-primary-container"></span> Ambient Context</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-primary-container/20 text-primary">LISTENING</span>
+            </div>
+            <p class="text-[11px] text-on-surface-variant">Perception buffer capturing desktop screen changes &amp; voice triggers.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Loaded Skills Gallery & Risk Manifest (5 cols) -->
+    <div class="lg:col-span-5 flex flex-col gap-space-md">
+      <div class="bg-surface-container-low rounded-2xl p-space-md border border-outline-variant/30 flex flex-col gap-space-md">
+        <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary-fixed-dim text-[22px]">extension</span>
+            <h3 class="font-headline-sm text-headline-sm text-on-surface">Registered Skills Gallery</h3>
+          </div>
+          <span id="orchestrator-skill-count" class="font-mono text-[11px] px-2 py-0.5 rounded-full bg-surface-container text-primary">0 Skills</span>
+        </div>
+
+        <div id="orchestrator-skills-list" class="flex flex-col gap-2.5 max-h-[580px] overflow-y-auto pr-1">
+          <div class="text-on-surface-variant text-[12px] italic">Loading registered skill manifests...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
      CREATE EVENT MODAL
      ═══════════════════════════════════════════════════════════════════════ -->
 <div id="agenda-event-modal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm hidden" onclick="if(event.target===this)agendaCloseEventModal()">
@@ -2850,6 +3064,8 @@
             document.getElementById('view-voice-interaction-studio'),
             document.getElementById('view-multimodal-vision'),
             document.getElementById('view-agenda-calendar'),
+            document.getElementById('view-telemetry-benchmarks'),
+            document.getElementById('view-agent-orchestrator')
           ];
           views.forEach(v => { if (v) v.classList.add('hidden'); });
 
@@ -2870,11 +3086,19 @@
           } else if (path === 'multimodal-vision') {
             const el = document.getElementById('view-multimodal-vision');
             if (el) el.classList.remove('hidden');
+          } else if (path === 'telemetry-benchmarks') {
+            const el = document.getElementById('view-telemetry-benchmarks');
+            if (el) el.classList.remove('hidden');
+            if (window.refreshTelemetryAndLogs) window.refreshTelemetryAndLogs();
+          } else if (path === 'agent-orchestrator') {
+            const el = document.getElementById('view-agent-orchestrator');
+            if (el) el.classList.remove('hidden');
+            if (window.refreshAgentOrchestrator) window.refreshAgentOrchestrator();
           } else if (path === 'agenda-calendar') {
             const el = document.getElementById('view-agenda-calendar');
             if (el) el.classList.remove('hidden');
-            agendaRenderCalendar();
-            agendaLoadTodos('all');
+            if (window.agendaRenderCalendar) window.agendaRenderCalendar();
+            if (window.agendaLoadTodos) window.agendaLoadTodos('all');
           } else {
             const el = document.getElementById('view-voice-interaction-studio');
             if (el) el.classList.remove('hidden');
@@ -3131,7 +3355,24 @@
 
 </script>
 
-</div></main><footer class="w-full bg-surface-container-lowest py-space-lg">
+</div><!-- /flex flex-col w-full -->
+</main>
 
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 py-space-md mt-auto">
+  <div class="w-full px-space-md lg:px-margin flex flex-col sm:flex-row items-center justify-between gap-space-sm">
+    <div class="flex items-center gap-space-sm text-on-surface-variant font-label-sm text-label-sm">
+      <span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+      <span>© 2026 RAGNAROK AI · LOCAL MULTIMODAL AGENT CORE</span>
+    </div>
+    <div class="flex items-center gap-space-md font-label-sm text-label-sm text-on-surface-variant">
+      <span class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>WebRTC v2 Active</span>
+      <span class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim"></span>48.0 kHz Lossless</span>
+      <span class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>100% Offline Core</span>
+    </div>
+  </div>
+</footer>
 
-<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/ort.wasm.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.31/dist/bundle.min.js" defer></script></body></html>
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/ort.wasm.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.31/dist/bundle.min.js" defer></script>
+</body>
+</html>
