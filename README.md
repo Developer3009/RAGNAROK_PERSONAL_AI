@@ -30,6 +30,7 @@
 - [🚀 3-Minute Quickstart (Zero Tech Skills Needed)](#-3-minute-quickstart-zero-tech-skills-needed)
 - [🧠 The Memory System Explained Simply](#-the-memory-system-explained-simply)
 - [🎙️ Voice & Application Launcher Guide](#-voice--application-launcher-guide)
+- [📅 Agenda, Calendar, To-Do List & Date/Time Schedule Watcher](#-agenda-calendar-to-do-list--datetime-schedule-watcher)
 - [💻 Technical User & Developer Setup](#-technical-user--developer-setup)
 - [📂 Project Directory Structure](#-project-directory-structure)
 - [🛡️ Privacy, Security & Sandboxing](#-privacy-security--sandboxing)
@@ -143,7 +144,39 @@ Ragnarok can be controlled via typed text or direct voice input through your mic
 
 ---
 
-## 💻 Technical User & Developer Setup
+## 📅 Agenda, Calendar, To-Do List & Date/Time Schedule Watcher
+
+Ragnarok includes a built-in, 100% offline **Personal Agenda & Calendar Suite** directly in the Web UI (`http://localhost:8000` -> **📅 Agenda** tab).
+
+### Features & Capabilities:
+1. **Interactive Calendar Grid**:
+   - Monthly calendar navigation (Previous, Next, Today).
+   - Color-coded event chips rendered directly on day cells.
+   - Click any date to view scheduled events or launch a new event modal.
+   - Quick one-click switch to the **Date & Time Schedule Watcher** for that date.
+2. **To-Do Task Management (Full CRUD)**:
+   - Create, list, filter, update, complete, and delete to-do tasks.
+   - Priority levels: 🟢 Low, 🟡 Medium, 🟠 High, 🔴 Urgent.
+   - Interactive checkbox toggle to immediately mark tasks as completed or pending.
+   - Filter pills: `All`, `Pending`, `Done`.
+3. **⏱️ Date & Time Schedule Watcher (Chronological Timeline)**:
+   - Chronological hour-by-hour view (00:00 to 23:00) showing both Calendar Events and To-Do tasks side-by-side by exact scheduled time.
+   - Time window filters: `All Hours (24h)`, `Morning (06:00 - 12:00)`, `Afternoon (12:00 - 18:00)`, `Evening (18:00 - 24:00)`, and `Workday (08:00 - 18:00)`.
+   - Real-time **NOW Pulse Tracker Bar** highlighting the current minute of the day.
+   - Quick `+ Add at HH:00` buttons on empty hourly slots to plan meetings or tasks at that exact time.
+   - Live digital clock and day summary statistics.
+4. **📧 AI Email Auto-Scheduler (100% Offline via Ollama)**:
+   - Paste any meeting invite, email thread, or deadline notice.
+   - Ragnarok's local LLM extracts all calendar events (start/end times, location, description) and to-do action items (due dates, priority).
+   - Relative dates like "tomorrow at 3 PM" or "by next Friday" are automatically resolved into ISO-8601 timestamps and saved to SQLite.
+5. **Voice & Agent Skill (`agenda_manager`)**:
+   - The agent can manage your schedule via voice or text prompts:
+     - `"Schedule team standup tomorrow from 9am to 9:30am"`
+     - `"Add urgent task to submit Q4 budget by Friday 5pm"`
+     - `"What events do I have scheduled for today?"`
+     - `"Parse this email and add it to my agenda: [email text]"`
+
+---
 
 If you are a developer and want to run, modify, or extend Ragnarok manually:
 

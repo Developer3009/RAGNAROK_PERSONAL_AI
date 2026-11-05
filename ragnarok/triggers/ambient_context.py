@@ -243,7 +243,7 @@ class ContextStreamAnalyzer:
         if not window_title and not screenshot_bytes:
             return ""
 
-        base_summary = f"User is in {app_name}: '{window_title}'"
+        base_summary = f"User is in {app_name}: '{window_title}'" if window_title else "User is active on desktop"
 
         if not screenshot_bytes:
             return base_summary

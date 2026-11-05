@@ -1,5 +1,5 @@
 <!DOCTYPE html><html class="dark" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><title>Ragnarok AI — Multimodal Core & CLI Studio</title><meta name="ragnarok-token" content="{{RAGNAROK_TOKEN}}"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-fixed":"#7df4ff","surface-dim":"#121318","tertiary-fixed":"#ffd9e4","on-primary-container":"#006970","on-secondary-fixed":"#2c0051","surface-bright":"#38393f","outline":"#849495","secondary-fixed":"#f0dbff","on-surface":"#e3e1e9","on-tertiary-container":"#b4146e","on-tertiary":"#640039","secondary":"#ddb7ff","on-error-container":"#ffdad6","surface-container-high":"#292a2f","on-secondary-fixed-variant":"#6900b3","on-tertiary-fixed-variant":"#8c0053","on-background":"#e3e1e9","on-primary-fixed-variant":"#004f54","surface-tint":"#00dbe9","primary":"#dbfcff","surface":"#121318","error":"#ffb4ab","inverse-primary":"#006970","surface-container-lowest":"#0d0e13","on-secondary":"#490080","primary-fixed-dim":"#00dbe9","on-error":"#690005","on-primary-fixed":"#002022","surface-container-highest":"#34343a","inverse-surface":"#e3e1e9","secondary-fixed-dim":"#ddb7ff","tertiary-fixed-dim":"#ffb0cd","on-secondary-container":"#d6a9ff","outline-variant":"#3b494b","error-container":"#93000a","background":"#121318","surface-variant":"#34343a","on-surface-variant":"#b9cacb","on-primary":"#00363a","tertiary-container":"#ffccdd","on-tertiary-fixed":"#3e0022","tertiary":"#fff3f5","surface-container-low":"#1a1b21","inverse-on-surface":"#2f3036","surface-container":"#1e1f25","secondary-container":"#6f00be","primary-container":"#00f0ff"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{"gutter-mobile":"1rem","space-lg":"1.5rem","margin-tablet":"2rem","margin-mobile":"1rem","space-md":"1rem",margin:"3rem",gutter:"1.5rem","space-sm":"0.5rem","space-xs":"0.25rem","space-xl":"2.5rem"},fontFamily:{"headline-sm":["Space Grotesk"],"display-lg-mobile":["Space Grotesk"],"headline-lg-mobile":["Space Grotesk"],"display-lg":["Space Grotesk"],"body-sm":["Inter"],"body-lg":["Inter"],"label-md":["Space Grotesk"],"label-lg":["Space Grotesk"],"headline-lg":["Space Grotesk"],"headline-md":["Space Grotesk"],"body-md":["Inter"],"label-sm":["Space Grotesk"]},fontSize:{"headline-sm":["1.125rem",{lineHeight:"1.625rem",fontWeight:"500"}],"display-lg-mobile":["2.25rem",{lineHeight:"2.75rem",letterSpacing:"-0.03em",fontWeight:"700"}],"headline-lg-mobile":["1.75rem",{lineHeight:"2.25rem",letterSpacing:"-0.02em",fontWeight:"600"}],"display-lg":["4rem",{lineHeight:"4.5rem",letterSpacing:"-0.04em",fontWeight:"700"}],"body-sm":["0.8125rem",{lineHeight:"1.25rem",fontWeight:"400"}],"body-lg":["1.125rem",{lineHeight:"1.75rem",fontWeight:"400"}],"label-md":["0.75rem",{lineHeight:"1rem",letterSpacing:"0.08em",fontWeight:"500"}],"label-lg":["0.875rem",{lineHeight:"1.25rem",letterSpacing:"0.05em",fontWeight:"600"}],"headline-lg":["2.25rem",{lineHeight:"2.75rem",letterSpacing:"-0.02em",fontWeight:"600"}],"headline-md":["1.5rem",{lineHeight:"2rem",letterSpacing:"-0.01em",fontWeight:"500"}],"body-md":["0.9375rem",{lineHeight:"1.5rem",fontWeight:"400"}],"label-sm":["0.625rem",{lineHeight:"0.875rem",letterSpacing:"0.12em",fontWeight:"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased min-h-screen"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/80 backdrop-blur-2xl shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="h-16 w-full px-space-md lg:px-margin flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs"><div class="w-2.5 h-2.5 rounded-full bg-primary-container animate-pulse shadow-[0_0_12px_rgba(0,240,255,0.8)]"></div><img src="/static/ragnarok_logo.png" alt="RAGNAROK" class="h-6 md:h-7 object-contain drop-shadow-[0_0_12px_rgba(0,240,255,0.5)]" /></div><div class="h-4 w-px bg-outline-variant hidden sm:block"></div><nav class="hidden lg:flex items-center gap-space-sm" data-active-classes="bg-surface-container text-primary font-bold rounded-lg px-space-sm py-space-xs shadow-[0_0_16px_rgba(0,240,255,0.15)]"><a aria-current="page" class="transition-colors bg-surface-container text-primary font-bold rounded-lg px-space-sm py-space-xs shadow-[0_0_16px_rgba(0,240,255,0.15)]" data-path="voice-interaction-studio" href="#">Interaction Studio</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-space-sm py-space-xs rounded-lg" data-path="multimodal-vision" href="#">Multimodal Vision</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-space-sm py-space-xs rounded-lg" data-path="telemetry-benchmarks" href="#">Telemetry &amp; Logs</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-space-sm py-space-xs rounded-lg" data-path="agent-orchestrator" href="#">Neural Agents</a></nav></div><div class="flex items-center gap-2"><div class="flex items-center gap-1.5 bg-surface-container px-2.5 py-1 rounded-full text-[10.5px] font-mono text-on-surface border border-outline-variant/30"><span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span><span>PORT 8000</span></div></div></div></header><main class="w-full pt-16 bg-background min-h-screen"><div class="flex flex-col w-full">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-fixed":"#7df4ff","surface-dim":"#121318","tertiary-fixed":"#ffd9e4","on-primary-container":"#006970","on-secondary-fixed":"#2c0051","surface-bright":"#38393f","outline":"#849495","secondary-fixed":"#f0dbff","on-surface":"#e3e1e9","on-tertiary-container":"#b4146e","on-tertiary":"#640039","secondary":"#ddb7ff","on-error-container":"#ffdad6","surface-container-high":"#292a2f","on-secondary-fixed-variant":"#6900b3","on-tertiary-fixed-variant":"#8c0053","on-background":"#e3e1e9","on-primary-fixed-variant":"#004f54","surface-tint":"#00dbe9","primary":"#dbfcff","surface":"#121318","error":"#ffb4ab","inverse-primary":"#006970","surface-container-lowest":"#0d0e13","on-secondary":"#490080","primary-fixed-dim":"#00dbe9","on-error":"#690005","on-primary-fixed":"#002022","surface-container-highest":"#34343a","inverse-surface":"#e3e1e9","secondary-fixed-dim":"#ddb7ff","tertiary-fixed-dim":"#ffb0cd","on-secondary-container":"#d6a9ff","outline-variant":"#3b494b","error-container":"#93000a","background":"#121318","surface-variant":"#34343a","on-surface-variant":"#b9cacb","on-primary":"#00363a","tertiary-container":"#ffccdd","on-tertiary-fixed":"#3e0022","tertiary":"#fff3f5","surface-container-low":"#1a1b21","inverse-on-surface":"#2f3036","surface-container":"#1e1f25","secondary-container":"#6f00be","primary-container":"#00f0ff"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{"gutter-mobile":"1rem","space-lg":"1.5rem","margin-tablet":"2rem","margin-mobile":"1rem","space-md":"1rem",margin:"3rem",gutter:"1.5rem","space-sm":"0.5rem","space-xs":"0.25rem","space-xl":"2.5rem"},fontFamily:{"headline-sm":["Space Grotesk"],"display-lg-mobile":["Space Grotesk"],"headline-lg-mobile":["Space Grotesk"],"display-lg":["Space Grotesk"],"body-sm":["Inter"],"body-lg":["Inter"],"label-md":["Space Grotesk"],"label-lg":["Space Grotesk"],"headline-lg":["Space Grotesk"],"headline-md":["Space Grotesk"],"body-md":["Inter"],"label-sm":["Space Grotesk"]},fontSize:{"headline-sm":["1.125rem",{lineHeight:"1.625rem",fontWeight:"500"}],"display-lg-mobile":["2.25rem",{lineHeight:"2.75rem",letterSpacing:"-0.03em",fontWeight:"700"}],"headline-lg-mobile":["1.75rem",{lineHeight:"2.25rem",letterSpacing:"-0.02em",fontWeight:"600"}],"display-lg":["4rem",{lineHeight:"4.5rem",letterSpacing:"-0.04em",fontWeight:"700"}],"body-sm":["0.8125rem",{lineHeight:"1.25rem",fontWeight:"400"}],"body-lg":["1.125rem",{lineHeight:"1.75rem",fontWeight:"400"}],"label-md":["0.75rem",{lineHeight:"1rem",letterSpacing:"0.08em",fontWeight:"500"}],"label-lg":["0.875rem",{lineHeight:"1.25rem",letterSpacing:"0.05em",fontWeight:"600"}],"headline-lg":["2.25rem",{lineHeight:"2.75rem",letterSpacing:"-0.02em",fontWeight:"600"}],"headline-md":["1.5rem",{lineHeight:"2rem",letterSpacing:"-0.01em",fontWeight:"500"}],"body-md":["0.9375rem",{lineHeight:"1.5rem",fontWeight:"400"}],"label-sm":["0.625rem",{lineHeight:"0.875rem",letterSpacing:"0.12em",fontWeight:"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased min-h-screen"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/80 backdrop-blur-2xl shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="h-16 w-full px-space-md lg:px-margin flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs"><div class="w-2.5 h-2.5 rounded-full bg-primary-container animate-pulse shadow-[0_0_12px_rgba(0,240,255,0.8)]"></div><img src="/static/ragnarok_logo.png" alt="RAGNAROK" class="h-6 md:h-7 object-contain drop-shadow-[0_0_12px_rgba(0,240,255,0.5)]" /></div><div class="h-4 w-px bg-outline-variant hidden sm:block"></div><nav class="hidden lg:flex items-center gap-space-sm" data-active-classes="bg-surface-container text-primary font-bold rounded-lg px-space-sm py-space-xs shadow-[0_0_16px_rgba(0,240,255,0.15)]"><a aria-current="page" class="transition-colors bg-surface-container text-primary font-bold rounded-lg px-space-sm py-space-xs shadow-[0_0_16px_rgba(0,240,255,0.15)]" data-path="voice-interaction-studio" href="#">Interaction Studio</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-space-sm py-space-xs rounded-lg" data-path="multimodal-vision" href="#">Multimodal Vision</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-space-sm py-space-xs rounded-lg" data-path="telemetry-benchmarks" href="#">Telemetry &amp; Logs</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-space-sm py-space-xs rounded-lg" data-path="agent-orchestrator" href="#">Neural Agents</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors px-space-sm py-space-xs rounded-lg" data-path="agenda-calendar" href="#">📅 Agenda</a></nav></div><div class="flex items-center gap-2"><div class="flex items-center gap-1.5 bg-surface-container px-2.5 py-1 rounded-full text-[10.5px] font-mono text-on-surface border border-outline-variant/30"><span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span><span>PORT 8000</span></div></div></div></header><main class="w-full pt-16 bg-background min-h-screen"><div class="flex flex-col w-full">
 <div class="w-full px-space-md lg:px-margin py-space-lg flex flex-col gap-space-lg">
 <!-- TOP TELEMETRY STRIP -->
 <div class="flex flex-wrap items-center justify-between gap-space-md bg-surface-container-lowest/90 backdrop-blur-xl px-space-md py-space-sm rounded-xl shadow-lg">
@@ -1588,7 +1588,1131 @@
 
   })();
 </script>
-</div></main><footer class="w-full bg-surface-container-lowest py-space-lg"><div class="w-full px-space-md lg:px-margin flex flex-col sm:flex-row items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm"><span class="font-label-sm text-label-sm text-on-surface-variant">© 2026 RAGNAROK AI. LOCAL MULTIMODAL AGENT CORE.</span></div><div class="flex items-center gap-space-md font-label-sm text-label-sm text-on-surface-variant"><span class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>WebRTC v2 Active</span><span class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim"></span>48.0 kHz 24-bit Lossless</span></div></div></footer>
+<!-- ═══════════════════════════════════════════════════════════════════════
+     AGENDA & CALENDAR VIEW  (data-path="agenda-calendar")
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="view-agenda-calendar" class="hidden w-full px-space-md lg:px-margin py-space-lg flex flex-col gap-space-lg">
+  <div class="flex flex-wrap items-center justify-between gap-space-sm mb-space-xs">
+    <div class="flex items-center gap-space-sm">
+      <span class="material-symbols-outlined text-primary-fixed-dim text-[28px]">calendar_month</span>
+      <h1 class="font-headline-md text-headline-md text-on-surface tracking-tight">Agenda, Calendar &amp; Time Watcher</h1>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-space-sm py-1 rounded-full">📡 100% Offline · Local LLM</span>
+    </div>
+  </div>
+
+  <!-- SUB-VIEW SWITCHER TABS -->
+  <div class="flex items-center gap-2 border-b border-outline-variant/30 pb-3">
+    <button id="agenda-tab-btn-month" onclick="agendaSwitchSubTab('month')" class="flex items-center gap-2 px-4 py-2 rounded-xl text-[12px] font-semibold bg-primary-container/25 text-primary border border-primary/40 transition-all shadow-[0_0_12px_rgba(0,240,255,0.15)]">
+      <span class="material-symbols-outlined text-[18px]">calendar_view_month</span> Month Grid &amp; Quick Tasks
+    </button>
+    <button id="agenda-tab-btn-watcher" onclick="agendaSwitchSubTab('watcher')" class="flex items-center gap-2 px-4 py-2 rounded-xl text-[12px] font-semibold bg-surface-container text-on-surface-variant hover:text-on-surface border border-transparent transition-all">
+      <span class="material-symbols-outlined text-[18px]">schedule</span> ⏱️ Date &amp; Time Schedule Watcher
+    </button>
+  </div>
+
+  <!-- ════ SUB-VIEW 1: MONTH GRID & QUICK BOARD ════ -->
+  <div id="agenda-subview-month" class="flex flex-col gap-space-lg">
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg">
+
+      <!-- ── LEFT: Calendar Grid ──────────────────────────────────────── -->
+      <div class="xl:col-span-7 flex flex-col gap-space-md">
+
+        <!-- Month navigation -->
+        <div class="bg-surface-container-low rounded-2xl p-space-md shadow-lg border border-outline-variant/30">
+          <div class="flex items-center justify-between mb-space-md">
+            <button id="cal-prev" onclick="agendaCalPrev()" class="flex items-center gap-1 px-space-sm py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors font-label-lg text-label-lg">
+              <span class="material-symbols-outlined text-[18px]">chevron_left</span> Prev
+            </button>
+            <div class="flex items-center gap-space-sm">
+              <h2 id="cal-month-label" class="font-headline-sm text-headline-sm text-primary"></h2>
+              <button onclick="agendaCalToday()" class="text-[11px] px-2 py-1 rounded-full bg-primary-container/20 text-primary hover:bg-primary-container/40 transition-colors font-semibold">Today</button>
+            </div>
+            <button id="cal-next" onclick="agendaCalNext()" class="flex items-center gap-1 px-space-sm py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors font-label-lg text-label-lg">
+              Next <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+            </button>
+          </div>
+          <!-- Weekday headers -->
+          <div class="grid grid-cols-7 gap-1 mb-1">
+            <div class="text-center font-label-sm text-label-sm text-on-surface-variant py-1">Sun</div>
+            <div class="text-center font-label-sm text-label-sm text-on-surface-variant py-1">Mon</div>
+            <div class="text-center font-label-sm text-label-sm text-on-surface-variant py-1">Tue</div>
+            <div class="text-center font-label-sm text-label-sm text-on-surface-variant py-1">Wed</div>
+            <div class="text-center font-label-sm text-label-sm text-on-surface-variant py-1">Thu</div>
+            <div class="text-center font-label-sm text-label-sm text-on-surface-variant py-1">Fri</div>
+            <div class="text-center font-label-sm text-label-sm text-on-surface-variant py-1">Sat</div>
+          </div>
+          <!-- Calendar day cells (JS-rendered) -->
+          <div id="cal-grid" class="grid grid-cols-7 gap-1"></div>
+        </div>
+
+        <!-- Event list for selected day -->
+        <div id="cal-day-events" class="bg-surface-container-low rounded-2xl p-space-md shadow-lg border border-outline-variant/30 hidden">
+          <div class="flex items-center justify-between mb-space-sm">
+            <h3 id="cal-day-label" class="font-label-lg text-label-lg text-primary"></h3>
+            <div class="flex items-center gap-2">
+              <button onclick="agendaSwitchToWatcher(window.agendaSelectedDate)" class="flex items-center gap-1 px-space-sm py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary-fixed-dim text-[11px] font-semibold transition-colors border border-outline-variant/40">
+                <span class="material-symbols-outlined text-[14px]">timer</span> Watch by Time
+              </button>
+              <button onclick="agendaOpenCreateEventModal(agendaSelectedDate)" class="flex items-center gap-1 px-space-sm py-1 rounded-lg bg-primary-container/20 hover:bg-primary-container/40 text-primary text-[12px] font-semibold transition-colors">
+                <span class="material-symbols-outlined text-[16px]">add</span> New Event
+              </button>
+            </div>
+          </div>
+          <div id="cal-day-events-list" class="flex flex-col gap-2"></div>
+        </div>
+
+      </div>
+
+      <!-- ── RIGHT: To-Do Board + Email Ingest ──────────────────────── -->
+      <div class="xl:col-span-5 flex flex-col gap-space-md">
+
+        <!-- Quick Add Task -->
+        <div class="bg-surface-container-low rounded-2xl p-space-md shadow-lg border border-outline-variant/30">
+          <h3 class="font-label-lg text-label-lg text-on-surface mb-space-sm flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary-fixed-dim text-[20px]">checklist</span> To-Do Tasks
+          </h3>
+          <div class="flex flex-col gap-2 mb-space-sm">
+            <input id="todo-title-input" type="text" placeholder="New task title…" class="w-full bg-surface-container-high rounded-lg px-3 py-2 text-on-surface text-[13px] border border-outline-variant/40 focus:border-primary focus:outline-none placeholder-on-surface-variant/60 transition-colors" />
+            <div class="flex gap-2">
+              <select id="todo-priority-input" class="flex-1 bg-surface-container-high rounded-lg px-2 py-2 text-on-surface text-[12px] border border-outline-variant/40 focus:border-primary focus:outline-none">
+                <option value="low">🟢 Low</option>
+                <option value="medium" selected>🟡 Medium</option>
+                <option value="high">🟠 High</option>
+                <option value="urgent">🔴 Urgent</option>
+              </select>
+              <input id="todo-duedate-input" type="datetime-local" class="flex-1 bg-surface-container-high rounded-lg px-2 py-1.5 text-on-surface text-[12px] border border-outline-variant/40 focus:border-primary focus:outline-none" />
+              <button onclick="agendaAddTodo()" class="px-3 py-2 rounded-lg bg-primary-container/25 hover:bg-primary-container/50 text-primary font-semibold text-[12px] transition-colors flex items-center gap-1">
+                <span class="material-symbols-outlined text-[16px]">add</span>
+              </button>
+            </div>
+          </div>
+          <!-- Filter pills -->
+          <div class="flex gap-2 mb-space-sm">
+            <button onclick="agendaLoadTodos('all')" id="todo-filter-all" class="px-3 py-1 rounded-full text-[11px] font-semibold bg-primary-container/30 text-primary transition-colors">All</button>
+            <button onclick="agendaLoadTodos('pending')" id="todo-filter-pending" class="px-3 py-1 rounded-full text-[11px] font-semibold bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors">Pending</button>
+            <button onclick="agendaLoadTodos('completed')" id="todo-filter-completed" class="px-3 py-1 rounded-full text-[11px] font-semibold bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors">Done</button>
+          </div>
+          <!-- Task list -->
+          <div id="todo-list" class="flex flex-col gap-1.5 max-h-64 overflow-y-auto pr-1"></div>
+        </div>
+
+        <!-- AI Email Ingest -->
+        <div class="bg-surface-container-low rounded-2xl p-space-md shadow-lg border border-outline-variant/30">
+          <h3 class="font-label-lg text-label-lg text-on-surface mb-space-sm flex items-center gap-2">
+            <span class="material-symbols-outlined text-secondary text-[20px]">auto_awesome</span> AI Email Auto-Scheduler
+          </h3>
+          <p class="text-[11px] text-on-surface-variant mb-space-sm">Paste any email text — the local LLM will extract events &amp; tasks and schedule them automatically.</p>
+          <textarea id="email-ingest-textarea" rows="6" placeholder="Paste email body here…&#10;e.g. 'Team standup tomorrow at 9 AM, please send the report by Friday.'" class="w-full bg-surface-container-high rounded-lg px-3 py-2 text-on-surface text-[12px] border border-outline-variant/40 focus:border-primary focus:outline-none placeholder-on-surface-variant/50 resize-none transition-colors mb-2"></textarea>
+          <div class="flex gap-2 mb-space-sm">
+            <button onclick="agendaParseEmail()" id="email-parse-btn" class="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-secondary-container hover:bg-secondary-container/80 text-on-secondary-container font-semibold text-[13px] transition-colors">
+              <span class="material-symbols-outlined text-[18px]">bolt</span> Extract &amp; Schedule
+            </button>
+          </div>
+          <!-- Preview area -->
+          <div id="email-parse-preview" class="hidden">
+            <div class="text-[11px] font-semibold text-on-surface-variant mb-1">Preview (extracted):</div>
+            <div id="email-parse-preview-content" class="text-[11px] text-on-surface bg-surface-container rounded-lg p-2 max-h-40 overflow-y-auto font-mono whitespace-pre-wrap"></div>
+            <div class="flex gap-2 mt-2">
+              <button onclick="agendaConfirmSchedule()" class="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg bg-primary-container/25 hover:bg-primary-container/50 text-primary font-semibold text-[12px] transition-colors">
+                <span class="material-symbols-outlined text-[15px]">check_circle</span> Confirm &amp; Refresh
+              </button>
+              <button onclick="agendaCancelEmailPreview()" class="px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant text-[12px] transition-colors">Cancel</button>
+            </div>
+          </div>
+          <div id="email-parse-status" class="text-[11px] text-on-surface-variant mt-1 hidden"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ SUB-VIEW 2: DATE & TIME SCHEDULE WATCHER ════ -->
+  <div id="agenda-subview-watcher" class="hidden flex flex-col gap-space-md">
+
+    <!-- Top Navigation & Control Toolbar -->
+    <div class="bg-surface-container-low rounded-2xl p-space-md shadow-lg border border-outline-variant/30 flex flex-wrap items-center justify-between gap-space-md">
+      
+      <!-- Date Selector & Navigation -->
+      <div class="flex items-center flex-wrap gap-2">
+        <button onclick="watcherStepDay(-1)" class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors" title="Previous Day">
+          <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+        </button>
+        <button onclick="watcherJumpToday()" class="px-3 py-1.5 rounded-lg bg-primary-container/20 text-primary hover:bg-primary-container/40 text-[12px] font-semibold transition-colors">
+          Today
+        </button>
+        <button onclick="watcherStepDay(1)" class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors" title="Next Day">
+          <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+        </button>
+
+        <div class="flex items-center gap-1.5 bg-surface-container-high px-2 py-1 rounded-lg border border-outline-variant/40">
+          <span class="material-symbols-outlined text-primary text-[18px]">event</span>
+          <input id="watcher-date-input" type="date" onchange="watcherOnDateChange(this.value)" class="bg-transparent text-on-surface text-[13px] font-semibold focus:outline-none" />
+        </div>
+
+        <button onclick="watcherStepDay(7)" class="px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface text-[11px] font-medium transition-colors">
+          +7d
+        </button>
+      </div>
+
+      <!-- Filters & Search -->
+      <div class="flex items-center flex-wrap gap-2">
+        <!-- Time Window -->
+        <select id="watcher-time-window" onchange="watcherRender()" class="bg-surface-container-high rounded-lg px-2.5 py-1.5 text-on-surface text-[12px] border border-outline-variant/40 focus:border-primary focus:outline-none">
+          <option value="all">🕒 All Hours (00:00 – 24:00)</option>
+          <option value="morning">🌅 Morning (06:00 – 12:00)</option>
+          <option value="afternoon">☀️ Afternoon (12:00 – 18:00)</option>
+          <option value="evening">🌙 Evening (18:00 – 24:00)</option>
+          <option value="work">💼 Workday (08:00 – 18:00)</option>
+        </select>
+
+        <!-- Item Type Filter -->
+        <select id="watcher-type-filter" onchange="watcherRender()" class="bg-surface-container-high rounded-lg px-2.5 py-1.5 text-on-surface text-[12px] border border-outline-variant/40 focus:border-primary focus:outline-none">
+          <option value="all">⚡ All Items (Events &amp; Tasks)</option>
+          <option value="events">📅 Calendar Events Only</option>
+          <option value="todos">✅ To-Do Tasks Only</option>
+          <option value="pending_todos">⏳ Pending Tasks Only</option>
+        </select>
+
+        <!-- Search Bar -->
+        <div class="relative">
+          <input id="watcher-search-input" type="text" oninput="watcherRender()" placeholder="Search schedule…" class="w-36 md:w-48 bg-surface-container-high rounded-lg pl-7 pr-2 py-1.5 text-on-surface text-[12px] border border-outline-variant/40 focus:border-primary focus:outline-none placeholder-on-surface-variant/50" />
+          <span class="material-symbols-outlined text-on-surface-variant text-[15px] absolute left-2 top-2">search</span>
+        </div>
+
+        <!-- Add Actions -->
+        <button onclick="watcherAddEventQuick()" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary-container/25 hover:bg-primary-container/50 text-primary text-[12px] font-semibold transition-colors">
+          <span class="material-symbols-outlined text-[16px]">add</span> Event
+        </button>
+        <button onclick="watcherAddTaskQuick()" class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-secondary-container hover:bg-secondary-container/80 text-on-secondary-container text-[12px] font-semibold transition-colors">
+          <span class="material-symbols-outlined text-[16px]">add_task</span> Task
+        </button>
+      </div>
+    </div>
+
+    <!-- Live Day Summary Header -->
+    <div class="bg-surface-container-low rounded-2xl p-space-md shadow-lg border border-outline-variant/30 flex flex-wrap items-center justify-between gap-space-sm">
+      <div class="flex items-center gap-space-sm">
+        <div class="w-3 h-3 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(0,219,233,0.8)]"></div>
+        <div>
+          <h2 id="watcher-formatted-date" class="font-headline-sm text-headline-sm text-on-surface"></h2>
+          <div id="watcher-subtext" class="text-[12px] text-on-surface-variant"></div>
+        </div>
+      </div>
+      <div class="flex items-center gap-space-md">
+        <div class="flex items-center gap-1.5 bg-surface-container px-3 py-1 rounded-full border border-outline-variant/30 text-[11px] font-mono">
+          <span class="material-symbols-outlined text-[14px] text-primary">schedule</span>
+          <span id="watcher-live-clock" class="text-on-surface font-semibold">--:--:--</span>
+        </div>
+        <div id="watcher-stat-badges" class="flex items-center gap-1.5 text-[11px] font-semibold"></div>
+      </div>
+    </div>
+
+    <!-- Chronological Hourly Schedule Watcher Stream -->
+    <div class="bg-surface-container-low rounded-2xl p-space-md shadow-lg border border-outline-variant/30 flex flex-col gap-2">
+      <!-- All-Day & Unscheduled drawer -->
+      <div id="watcher-allday-container" class="hidden mb-3 pb-3 border-b border-outline-variant/30">
+        <div class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider mb-1.5 flex items-center gap-1">
+          <span class="material-symbols-outlined text-[14px]">all_inclusive</span> All-Day &amp; Anytime Items
+        </div>
+        <div id="watcher-allday-list" class="flex flex-col gap-1.5"></div>
+      </div>
+
+      <!-- Time Slots Stream -->
+      <div id="watcher-timeline-stream" class="flex flex-col gap-2"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     CREATE EVENT MODAL
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div id="agenda-event-modal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm hidden" onclick="if(event.target===this)agendaCloseEventModal()">
+  <div class="bg-surface-container-low rounded-2xl shadow-2xl border border-outline-variant/40 w-full max-w-md mx-4 p-6" onclick="event.stopPropagation()">
+    <div class="flex items-center justify-between mb-4">
+      <h3 id="event-modal-title" class="font-headline-sm text-headline-sm text-on-surface">New Event</h3>
+      <button onclick="agendaCloseEventModal()" class="text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[22px]">close</span></button>
+    </div>
+    <input type="hidden" id="event-modal-id" value="">
+    <div class="flex flex-col gap-3">
+      <div>
+        <label class="text-[11px] text-on-surface-variant font-semibold mb-1 block">Title *</label>
+        <input id="event-modal-title-input" type="text" placeholder="Event title" class="w-full bg-surface-container-high rounded-lg px-3 py-2 text-on-surface text-[13px] border border-outline-variant/40 focus:border-primary focus:outline-none" />
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="text-[11px] text-on-surface-variant font-semibold mb-1 block">Start *</label>
+          <input id="event-modal-start" type="datetime-local" class="w-full bg-surface-container-high rounded-lg px-2 py-2 text-on-surface text-[12px] border border-outline-variant/40 focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="text-[11px] text-on-surface-variant font-semibold mb-1 block">End *</label>
+          <input id="event-modal-end" type="datetime-local" class="w-full bg-surface-container-high rounded-lg px-2 py-2 text-on-surface text-[12px] border border-outline-variant/40 focus:border-primary focus:outline-none" />
+        </div>
+      </div>
+      <div>
+        <label class="text-[11px] text-on-surface-variant font-semibold mb-1 block">Location</label>
+        <input id="event-modal-location" type="text" placeholder="Optional location" class="w-full bg-surface-container-high rounded-lg px-3 py-2 text-on-surface text-[13px] border border-outline-variant/40 focus:border-primary focus:outline-none" />
+      </div>
+      <div>
+        <label class="text-[11px] text-on-surface-variant font-semibold mb-1 block">Description</label>
+        <textarea id="event-modal-desc" rows="3" placeholder="Optional description" class="w-full bg-surface-container-high rounded-lg px-3 py-2 text-on-surface text-[12px] border border-outline-variant/40 focus:border-primary focus:outline-none resize-none"></textarea>
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-[11px] text-on-surface-variant font-semibold">Color</label>
+        <input id="event-modal-color" type="color" value="#00dbe9" class="w-8 h-8 rounded cursor-pointer border-0 bg-transparent" />
+      </div>
+    </div>
+    <div id="event-modal-error" class="text-[11px] text-error mt-2 hidden"></div>
+    <div class="flex gap-2 mt-4">
+      <button onclick="agendaSaveEvent()" class="flex-1 py-2 rounded-lg bg-primary-container/30 hover:bg-primary-container/60 text-primary font-semibold text-[13px] transition-colors">Save Event</button>
+      <button onclick="agendaCloseEventModal()" class="px-4 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant text-[13px] transition-colors">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     CREATE / EDIT TASK MODAL
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div id="agenda-task-modal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm hidden" onclick="if(event.target===this)agendaCloseTaskModal()">
+  <div class="bg-surface-container-low rounded-2xl shadow-2xl border border-outline-variant/40 w-full max-w-md mx-4 p-6" onclick="event.stopPropagation()">
+    <div class="flex items-center justify-between mb-4">
+      <h3 id="task-modal-title" class="font-headline-sm text-headline-sm text-on-surface">New Task</h3>
+      <button onclick="agendaCloseTaskModal()" class="text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[22px]">close</span></button>
+    </div>
+    <input type="hidden" id="task-modal-id" value="">
+    <div class="flex flex-col gap-3">
+      <div>
+        <label class="text-[11px] text-on-surface-variant font-semibold mb-1 block">Title *</label>
+        <input id="task-modal-title-input" type="text" placeholder="Task title" class="w-full bg-surface-container-high rounded-lg px-3 py-2 text-on-surface text-[13px] border border-outline-variant/40 focus:border-primary focus:outline-none" />
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="text-[11px] text-on-surface-variant font-semibold mb-1 block">Due Date &amp; Time *</label>
+          <input id="task-modal-due" type="datetime-local" class="w-full bg-surface-container-high rounded-lg px-2 py-2 text-on-surface text-[12px] border border-outline-variant/40 focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="text-[11px] text-on-surface-variant font-semibold mb-1 block">Priority</label>
+          <select id="task-modal-priority" class="w-full bg-surface-container-high rounded-lg px-2 py-2 text-on-surface text-[12px] border border-outline-variant/40 focus:border-primary focus:outline-none">
+            <option value="low">🟢 Low</option>
+            <option value="medium" selected>🟡 Medium</option>
+            <option value="high">🟠 High</option>
+            <option value="urgent">🔴 Urgent</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="text-[11px] text-on-surface-variant font-semibold mb-1 block">Description</label>
+        <textarea id="task-modal-desc" rows="3" placeholder="Optional task description" class="w-full bg-surface-container-high rounded-lg px-3 py-2 text-on-surface text-[12px] border border-outline-variant/40 focus:border-primary focus:outline-none resize-none"></textarea>
+      </div>
+    </div>
+    <div id="task-modal-error" class="text-[11px] text-error mt-2 hidden"></div>
+    <div class="flex gap-2 mt-4">
+      <button onclick="agendaSaveTaskModal()" class="flex-1 py-2 rounded-lg bg-secondary-container hover:bg-secondary-container/80 text-on-secondary-container font-semibold text-[13px] transition-colors">Save Task</button>
+      <button onclick="agendaCloseTaskModal()" class="px-4 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant text-[13px] transition-colors">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+//  AGENDA, CALENDAR & TIME WATCHER — JavaScript Module
+// ═══════════════════════════════════════════════════════════════════════════
+(function() {
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const PRIORITY_COLORS = { low: 'bg-green-500/20 text-green-400', medium: 'bg-yellow-500/20 text-yellow-400', high: 'bg-orange-500/20 text-orange-400', urgent: 'bg-red-500/20 text-red-400' };
+  const PRIORITY_ICONS  = { low: '🟢', medium: '🟡', high: '🟠', urgent: '🔴' };
+
+  let agendaCurYear  = new Date().getFullYear();
+  let agendaCurMonth = new Date().getMonth();
+  let agendaAllEvents = [];
+  let agendaAllTasks  = [];
+  let agendaLastParseResult = null;
+  let watcherSelectedDate = toDateInputString(new Date());
+
+  // ── Expose globals ───────────────────────────────────────────────────────
+  window.agendaSelectedDate = watcherSelectedDate;
+  window.agendaCalPrev  = function() { agendaCurMonth--; if (agendaCurMonth < 0) { agendaCurMonth=11; agendaCurYear--; } agendaRenderCalendar(); };
+  window.agendaCalNext  = function() { agendaCurMonth++; if (agendaCurMonth > 11) { agendaCurMonth=0; agendaCurYear++; } agendaRenderCalendar(); };
+  window.agendaCalToday = function() { const n=new Date(); agendaCurYear=n.getFullYear(); agendaCurMonth=n.getMonth(); agendaRenderCalendar(); };
+  window.agendaSwitchSubTab = agendaSwitchSubTab;
+  window.agendaSwitchToWatcher = agendaSwitchToWatcher;
+  window.agendaOpenCreateEventModal = agendaOpenCreateEventModal;
+  window.agendaCloseEventModal = agendaCloseEventModal;
+  window.agendaSaveEvent  = agendaSaveEvent;
+  window.agendaDeleteEvent = agendaDeleteEvent;
+  window.agendaOpenTaskModal = agendaOpenTaskModal;
+  window.agendaCloseTaskModal = agendaCloseTaskModal;
+  window.agendaSaveTaskModal = agendaSaveTaskModal;
+  window.agendaAddTodo    = agendaAddTodo;
+  window.agendaLoadTodos  = agendaLoadTodos;
+  window.agendaToggleTodo = agendaToggleTodo;
+  window.agendaDeleteTodo = agendaDeleteTodo;
+  window.agendaParseEmail = agendaParseEmail;
+  window.agendaConfirmSchedule = agendaConfirmSchedule;
+  window.agendaCancelEmailPreview = agendaCancelEmailPreview;
+
+  // Watcher functions
+  window.watcherStepDay = watcherStepDay;
+  window.watcherJumpToday = watcherJumpToday;
+  window.watcherOnDateChange = watcherOnDateChange;
+  window.watcherRender = watcherRender;
+  window.watcherAddEventQuick = watcherAddEventQuick;
+  window.watcherAddTaskQuick = watcherAddTaskQuick;
+  window.watcherAddEventAtHour = watcherAddEventAtHour;
+  window.watcherAddTaskAtHour = watcherAddTaskAtHour;
+
+  // ── Token & Auth helper ──────────────────────────────────────────────────
+  function getToken() {
+    return document.querySelector('meta[name="ragnarok-token"]')?.content || '';
+  }
+  function authHeaders() {
+    return { 'Content-Type': 'application/json', 'X-Ragnarok-Token': getToken(), 'Origin': location.origin };
+  }
+  function toDateInputString(d) {
+    const pad = n => String(n).padStart(2,'0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  }
+
+  // ── Sub-tab switcher ─────────────────────────────────────────────────────
+  function agendaSwitchSubTab(tab) {
+    const monthView   = document.getElementById('agenda-subview-month');
+    const watcherView = document.getElementById('agenda-subview-watcher');
+    const monthBtn    = document.getElementById('agenda-tab-btn-month');
+    const watcherBtn  = document.getElementById('agenda-tab-btn-watcher');
+
+    if (tab === 'month') {
+      if (monthView) monthView.classList.remove('hidden');
+      if (watcherView) watcherView.classList.add('hidden');
+      if (monthBtn) {
+        monthBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-xl text-[12px] font-semibold bg-primary-container/25 text-primary border border-primary/40 transition-all shadow-[0_0_12px_rgba(0,240,255,0.15)]';
+      }
+      if (watcherBtn) {
+        watcherBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-xl text-[12px] font-semibold bg-surface-container text-on-surface-variant hover:text-on-surface border border-transparent transition-all';
+      }
+      agendaRenderCalendar();
+      agendaLoadTodos('all');
+    } else {
+      if (monthView) monthView.classList.add('hidden');
+      if (watcherView) watcherView.classList.remove('hidden');
+      if (watcherBtn) {
+        watcherBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-xl text-[12px] font-semibold bg-primary-container/25 text-primary border border-primary/40 transition-all shadow-[0_0_12px_rgba(0,240,255,0.15)]';
+      }
+      if (monthBtn) {
+        monthBtn.className = 'flex items-center gap-2 px-4 py-2 rounded-xl text-[12px] font-semibold bg-surface-container text-on-surface-variant hover:text-on-surface border border-transparent transition-all';
+      }
+      watcherInit();
+    }
+  }
+
+  function agendaSwitchToWatcher(dateStr) {
+    if (dateStr) watcherSelectedDate = dateStr;
+    agendaSwitchSubTab('watcher');
+  }
+
+  // ── Calendar Month Rendering ─────────────────────────────────────────────
+  function agendaRenderCalendar() {
+    const label = document.getElementById('cal-month-label');
+    if (label) label.textContent = MONTHS[agendaCurMonth] + ' ' + agendaCurYear;
+    agendaFetchEvents();
+  }
+
+  async function agendaFetchEvents() {
+    const firstDay = new Date(agendaCurYear, agendaCurMonth, 1);
+    const lastDay  = new Date(agendaCurYear, agendaCurMonth + 1, 0, 23, 59, 59);
+    const start = isoLocal(firstDay);
+    const end   = isoLocal(lastDay);
+    try {
+      const r = await fetch(`/api/calendar/events?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}&limit=300`, { headers: authHeaders() });
+      if (!r.ok) throw new Error('fetch failed');
+      const d = await r.json();
+      agendaAllEvents = d.events || [];
+    } catch(e) {
+      agendaAllEvents = [];
+    }
+    agendaBuildGrid();
+  }
+
+  function agendaBuildGrid() {
+    const grid = document.getElementById('cal-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    const firstDOW = new Date(agendaCurYear, agendaCurMonth, 1).getDay();
+    const daysInMonth = new Date(agendaCurYear, agendaCurMonth + 1, 0).getDate();
+    const today = new Date();
+    const isCurrentMonth = today.getFullYear() === agendaCurYear && today.getMonth() === agendaCurMonth;
+
+    for (let i = 0; i < firstDOW; i++) {
+      const blank = document.createElement('div');
+      blank.className = 'h-16 rounded-lg';
+      grid.appendChild(blank);
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateStr = `${agendaCurYear}-${String(agendaCurMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const dayEvents = agendaAllEvents.filter(e => e.start_time && e.start_time.startsWith(dateStr));
+      const isToday = isCurrentMonth && today.getDate() === d;
+      const isSelected = window.agendaSelectedDate === dateStr;
+
+      const cell = document.createElement('div');
+      cell.className = `h-16 rounded-lg border cursor-pointer flex flex-col p-1 transition-all hover:border-primary/60 hover:bg-surface-container-high/40 ${isSelected ? 'ring-2 ring-primary bg-primary-container/20 border-primary' : (isToday ? 'border-primary/50 bg-primary-container/10' : 'border-outline-variant/20 bg-surface-container/30')}`;
+      cell.onclick = () => agendaSelectDay(dateStr, d);
+
+      const dayNum = document.createElement('span');
+      dayNum.className = `text-[11px] font-semibold ${isToday ? 'text-primary' : 'text-on-surface-variant'} self-end`;
+      dayNum.textContent = d;
+      cell.appendChild(dayNum);
+
+      dayEvents.slice(0, 2).forEach(ev => {
+        const chip = document.createElement('div');
+        chip.className = 'text-[9px] font-medium px-1 py-0.5 rounded truncate mt-0.5 text-on-primary';
+        chip.style.backgroundColor = ev.color || '#00dbe9';
+        chip.style.opacity = '0.85';
+        chip.textContent = ev.title;
+        cell.appendChild(chip);
+      });
+      if (dayEvents.length > 2) {
+        const more = document.createElement('div');
+        more.className = 'text-[9px] text-on-surface-variant mt-0.5';
+        more.textContent = `+${dayEvents.length - 2} more`;
+        cell.appendChild(more);
+      }
+
+      grid.appendChild(cell);
+    }
+  }
+
+  function agendaSelectDay(dateStr, dayNum) {
+    window.agendaSelectedDate = dateStr;
+    watcherSelectedDate = dateStr;
+    const panel = document.getElementById('cal-day-events');
+    const lbl   = document.getElementById('cal-day-label');
+    const list  = document.getElementById('cal-day-events-list');
+    if (!panel || !lbl || !list) return;
+    panel.classList.remove('hidden');
+    lbl.textContent = `Events on ${dateStr}`;
+    list.innerHTML = '';
+    const dayEvs = agendaAllEvents.filter(e => e.start_time && e.start_time.startsWith(dateStr));
+    if (dayEvs.length === 0) {
+      list.innerHTML = '<div class="text-[12px] text-on-surface-variant py-2">No events. Click "+ New Event" to add one, or click "Watch by Time" to view full hourly timeline.</div>';
+    } else {
+      dayEvs.forEach(ev => {
+        const item = document.createElement('div');
+        item.className = 'flex items-center gap-2 bg-surface-container rounded-lg px-3 py-2 group';
+        item.innerHTML = `<span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background:${ev.color||'#00dbe9'}"></span>
+          <div class="flex-1 min-w-0">
+            <div class="text-[13px] font-medium text-on-surface truncate">${escHtml(ev.title)}</div>
+            <div class="text-[10px] text-on-surface-variant">${ev.start_time.slice(11,16)} – ${ev.end_time.slice(11,16)} ${ev.location ? '· ' + escHtml(ev.location) : ''}</div>
+          </div>
+          <button onclick="agendaDeleteEvent('${ev.id}')" class="opacity-0 group-hover:opacity-100 text-error hover:text-red-400 transition-opacity ml-1"><span class="material-symbols-outlined text-[18px]">delete</span></button>`;
+        list.appendChild(item);
+      });
+    }
+    agendaBuildGrid();
+  }
+
+  function isoLocal(date) {
+    const pad = n => String(n).padStart(2,'0');
+    return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+  }
+  function escHtml(str) {
+    const d = document.createElement('div'); d.textContent = str || ''; return d.innerHTML;
+  }
+
+  // ── Event Modal ──────────────────────────────────────────────────────────
+  function agendaOpenCreateEventModal(dateStr, startHour) {
+    const modal = document.getElementById('agenda-event-modal');
+    const titleEl = document.getElementById('event-modal-title');
+    const idEl = document.getElementById('event-modal-id');
+    const tInput = document.getElementById('event-modal-title-input');
+    const startEl = document.getElementById('event-modal-start');
+    const endEl = document.getElementById('event-modal-end');
+    const locEl = document.getElementById('event-modal-location');
+    const descEl = document.getElementById('event-modal-desc');
+    const colorEl = document.getElementById('event-modal-color');
+    const errEl = document.getElementById('event-modal-error');
+    if (!modal) return;
+    titleEl.textContent = 'New Event';
+    idEl.value = '';
+    tInput.value = '';
+    const baseDate = dateStr || watcherSelectedDate || toDateInputString(new Date());
+    const h = (startHour !== undefined && startHour !== null) ? String(startHour).padStart(2,'0') : '09';
+    const nextH = (startHour !== undefined && startHour !== null) ? String((startHour+1)%24).padStart(2,'0') : '10';
+    startEl.value = `${baseDate}T${h}:00`;
+    endEl.value   = `${baseDate}T${nextH}:00`;
+    locEl.value = ''; descEl.value = '';
+    colorEl.value = '#00dbe9';
+    if (errEl) { errEl.textContent=''; errEl.classList.add('hidden'); }
+    modal.classList.remove('hidden');
+    setTimeout(() => tInput.focus(), 50);
+  }
+
+  function agendaCloseEventModal() {
+    const modal = document.getElementById('agenda-event-modal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  async function agendaSaveEvent() {
+    const id    = document.getElementById('event-modal-id').value.trim();
+    const title = document.getElementById('event-modal-title-input').value.trim();
+    const start = document.getElementById('event-modal-start').value;
+    const end   = document.getElementById('event-modal-end').value;
+    const loc   = document.getElementById('event-modal-location').value.trim();
+    const desc  = document.getElementById('event-modal-desc').value.trim();
+    const color = document.getElementById('event-modal-color').value;
+    const errEl = document.getElementById('event-modal-error');
+
+    if (!title) { errEl.textContent='Title is required.'; errEl.classList.remove('hidden'); return; }
+    if (!start) { errEl.textContent='Start time is required.'; errEl.classList.remove('hidden'); return; }
+    if (!end)   { errEl.textContent='End time is required.'; errEl.classList.remove('hidden'); return; }
+
+    const payload = { title, start_time: start.length===16?start+':00':start, end_time: end.length===16?end+':00':end, location: loc, description: desc, color };
+    try {
+      let r;
+      if (id) {
+        r = await fetch(`/api/calendar/events/${id}`, { method:'PUT', headers: authHeaders(), body: JSON.stringify(payload) });
+      } else {
+        r = await fetch('/api/calendar/events', { method:'POST', headers: authHeaders(), body: JSON.stringify(payload) });
+      }
+      if (!r.ok) { const e=await r.json().catch(()=>({detail:'Server error'})); errEl.textContent=e.detail||'Error saving.'; errEl.classList.remove('hidden'); return; }
+      agendaCloseEventModal();
+      await agendaFetchEvents();
+      if (window.agendaSelectedDate) agendaSelectDay(window.agendaSelectedDate);
+      watcherRender();
+    } catch(e) {
+      errEl.textContent='Network error: '+e.message; errEl.classList.remove('hidden');
+    }
+  }
+
+  async function agendaDeleteEvent(id) {
+    if (!confirm('Delete this event?')) return;
+    try {
+      await fetch(`/api/calendar/events/${id}`, { method:'DELETE', headers: authHeaders() });
+      await agendaFetchEvents();
+      if (window.agendaSelectedDate) agendaSelectDay(window.agendaSelectedDate);
+      watcherRender();
+    } catch(e) {}
+  }
+
+  // ── Task Modal (for Watcher & Board) ─────────────────────────────────────
+  function agendaOpenTaskModal(dateStr, hour) {
+    const modal = document.getElementById('agenda-task-modal');
+    const titleEl = document.getElementById('task-modal-title');
+    const idEl = document.getElementById('task-modal-id');
+    const tInput = document.getElementById('task-modal-title-input');
+    const dueEl = document.getElementById('task-modal-due');
+    const prioEl = document.getElementById('task-modal-priority');
+    const descEl = document.getElementById('task-modal-desc');
+    const errEl = document.getElementById('task-modal-error');
+    if (!modal) return;
+    titleEl.textContent = 'New Task';
+    idEl.value = '';
+    tInput.value = '';
+    const baseDate = dateStr || watcherSelectedDate || toDateInputString(new Date());
+    const h = (hour !== undefined && hour !== null) ? String(hour).padStart(2,'0') : '12';
+    dueEl.value = `${baseDate}T${h}:00`;
+    prioEl.value = 'medium';
+    descEl.value = '';
+    if (errEl) { errEl.textContent=''; errEl.classList.add('hidden'); }
+    modal.classList.remove('hidden');
+    setTimeout(() => tInput.focus(), 50);
+  }
+
+  function agendaCloseTaskModal() {
+    const modal = document.getElementById('agenda-task-modal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  async function agendaSaveTaskModal() {
+    const id = document.getElementById('task-modal-id').value.trim();
+    const title = document.getElementById('task-modal-title-input').value.trim();
+    const due = document.getElementById('task-modal-due').value;
+    const priority = document.getElementById('task-modal-priority').value;
+    const description = document.getElementById('task-modal-desc').value.trim();
+    const errEl = document.getElementById('task-modal-error');
+
+    if (!title) { errEl.textContent='Title is required.'; errEl.classList.remove('hidden'); return; }
+    if (!due)   { errEl.textContent='Due date/time is required.'; errEl.classList.remove('hidden'); return; }
+
+    const dueIso = due.length===16 ? due+':00' : due;
+    const payload = { title, due_date: dueIso, priority, description };
+    try {
+      let r;
+      if (id) {
+        r = await fetch(`/api/todos/${id}`, { method:'PUT', headers: authHeaders(), body: JSON.stringify(payload) });
+      } else {
+        r = await fetch('/api/todos', { method:'POST', headers: authHeaders(), body: JSON.stringify(payload) });
+      }
+      if (!r.ok) { const e=await r.json().catch(()=>({detail:'Server error'})); errEl.textContent=e.detail||'Error saving.'; errEl.classList.remove('hidden'); return; }
+      agendaCloseTaskModal();
+      agendaLoadTodos('all');
+      watcherRender();
+    } catch(e) {
+      errEl.textContent='Network error: '+e.message; errEl.classList.remove('hidden');
+    }
+  }
+
+  // ── To-Do Tasks (Quick Board) ────────────────────────────────────────────
+  async function agendaLoadTodos(filterStatus) {
+    const list = document.getElementById('todo-list');
+    if (!list) return;
+
+    ['all','pending','completed'].forEach(f => {
+      const btn = document.getElementById(`todo-filter-${f}`);
+      if (btn) {
+        const isActive = f === filterStatus;
+        btn.className = `px-3 py-1 rounded-full text-[11px] font-semibold transition-colors ${isActive ? 'bg-primary-container/30 text-primary' : 'bg-surface-container text-on-surface-variant hover:text-on-surface'}`;
+      }
+    });
+
+    const qs = filterStatus && filterStatus !== 'all' ? `?status=${filterStatus}` : '';
+    try {
+      const r = await fetch(`/api/todos${qs}`, { headers: authHeaders() });
+      if (!r.ok) return;
+      const d = await r.json();
+      agendaAllTasks = d.tasks || [];
+      agendaRenderTodoList(agendaAllTasks);
+    } catch(e) {}
+  }
+
+  function agendaRenderTodoList(tasks) {
+    const list = document.getElementById('todo-list');
+    if (!list) return;
+    if (tasks.length === 0) {
+      list.innerHTML = '<div class="text-[12px] text-on-surface-variant py-2 text-center">No tasks. Add one above!</div>';
+      return;
+    }
+    list.innerHTML = '';
+    tasks.forEach(t => {
+      const item = document.createElement('div');
+      item.className = 'flex items-center gap-2 bg-surface-container rounded-lg px-2 py-1.5 group';
+      const isDone = t.status === 'completed';
+      const pColor = PRIORITY_COLORS[t.priority] || PRIORITY_COLORS.medium;
+      const pIcon  = PRIORITY_ICONS[t.priority]  || '🟡';
+      const dueStr = t.due_date ? t.due_date.replace('T', ' ').slice(0, 16) : '';
+      item.innerHTML = `
+        <input type="checkbox" ${isDone?'checked':''} onchange="agendaToggleTodo('${t.id}')"
+               class="w-4 h-4 accent-primary rounded cursor-pointer flex-shrink-0" />
+        <div class="flex-1 min-w-0">
+          <div class="text-[12px] font-medium text-on-surface truncate ${isDone?'line-through opacity-60':''}">${escHtml(t.title)}</div>
+          <div class="text-[10px] text-on-surface-variant">${dueStr ? '🕒 ' + dueStr : ''}</div>
+        </div>
+        <span class="text-[10px] px-1.5 py-0.5 rounded-full font-semibold flex-shrink-0 ${pColor}">${pIcon}</span>
+        <button onclick="agendaDeleteTodo('${t.id}')" class="opacity-0 group-hover:opacity-100 text-error hover:text-red-400 transition-opacity">
+          <span class="material-symbols-outlined text-[16px]">delete</span>
+        </button>`;
+      list.appendChild(item);
+    });
+  }
+
+  async function agendaAddTodo() {
+    const titleEl = document.getElementById('todo-title-input');
+    const prioEl  = document.getElementById('todo-priority-input');
+    const dueEl   = document.getElementById('todo-duedate-input');
+    const title = titleEl?.value?.trim();
+    if (!title) { titleEl?.focus(); return; }
+    const dueRaw = dueEl?.value;
+    const dueIso = dueRaw ? (dueRaw.length===16 ? dueRaw+':00' : dueRaw) : new Date().toISOString().slice(0,19);
+    try {
+      const r = await fetch('/api/todos', { method:'POST', headers: authHeaders(), body: JSON.stringify({ title, due_date: dueIso, priority: prioEl?.value||'medium' }) });
+      if (r.ok) {
+        if (titleEl) titleEl.value = '';
+        if (dueEl) dueEl.value = '';
+        await agendaLoadTodos('all');
+        watcherRender();
+      }
+    } catch(e) {}
+  }
+
+  async function agendaToggleTodo(id) {
+    try {
+      await fetch(`/api/todos/${id}/toggle`, { method:'POST', headers: authHeaders() });
+      await agendaLoadTodos('all');
+      watcherRender();
+    } catch(e) {}
+  }
+
+  async function agendaDeleteTodo(id) {
+    if (!confirm('Delete this task?')) return;
+    try {
+      await fetch(`/api/todos/${id}`, { method:'DELETE', headers: authHeaders() });
+      await agendaLoadTodos('all');
+      watcherRender();
+    } catch(e) {}
+  }
+
+  // ── Email AI Parser ──────────────────────────────────────────────────────
+  async function agendaParseEmail() {
+    const textarea = document.getElementById('email-ingest-textarea');
+    const btn = document.getElementById('email-parse-btn');
+    const preview = document.getElementById('email-parse-preview');
+    const previewContent = document.getElementById('email-parse-preview-content');
+    const statusEl = document.getElementById('email-parse-status');
+    const text = textarea?.value?.trim();
+    if (!text) { textarea?.focus(); return; }
+
+    if (btn) { btn.disabled=true; btn.innerHTML='<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span> Parsing…'; }
+    if (statusEl) { statusEl.textContent='⏳ Local LLM processing…'; statusEl.classList.remove('hidden'); }
+    if (preview) preview.classList.add('hidden');
+
+    try {
+      const r = await fetch('/api/agenda/parse-email', { method:'POST', headers: authHeaders(), body: JSON.stringify({ email_text: text }) });
+      const d = await r.json();
+      agendaLastParseResult = d;
+      const ev = d.events_created || []; const td = d.todos_created || [];
+      let txt = `✅ ${ev.length} event(s), ${td.length} task(s) extracted.\n\n`;
+      ev.forEach((e,i) => { txt += `📅 Event ${i+1}: ${e.title}\n   ${e.start_time} → ${e.end_time}\n   ${e.location||''}\n\n`; });
+      td.forEach((t,i) => { txt += `✔ Task ${i+1}: ${t.title} [${t.priority}]\n   Due: ${t.due_date}\n\n`; });
+      if (d.parse_errors?.length) { txt += `⚠ Warnings:\n${d.parse_errors.join('\n')}`; }
+      if (previewContent) previewContent.textContent = txt;
+      if (preview) preview.classList.remove('hidden');
+      if (statusEl) { statusEl.textContent = `✅ Parsed: ${ev.length} event(s), ${td.length} task(s) auto-saved.`; statusEl.classList.remove('hidden'); }
+    } catch(e) {
+      if (statusEl) { statusEl.textContent='❌ Error: ' + e.message; statusEl.classList.remove('hidden'); }
+    } finally {
+      if (btn) { btn.disabled=false; btn.innerHTML='<span class="material-symbols-outlined text-[18px]">bolt</span> Extract &amp; Schedule'; }
+    }
+  }
+
+  function agendaConfirmSchedule() {
+    agendaFetchEvents();
+    agendaLoadTodos('all');
+    watcherRender();
+    const textarea = document.getElementById('email-ingest-textarea');
+    if (textarea) textarea.value = '';
+    agendaCancelEmailPreview();
+  }
+
+  function agendaCancelEmailPreview() {
+    const preview = document.getElementById('email-parse-preview');
+    if (preview) preview.classList.add('hidden');
+    const statusEl = document.getElementById('email-parse-status');
+    if (statusEl) statusEl.classList.add('hidden');
+    agendaLastParseResult = null;
+  }
+
+  // ═════════════════════════════════════════════════════════════════════════
+  //  DATE & TIME SCHEDULE WATCHER LOGIC
+  // ═════════════════════════════════════════════════════════════════════════
+  let watcherClockTimer = null;
+
+  function watcherInit() {
+    const dateInput = document.getElementById('watcher-date-input');
+    if (dateInput) dateInput.value = watcherSelectedDate;
+    if (!watcherClockTimer) {
+      watcherUpdateClock();
+      watcherClockTimer = setInterval(watcherUpdateClock, 1000);
+    }
+    watcherFetchAndRender();
+  }
+
+  function watcherUpdateClock() {
+    const clockEl = document.getElementById('watcher-live-clock');
+    if (clockEl) {
+      const now = new Date();
+      clockEl.textContent = now.toLocaleTimeString('en-US', { hour12: false });
+    }
+  }
+
+  function watcherStepDay(delta) {
+    const parts = watcherSelectedDate.split('-').map(Number);
+    const d = new Date(parts[0], parts[1]-1, parts[2] + delta);
+    watcherSelectedDate = toDateInputString(d);
+    window.agendaSelectedDate = watcherSelectedDate;
+    const dateInput = document.getElementById('watcher-date-input');
+    if (dateInput) dateInput.value = watcherSelectedDate;
+    watcherFetchAndRender();
+  }
+
+  function watcherJumpToday() {
+    watcherSelectedDate = toDateInputString(new Date());
+    window.agendaSelectedDate = watcherSelectedDate;
+    const dateInput = document.getElementById('watcher-date-input');
+    if (dateInput) dateInput.value = watcherSelectedDate;
+    watcherFetchAndRender();
+  }
+
+  function watcherOnDateChange(newVal) {
+    if (!newVal) return;
+    watcherSelectedDate = newVal;
+    window.agendaSelectedDate = watcherSelectedDate;
+    watcherFetchAndRender();
+  }
+
+  function watcherAddEventQuick() {
+    agendaOpenCreateEventModal(watcherSelectedDate, 9);
+  }
+
+  function watcherAddTaskQuick() {
+    agendaOpenTaskModal(watcherSelectedDate, 12);
+  }
+
+  function watcherAddEventAtHour(hour) {
+    agendaOpenCreateEventModal(watcherSelectedDate, hour);
+  }
+
+  function watcherAddTaskAtHour(hour) {
+    agendaOpenTaskModal(watcherSelectedDate, hour);
+  }
+
+  async function watcherFetchAndRender() {
+    const startIso = `${watcherSelectedDate}T00:00:00`;
+    const endIso   = `${watcherSelectedDate}T23:59:59`;
+
+    try {
+      const [rEv, rTd] = await Promise.all([
+        fetch(`/api/calendar/events?start=${encodeURIComponent(startIso)}&end=${encodeURIComponent(endIso)}&limit=300`, { headers: authHeaders() }),
+        fetch(`/api/todos?start=${encodeURIComponent(startIso)}&end=${encodeURIComponent(endIso)}&limit=300`, { headers: authHeaders() }),
+      ]);
+      const [dEv, dTd] = await Promise.all([rEv.json(), rTd.json()]);
+      agendaAllEvents = dEv.events || [];
+      agendaAllTasks  = dTd.tasks  || [];
+    } catch(e) {}
+
+    watcherRender();
+  }
+
+  function watcherRender() {
+    const formattedDateEl = document.getElementById('watcher-formatted-date');
+    const subtextEl       = document.getElementById('watcher-subtext');
+    const statBadgesEl    = document.getElementById('watcher-stat-badges');
+    const streamEl        = document.getElementById('watcher-timeline-stream');
+    const alldayCont      = document.getElementById('watcher-allday-container');
+    const alldayList      = document.getElementById('watcher-allday-list');
+
+    if (!streamEl) return;
+
+    // Format Date Header
+    const parts = watcherSelectedDate.split('-').map(Number);
+    const dateObj = new Date(parts[0], parts[1]-1, parts[2]);
+    const dayName = DAYS[dateObj.getDay()];
+    const monthName = MONTHS[dateObj.getMonth()];
+    const todayStr = toDateInputString(new Date());
+    const isToday = watcherSelectedDate === todayStr;
+
+    if (formattedDateEl) {
+      formattedDateEl.textContent = `${dayName}, ${monthName} ${parts[2]}, ${parts[0]} ${isToday ? '🌟 (TODAY)' : ''}`;
+    }
+    if (subtextEl) {
+      subtextEl.textContent = `Chronological timeline for events and tasks by scheduled date & time`;
+    }
+
+    // Filters
+    const timeWinVal = document.getElementById('watcher-time-window')?.value || 'all';
+    const typeVal    = document.getElementById('watcher-type-filter')?.value || 'all';
+    const query      = (document.getElementById('watcher-search-input')?.value || '').toLowerCase().trim();
+
+    let startH = 0, endH = 23;
+    if (timeWinVal === 'morning')   { startH = 6;  endH = 11; }
+    if (timeWinVal === 'afternoon') { startH = 12; endH = 17; }
+    if (timeWinVal === 'evening')   { startH = 18; endH = 23; }
+    if (timeWinVal === 'work')      { startH = 8;  endH = 18; }
+
+    // Filter Items
+    let dayEvents = agendaAllEvents.filter(e => e.start_time && e.start_time.startsWith(watcherSelectedDate));
+    let dayTasks  = agendaAllTasks.filter(t => t.due_date && t.due_date.startsWith(watcherSelectedDate));
+
+    if (typeVal === 'events') dayTasks = [];
+    if (typeVal === 'todos')  dayEvents = [];
+    if (typeVal === 'pending_todos') { dayEvents = []; dayTasks = dayTasks.filter(t => t.status !== 'completed'); }
+
+    if (query) {
+      dayEvents = dayEvents.filter(e => (e.title+' '+(e.description||'')+' '+(e.location||'')).toLowerCase().includes(query));
+      dayTasks  = dayTasks.filter(t => (t.title+' '+(t.description||'')).toLowerCase().includes(query));
+    }
+
+    // Stats
+    const totalEvents = dayEvents.length;
+    const totalTasks  = dayTasks.length;
+    const pendingTasks = dayTasks.filter(t => t.status !== 'completed').length;
+
+    if (statBadgesEl) {
+      statBadgesEl.innerHTML = `
+        <span class="px-2.5 py-1 rounded-full bg-primary-container/20 text-primary border border-primary/30">📅 ${totalEvents} Events</span>
+        <span class="px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container">✅ ${totalTasks} Tasks (${pendingTasks} pending)</span>
+      `;
+    }
+
+    // Separate All-Day / Unscheduled tasks (due at 23:59 or no specific time)
+    const alldayTasks = dayTasks.filter(t => t.due_date.includes('23:59'));
+    if (alldayTasks.length > 0 && alldayCont && alldayList) {
+      alldayCont.classList.remove('hidden');
+      alldayList.innerHTML = '';
+      alldayTasks.forEach(t => {
+        alldayList.appendChild(buildTaskCard(t));
+      });
+    } else if (alldayCont) {
+      alldayCont.classList.add('hidden');
+    }
+
+    // Build Hourly Stream
+    streamEl.innerHTML = '';
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+
+    for (let h = startH; h <= endH; h++) {
+      const hStr = String(h).padStart(2,'0');
+      const hourEvents = dayEvents.filter(e => {
+        const evH = e.start_time ? e.start_time.slice(11,13) : '';
+        return evH === hStr;
+      });
+      const hourTasks = dayTasks.filter(t => {
+        if (t.due_date.includes('23:59')) return false; // shown in allday drawer
+        const tdH = t.due_date ? t.due_date.slice(11,13) : '';
+        return tdH === hStr;
+      });
+
+      const hasItems = hourEvents.length > 0 || hourTasks.length > 0;
+      const isCurrentSlot = isToday && currentHour === h;
+
+      const slotRow = document.createElement('div');
+      slotRow.className = `flex gap-space-sm rounded-xl p-space-sm transition-all ${isCurrentSlot ? 'bg-primary-container/10 border border-primary/40' : (hasItems ? 'bg-surface-container/60 border border-outline-variant/30' : 'hover:bg-surface-container/30 border border-transparent')}`;
+
+      // Hour column
+      const timeCol = document.createElement('div');
+      timeCol.className = 'w-16 flex flex-col items-center flex-shrink-0 pt-1';
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const dispH = h % 12 === 0 ? 12 : h % 12;
+      timeCol.innerHTML = `
+        <span class="text-[13px] font-mono font-bold ${isCurrentSlot ? 'text-primary' : 'text-on-surface'}">${dispH}:00</span>
+        <span class="text-[9px] font-mono text-on-surface-variant font-semibold">${ampm}</span>
+      `;
+      slotRow.appendChild(timeCol);
+
+      // Content column
+      const contentCol = document.createElement('div');
+      contentCol.className = 'flex-1 min-w-0 flex flex-col gap-2';
+
+      // Current Time Pulse Indicator
+      if (isCurrentSlot) {
+        const pulseBar = document.createElement('div');
+        pulseBar.className = 'flex items-center gap-2 py-0.5 text-primary text-[10.5px] font-mono font-bold';
+        pulseBar.innerHTML = `<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span> <span>NOW [${String(currentHour).padStart(2,'0')}:${String(currentMinute).padStart(2,'0')}]</span><div class="h-px flex-1 bg-primary/40"></div>`;
+        contentCol.appendChild(pulseBar);
+      }
+
+      if (hasItems) {
+        // Render events
+        hourEvents.forEach(ev => {
+          contentCol.appendChild(buildEventCard(ev));
+        });
+        // Render tasks
+        hourTasks.forEach(task => {
+          contentCol.appendChild(buildTaskCard(task));
+        });
+      } else {
+        // Empty hour slot with quick-add prompt
+        const emptyPrompt = document.createElement('div');
+        emptyPrompt.className = 'flex items-center justify-between text-[11px] text-on-surface-variant/50 py-1.5 px-2 rounded-lg hover:bg-surface-container-high/40 transition-colors group';
+        emptyPrompt.innerHTML = `
+          <span>No events or tasks scheduled</span>
+          <div class="opacity-0 group-hover:opacity-100 flex items-center gap-2 transition-opacity">
+            <button onclick="watcherAddEventAtHour(${h})" class="text-[11px] text-primary hover:underline font-semibold flex items-center gap-0.5">
+              <span class="material-symbols-outlined text-[14px]">add</span> Event
+            </button>
+            <span class="text-outline-variant">·</span>
+            <button onclick="watcherAddTaskAtHour(${h})" class="text-[11px] text-secondary hover:underline font-semibold flex items-center gap-0.5">
+              <span class="material-symbols-outlined text-[14px]">add_task</span> Task
+            </button>
+          </div>
+        `;
+        contentCol.appendChild(emptyPrompt);
+      }
+
+      slotRow.appendChild(contentCol);
+      streamEl.appendChild(slotRow);
+    }
+  }
+
+  function buildEventCard(ev) {
+    const card = document.createElement('div');
+    card.className = 'flex items-center gap-3 bg-surface-container rounded-xl p-2.5 border border-outline-variant/30 hover:border-primary/50 transition-all shadow-sm group';
+    const color = ev.color || '#00dbe9';
+    const startStr = ev.start_time ? ev.start_time.slice(11,16) : '';
+    const endStr   = ev.end_time   ? ev.end_time.slice(11,16) : '';
+
+    card.innerHTML = `
+      <div class="w-1.5 self-stretch rounded-full flex-shrink-0" style="background:${color}"></div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2">
+          <span class="text-[13px] font-bold text-on-surface truncate">${escHtml(ev.title)}</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-surface-container-high text-primary border border-outline-variant/30">${startStr} – ${endStr}</span>
+          ${ev.source === 'email' ? '<span class="text-[9px] px-1.5 py-0.2 rounded bg-secondary-container/60 text-on-secondary-container font-mono">AI Email</span>' : ''}
+        </div>
+        ${ev.location ? `<div class="text-[11px] text-on-surface-variant flex items-center gap-1 mt-0.5"><span class="material-symbols-outlined text-[13px] text-primary">location_on</span> ${escHtml(ev.location)}</div>` : ''}
+        ${ev.description ? `<div class="text-[11px] text-on-surface-variant/80 mt-0.5 truncate">${escHtml(ev.description)}</div>` : ''}
+      </div>
+      <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button onclick="agendaDeleteEvent('${ev.id}')" class="p-1 rounded text-error hover:text-red-400 hover:bg-error-container/20 transition-colors" title="Delete Event">
+          <span class="material-symbols-outlined text-[16px]">delete</span>
+        </button>
+      </div>
+    `;
+    return card;
+  }
+
+  function buildTaskCard(task) {
+    const card = document.createElement('div');
+    card.className = 'flex items-center gap-3 bg-surface-container rounded-xl p-2.5 border border-outline-variant/30 hover:border-secondary/50 transition-all shadow-sm group';
+    const isDone = task.status === 'completed';
+    const pColor = PRIORITY_COLORS[task.priority] || PRIORITY_COLORS.medium;
+    const pIcon  = PRIORITY_ICONS[task.priority]  || '🟡';
+    const dueTime = task.due_date ? task.due_date.slice(11,16) : '';
+
+    card.innerHTML = `
+      <input type="checkbox" ${isDone?'checked':''} onchange="agendaToggleTodo('${task.id}')"
+             class="w-4 h-4 accent-primary rounded cursor-pointer flex-shrink-0" />
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2">
+          <span class="text-[13px] font-medium text-on-surface truncate ${isDone?'line-through opacity-60 text-on-surface-variant':''}">${escHtml(task.title)}</span>
+          <span class="text-[10px] font-mono px-1.5 py-0.5 rounded-full ${pColor} flex items-center gap-1">${pIcon} ${task.priority.toUpperCase()}</span>
+          ${dueTime ? `<span class="text-[10px] font-mono text-on-surface-variant flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">schedule</span> ${dueTime}</span>` : ''}
+          ${task.source === 'email' ? '<span class="text-[9px] px-1.5 py-0.2 rounded bg-secondary-container/60 text-on-secondary-container font-mono">AI Email</span>' : ''}
+        </div>
+        ${task.description ? `<div class="text-[11px] text-on-surface-variant/80 mt-0.5 truncate">${escHtml(task.description)}</div>` : ''}
+      </div>
+      <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button onclick="agendaDeleteTodo('${task.id}')" class="p-1 rounded text-error hover:text-red-400 hover:bg-error-container/20 transition-colors" title="Delete Task">
+          <span class="material-symbols-outlined text-[16px]">delete</span>
+        </button>
+      </div>
+    `;
+    return card;
+  }
+
+  // ── Nav Tab Integration ──────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelectorAll('nav[data-active-classes] a[data-path]');
+    navLinks.forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        if (link.getAttribute('data-path') === 'agenda-calendar') {
+          e.preventDefault();
+          e.stopPropagation();
+          document.querySelectorAll('main section[id^="view-"]').forEach(function(s) { s.classList.add('hidden'); });
+          const agendaSection = document.getElementById('view-agenda-calendar');
+          if (agendaSection) agendaSection.classList.remove('hidden');
+          const activeClasses = (link.closest('nav[data-active-classes]')?.getAttribute('data-active-classes')||'').split(' ');
+          navLinks.forEach(function(l) {
+            l.removeAttribute('aria-current');
+            activeClasses.forEach(c => { if(c) l.classList.remove(c); });
+            l.classList.add('font-label-md','text-label-md','text-on-surface-variant');
+          });
+          link.setAttribute('aria-current','page');
+          activeClasses.forEach(c => { if(c) link.classList.add(c); });
+          link.classList.remove('text-on-surface-variant');
+          agendaRenderCalendar();
+          agendaLoadTodos('all');
+        }
+      }, true);
+    });
+  });
+})();
+</script>
+
+</div></main><footer class="w-full bg-surface-container-lowest py-space-lg">
 
 
 <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.22.0/dist/ort.wasm.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.31/dist/bundle.min.js" defer></script></body></html>

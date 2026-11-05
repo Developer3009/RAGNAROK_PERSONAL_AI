@@ -43,9 +43,11 @@ from pydantic import BaseModel, Field
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from ragnarok import llm
+from ragnarok.agent.email_scheduler import EmailScheduler
 from ragnarok.agent.loop import AgentLoop, AgentResult
 from ragnarok.agent.swarm import SwarmOrchestrator, SwarmResult
 from ragnarok.config import settings
+from ragnarok.memory.agenda import CalendarEvent, TodoTask, get_agenda_db
 from ragnarok.memory.recall import MemoryStore
 from ragnarok.safety.approval import ApprovalDecision, ApprovalManager, ApprovalStatus
 from ragnarok.safety.audit_integrity import get_audit_signer
@@ -580,6 +582,210 @@ def export_memories_json(_: str = Depends(verify_token)) -> Response:
         media_type="application/json",
         headers={"Content-Disposition": 'attachment; filename="ragnarok_memories.json"'},
     )
+
+
+# ── Agenda / Calendar / Todo REST Endpoints ───────────────────────────────────
+
+class CalendarEventCreate(BaseModel):
+    """Request body for creating a calendar event."""
+    title: str = Field(..., min_length=1, max_length=500)
+    start_time: str = Field(..., description="ISO 8601 datetime")
+    end_time: str = Field(..., description="ISO 8601 datetime")
+    description: str = Field("", max_length=2000)
+    location: str = Field("", max_length=500)
+    color: str = Field("#00dbe9", max_length=20)
+    source: str = Field("manual", max_length=20)
+
+
+class CalendarEventUpdate(BaseModel):
+    """Request body for updating a calendar event (all fields optional)."""
+    title: Optional[str] = Field(None, max_length=500)
+    start_time: Optional[str] = None
+    end_time: Optional[str] = None
+    description: Optional[str] = Field(None, max_length=2000)
+    location: Optional[str] = Field(None, max_length=500)
+    color: Optional[str] = Field(None, max_length=20)
+
+
+class TodoTaskCreate(BaseModel):
+    """Request body for creating a to-do task."""
+    title: str = Field(..., min_length=1, max_length=500)
+    due_date: str = Field(..., description="ISO 8601 datetime")
+    priority: str = Field("medium", pattern="^(low|medium|high|urgent)$")
+    description: str = Field("", max_length=2000)
+    scheduled_time: str = Field("", max_length=50)
+    tags: List[str] = Field(default_factory=list)
+    source: str = Field("manual", max_length=20)
+
+
+class TodoTaskUpdate(BaseModel):
+    """Request body for updating a to-do task (all fields optional)."""
+    title: Optional[str] = Field(None, max_length=500)
+    due_date: Optional[str] = None
+    priority: Optional[str] = Field(None, pattern="^(low|medium|high|urgent)$")
+    status: Optional[str] = Field(None, pattern="^(pending|in_progress|completed|cancelled)$")
+    description: Optional[str] = Field(None, max_length=2000)
+    scheduled_time: Optional[str] = Field(None, max_length=50)
+    tags: Optional[List[str]] = None
+
+
+class ParseEmailRequest(BaseModel):
+    """Request body for AI email parsing and auto-scheduling."""
+    email_text: str = Field(..., min_length=1, max_length=50_000)
+
+
+@app.get("/api/calendar/events")
+def list_calendar_events(
+    start: Optional[str] = Query(None, description="ISO 8601 start filter"),
+    end: Optional[str] = Query(None, description="ISO 8601 end filter"),
+    limit: int = Query(500, ge=1, le=1000),
+    _: str = Depends(verify_token),
+) -> dict[str, Any]:
+    """List calendar events, optionally filtered by date range."""
+    db = get_agenda_db()
+    events = db.list_events(start=start, end=end, limit=limit)
+    from dataclasses import asdict as _asdict
+    return {"events": [_asdict(e) for e in events], "count": len(events)}
+
+
+@app.post("/api/calendar/events")
+def create_calendar_event(
+    body: CalendarEventCreate,
+    _: str = Depends(verify_token),
+) -> dict[str, Any]:
+    """Create a new calendar event."""
+    db = get_agenda_db()
+    ev = db.create_event(
+        title=body.title,
+        start_time=body.start_time,
+        end_time=body.end_time,
+        description=body.description,
+        location=body.location,
+        color=body.color,
+        source=body.source,
+    )
+    from dataclasses import asdict as _asdict
+    return {"event": _asdict(ev), "status": "created"}
+
+
+@app.put("/api/calendar/events/{event_id}")
+def update_calendar_event(
+    event_id: str,
+    body: CalendarEventUpdate,
+    _: str = Depends(verify_token),
+) -> dict[str, Any]:
+    """Update an existing calendar event."""
+    db = get_agenda_db()
+    updates = {k: v for k, v in body.model_dump().items() if v is not None}
+    ev = db.update_event(event_id, **updates)
+    if ev is None:
+        raise HTTPException(status_code=404, detail=f"Event '{event_id}' not found")
+    from dataclasses import asdict as _asdict
+    return {"event": _asdict(ev), "status": "updated"}
+
+
+@app.delete("/api/calendar/events/{event_id}")
+def delete_calendar_event(
+    event_id: str,
+    _: str = Depends(verify_token),
+) -> dict[str, Any]:
+    """Permanently delete a calendar event."""
+    db = get_agenda_db()
+    ok = db.delete_event(event_id)
+    if not ok:
+        raise HTTPException(status_code=404, detail=f"Event '{event_id}' not found")
+    return {"id": event_id, "status": "deleted"}
+
+
+@app.get("/api/todos")
+def list_todos(
+    status: Optional[str] = Query(None, description="Filter by status"),
+    priority: Optional[str] = Query(None, description="Filter by priority"),
+    start: Optional[str] = Query(None, description="Filter by due_date start ISO"),
+    end: Optional[str] = Query(None, description="Filter by due_date end ISO"),
+    limit: int = Query(500, ge=1, le=1000),
+    _: str = Depends(verify_token),
+) -> dict[str, Any]:
+    """List to-do tasks, optionally filtered by status, priority, and date range."""
+    db = get_agenda_db()
+    tasks = db.list_tasks(status=status, priority=priority, start=start, end=end, limit=limit)
+    from dataclasses import asdict as _asdict
+    return {"tasks": [_asdict(t) for t in tasks], "count": len(tasks)}
+
+
+@app.post("/api/todos")
+def create_todo(
+    body: TodoTaskCreate,
+    _: str = Depends(verify_token),
+) -> dict[str, Any]:
+    """Create a new to-do task."""
+    db = get_agenda_db()
+    task = db.create_task(
+        title=body.title,
+        due_date=body.due_date,
+        priority=body.priority,
+        description=body.description,
+        scheduled_time=body.scheduled_time,
+        tags=body.tags,
+        source=body.source,
+    )
+    from dataclasses import asdict as _asdict
+    return {"task": _asdict(task), "status": "created"}
+
+
+@app.put("/api/todos/{task_id}")
+def update_todo(
+    task_id: str,
+    body: TodoTaskUpdate,
+    _: str = Depends(verify_token),
+) -> dict[str, Any]:
+    """Update an existing to-do task."""
+    db = get_agenda_db()
+    updates = {k: v for k, v in body.model_dump().items() if v is not None}
+    task = db.update_task(task_id, **updates)
+    if task is None:
+        raise HTTPException(status_code=404, detail=f"Task '{task_id}' not found")
+    from dataclasses import asdict as _asdict
+    return {"task": _asdict(task), "status": "updated"}
+
+
+@app.delete("/api/todos/{task_id}")
+def delete_todo(
+    task_id: str,
+    _: str = Depends(verify_token),
+) -> dict[str, Any]:
+    """Permanently delete a to-do task."""
+    db = get_agenda_db()
+    ok = db.delete_task(task_id)
+    if not ok:
+        raise HTTPException(status_code=404, detail=f"Task '{task_id}' not found")
+    return {"id": task_id, "status": "deleted"}
+
+
+@app.post("/api/todos/{task_id}/toggle")
+def toggle_todo(
+    task_id: str,
+    _: str = Depends(verify_token),
+) -> dict[str, Any]:
+    """Toggle a task between pending and completed."""
+    db = get_agenda_db()
+    task = db.toggle_task(task_id)
+    if task is None:
+        raise HTTPException(status_code=404, detail=f"Task '{task_id}' not found")
+    from dataclasses import asdict as _asdict
+    return {"task": _asdict(task), "status": "toggled"}
+
+
+@app.post("/api/agenda/parse-email")
+def parse_email_schedule(
+    body: ParseEmailRequest,
+    _: str = Depends(verify_token),
+) -> dict[str, Any]:
+    """Parse raw email text with the local LLM and auto-schedule extracted events/tasks."""
+    db = get_agenda_db()
+    scheduler = EmailScheduler(agenda_db=db)
+    result = scheduler.parse_and_schedule(body.email_text)
+    return result
 
 
 # ── Approvals Endpoint ────────────────────────────────────────────────────────
